@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockups - Duodingo</title>
+<style>
+  @page { margin: 1cm; size: A4; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #1a1a2e;
+    line-height: 1.6;
+    background: #f5f5f5;
+    padding: 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .cover {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #131F24, #1A2C34);
+    color: white;
+    border-radius: 12px;
+    margin-bottom: 40px;
+    page-break-after: always;
+  }
+  .cover h1 { font-size: 42px; color: #58CC02; margin-bottom: 8px; }
+  .cover h2 { font-size: 20px; font-weight: 400; color: #afafaf; margin-bottom: 30px; }
+  .cover .meta { font-size: 14px; color: #777; margin-top: 40px; }
+  .cover .meta p { margin: 4px 0; }
+  h1 { font-size: 26px; color: #131F24; border-bottom: 3px solid #58CC02; padding-bottom: 8px; margin: 40px 0 20px; }
+  h2 { font-size: 18px; color: #1A2C34; margin: 20px 0 10px; }
+  p.desc { font-size: 14px; color: #555; margin-bottom: 16px; }
+
+  .mockup-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    margin: 20px 0 40px;
+  }
+  .mockup-card {
+    width: 280px;
+  }
+  .mockup-card h3 {
+    font-size: 14px;
+    color: #58CC02;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  /* Phone frame */
+  .phone {
+    width: 260px;
+    height: 520px;
+    background: #131F24;
+    border-radius: 28px;
+    border: 3px solid #333;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+  .phone .notch {
+    width: 100px;
+    height: 20px;
+    background: #333;
+    border-radius: 0 0 12px 12px;
+    margin: 0 auto;
+  }
+  .phone .screen {
+    padding: 10px 14px;
+    height: calc(100% - 20px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* UI Elements */
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    color: #888;
+    padding: 2px 0 6px;
+  }
+  .m-title {
+    color: #58CC02;
+    font-size: 18px;
+    font-weight: 800;
+    text-align: center;
+  }
+  .m-subtitle {
+    color: #afafaf;
+    font-size: 10px;
+    text-align: center;
+    margin: 4px 0 10px;
+  }
+  .m-btn {
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin: 4px 0;
+  }
+  .m-btn-primary { background: #58CC02; color: #fff; }
+  .m-btn-outline { border: 2px solid #2A3A42; color: #1CB0F6; background: transparent; }
+  .m-btn-secondary { background: #1CB0F6; color: #fff; }
+  .m-input {
+    background: #1A2C34;
+    border: 1px solid #2A3A42;
+    border-radius: 8px;
+    padding: 8px 10px;
+    color: #888;
+    font-size: 10px;
+    margin: 4px 0;
+  }
+  .m-card {
+    background: #1A2C34;
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin: 3px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .m-card-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+  .m-card-text { color: #fff; font-size: 10px; }
+  .m-card-text-sm { color: #888; font-size: 8px; }
+  .m-chip {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 14px;
+    font-size: 9px;
+    font-weight: 600;
+    margin: 2px;
+  }
+  .m-chip-active { background: #58CC02; color: #fff; }
+  .m-chip-inactive { background: #1A2C34; color: #888; }
+  .m-progress-bar {
+    height: 6px;
+    background: #1A2C34;
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 4px 0;
+  }
+  .m-progress-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+  .m-tab-bar {
+    display: flex;
+    justify-content: space-around;
+    background: #1A2C34;
+    padding: 6px 0;
+    border-radius: 0 0 20px 20px;
+    margin-top: auto;
+  }
+  .m-tab {
+    text-align: center;
+    font-size: 8px;
+    color: #888;
+  }
+  .m-tab.active { color: #58CC02; }
+  .m-tab-icon { font-size: 14px; display: block; }
+  .m-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #58CC02, #46a302);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0 auto 6px;
+    border: 3px solid #2A3A42;
+  }
+  .m-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 9px;
+    font-weight: 700;
+  }
+  .m-mascot {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 4px;
+    display: block;
+  }
+  .spacer { flex: 1; }
+  .center { text-align: center; }
+  .flex-col { display: flex; flex-direction: column; }
+  .flex-row { display: flex; align-items: center; gap: 6px; }
+  .gap-sm > * + * { margin-top: 4px; }
+  .mt-auto { margin-top: auto; }
+  .mb-8 { margin-bottom: 8px; }
+  .mb-4 { margin-bottom: 4px; }
+  .mt-6 { margin-top: 6px; }
+  .mt-10 { margin-top: 10px; }
+
+  /* Topic path zigzag */
+  .topic-node {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    margin: 3px 0;
+    position: relative;
+  }
+  .topic-unlocked { background: #58CC02; box-shadow: 0 3px 0 #46a302; }
+  .topic-current { background: #1CB0F6; box-shadow: 0 3px 0 #1499d6; border: 2px solid #fff; }
+  .topic-locked { background: #2A3A42; box-shadow: 0 3px 0 #1A2C34; }
+
+  .leaderboard-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 8px;
+    background: #1A2C34;
+    border-radius: 6px;
+    margin: 3px 0;
+  }
+  .lb-rank { font-size: 11px; font-weight: 800; width: 16px; text-align: center; }
+  .lb-avatar {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #2A3A42;
+  }
+  .lb-name { font-size: 10px; color: #fff; flex: 1; }
+  .lb-xp { font-size: 9px; color: #58CC02; font-weight: 700; }
+
+  /* Feedback bar */
+  .feedback-bar {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    margin: 4px 0;
+  }
+  .feedback-correct { background: #1a3a1a; color: #58CC02; border: 1px solid #58CC02; }
+  .feedback-wrong { background: #3a1a1a; color: #FF4B4B; border: 1px solid #FF4B4B; }
+
+  @media print {
+    .cover { page-break-after: always; }
+    .mockup-grid { page-break-inside: avoid; }
+    body { background: #fff; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <img src="glitch.png" alt="Glitch" style="width: 120px; height: 120px; margin-bottom: 16px;">
+  <h1>Duodingo</h1>
+  <h2>Mockups & Maquettes</h2>
+  <p style="font-size:18px; color:#ccc;">Interfaces utilisateur de l'application</p>
+  <div class="meta">
+    <p>Version 1.0 - Mars 2026</p>
+    <p>8 ecrans principaux</p>
+  </div>
+</div>
+
+<!-- ========== WELCOME + AUTH ========== -->
+<h1>1. Ecrans d'accueil et authentification</h1>
+<p class="desc">Flux d'entree dans l'application : ecran de bienvenue, inscription et connexion.</p>
+
+<div class="mockup-grid">
+
+  <!-- Welcome -->
+  <div class="mockup-card">
+    <h3>1.1 Welcome</h3>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="spacer"></div>
+        <div class="center">
+          <img src="glitch.png" alt="Glitch" class="m-mascot">
+          <div class="m-title">Duodingo</div>
+          <div class="m-subtitle">Apprends a coder.<br>Gratuitement. Fun.</div>
+        </div>
+        <div class="spacer"></div>
+        <div class="gap-sm">
+          <div class="m-card">
+            <div class="m-card-icon" style="background:#58CC0233;color:#58CC02;">&#127918;</div>
+            <div class="m-card-text">Lecons interactives et gamifiees</div>
+          </div>
+          <div class="m-card">
+            <div class="m-card-icon" style="background:#FF960033;color:#FF9600;">&#127942;</div>
+            <div class="m-card-text">Gagne de l'XP et monte en niveau</div>
+          </div>
+          <div class="m-card">
+            <div class="m-card-icon" style="background:#FF4B4B33;color:#FF4B4B;">&#128293;</div>
+            <div class="m-card-text">Garde ta serie quotidienne</div>
+          </div>
+        </div>
+        <div style="height:12px;"></div>
+        <div class="m-btn m-btn-primary">C'EST PARTI</div>
+        <div class="m-btn m-btn-outline">J'AI DEJA UN COMPTE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Register -->
+  <div class="mockup-card">
+    <h3>1.2 Inscription</h3>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div style="font-size:18px;margin:8px 0;">&#8592;</div>
+        <div class="center">
+          <img src="glitch.png" alt="Glitch" class="m-mascot" style="width:44px;height:44px;">
+          <div class="m-title" style="font-size:16px;">Creer un compte</div>
+          <div class="m-subtitle">Rejoins la communaute Duodingo</div>
+        </div>
+        <div style="height:12px;"></div>
+        <div class="m-input">&#128100; Pseudo</div>
+        <div class="m-input">&#9993; Email</div>
+        <div class="m-input">&#128274; Mot de passe</div>
+        <div class="m-input">&#128274; Confirmer le mot de passe</div>
+        <div style="height:12px;"></div>
+        <div class="m-btn m-btn-primary">S'INSCRIRE</div>
+        <div class="center" style="margin-top:12px;">
+          <span style="font-size:10px;color:#888;">Deja un compte ? </span>
+          <span style="font-size:10px;color:#1CB0F6;">Se connecter</span>
+        </div>
+        <div class="spacer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login -->
+  <div class="mockup-card">
+    <h3>1.3 Connexion</h3>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div style="font-size:18px;margin:8px 0;">&#8592;</div>
+        <div class="center">
+          <img src="glitch.png" alt="Glitch" class="m-mascot" style="width:44px;height:44px;">
+          <div class="m-title" style="font-size:16px;">Content de te revoir !</div>
+          <div class="m-subtitle">Connecte-toi pour continuer</div>
+        </div>
+        <div style="height:20px;"></div>
+        <div class="m-input">&#9993; Email</div>
+        <div class="m-input">&#128274; Mot de passe</div>
+        <div style="height:16px;"></div>
+        <div class="m-btn m-btn-primary">SE CONNECTER</div>
+        <div class="center" style="margin-top:12px;">
+          <span style="font-size:10px;color:#888;">Pas encore de compte ? </span>
+          <span style="font-size:10px;color:#1CB0F6;">S'inscrire</span>
+        </div>
+        <div class="spacer"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== HOME + TOPICS ========== -->
+<h1>2. Navigation principale</h1>
+<p class="desc">Ecran principal avec selection de langage et parcours de topics en zigzag.</p>
+
+<div class="mockup-grid">
+
+  <!-- Home -->
+  <div class="mockup-card">
+    <h3>2.1 Home - Parcours</h3>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="flex-row mb-8">
+          <div style="color:#FF4B4B;font-size:12px;font-weight:700;">&#128293; 5</div>
+          <div class="spacer"></div>
+          <div style="color:#FF9600;font-size:12px;font-weight:700;">&#9733; 1250 XP</div>
+          <div class="spacer"></div>
+          <div style="color:#FF4B4B;font-size:12px;">&#10084; 5</div>
+        </div>
+        <div class="center mb-4">
+          <span class="m-chip m-chip-active">JavaScript</span>
+          <span class="m-chip m-chip-inactive">Python</span>
+          <span class="m-chip m-chip-inactive">HTML/CSS</span>
+        </div>
+        <div style="height:10px;"></div>
+        <div class="center">
+          <div class="topic-node topic-unlocked" style="margin:0 auto;">&#9989;</div>
+          <div style="font-size:8px;color:#58CC02;margin:2px 0 6px;">Variables</div>
+        </div>
+        <div class="center" style="margin-left:40px;">
+          <div class="topic-node topic-unlocked" style="margin:0 auto;">&#9989;</div>
+          <div style="font-size:8px;color:#58CC02;margin:2px 0 6px;">Fonctions</div>
+        </div>
+        <div class="center" style="margin-right:30px;">
+          <div class="topic-node topic-current" style="margin:0 auto;">&#9654;</div>
+          <div style="font-size:8px;color:#1CB0F6;margin:2px 0 6px;">Conditions</div>
+        </div>
+        <div class="center" style="margin-left:30px;">
+          <div class="topic-node topic-locked" style="margin:0 auto;">&#128274;</div>
+          <div style="font-size:8px;color:#888;margin:2px 0 6px;">Boucles</div>
+        </div>
+        <div class="center">
+          <div class="topic-node topic-locked" style="margin:0 auto;">&#128274;</div>
+          <div style="font-size:8px;color:#888;margin:2px 0 6px;">Tableaux</div>
+        </div>
+        <div class="spacer"></div>
+        <div class="m-tab-bar">
+          <div class="m-tab active"><span class="m-tab-icon">&#127968;</span>Home</div>
+          <div class="m-tab"><span class="m-tab-icon">&#127942;</span>Classement</div>
+          <div class="m-tab"><span class="m-tab-icon">&#128100;</span>Profil</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Topic Lessons -->
+  <div class="mockup-card">
+    <h3>2.2 Lecons d'un topic</h3>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="flex-row mb-8">
+          <div style="font-size:18px;">&#8592;</div>
+          <div class="spacer"></div>
+          <div class="m-title" style="font-size:14px;">Conditions</div>
+          <div class="spacer"></div>
+        </div>
+        <div class="m-subtitle" style="margin-bottom:14px;">Maitrise les if, else et switch</div>
+        <div class="m-card">
+          <div class="m-card-icon" style="background:#58CC0244;font-size:14px;">1</div>
+          <div style="flex:1;">
+            <div class="m-card-text">Les bases du if</div>
+            <div class="m-card-text-sm">4 exercices &bull; 30 XP</div>
+          </div>
+          <div class="m-badge" style="background:#58CC0233;color:#58CC02;">&#9989;</div>
+        </div>
+        <div class="m-card">
+          <div class="m-card-icon" style="background:#1CB0F644;font-size:14px;">2</div>
+          <div style="flex:1;">
+            <div class="m-card-text">If...else</div>
+            <div class="m-card-text-sm">4 exercices &bull; 35 XP</div>
+          </div>
+          <div class="m-badge" style="background:#1CB0F633;color:#1CB0F6;">&#9654;</div>
+        </div>
+        <div class="m-card">
+          <div class="m-card-icon" style="background:#2A3A4244;font-size:14px;color:#888;">3</div>
+          <div style="flex:1;">
+            <div class="m-card-text" style="color:#888;">Switch case</div>
+            <div class="m-card-text-sm">5 exercices &bull; 40 XP</div>
+          </div>
+          <div class="m-badge" style="background:#2A3A42;color:#888;">&#128274;</div>
+        </div>
+        <div class="m-card">
+          <div class="m-card-icon" style="background:#2A3A4244;font-size:14px;color:#888;">4</div>
+          <div style="flex:1;">
+            <div class="m-card-text" style="color:#888;">Operateur ternaire</div>
+            <div class="m-card-text-sm">3 exercices &bull; 35 XP</div>
+          </div>
+          <div class="m-badge" style="background:#2A3A42;color:#888;">&#128274;</div>
+        </div>
+        <div class="spacer"></div>
+        <div class="m-tab-bar">
+          <div class="m-tab active"><span class="m-tab-icon">&#127968;</span>Home</div>
+          <div class="m-tab"><span class="m-tab-icon">&#127942;</span>Classement</div>
+          <div class="m-tab"><span class="m-tab-icon">&#128100;</span>Profil</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== LESSON PLAY ========== -->
+<h1>3. Deroulement d'une lecon</h1>
+<p class="desc">Les 4 types d'exercices : QCM, completion de code, vrai/faux, et ordonnancement.</p>
+
+<div class="mockup-grid">
+
+  <!-- QCM -->
+  <div class="mockup-card">
+    <h3>3.1 Exercice QCM</h3>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="flex-row mb-4">
+          <div style="font-size:14px;">&#10005;</div>
+          <div style="flex:1;">
+            <div class="m-progress-bar"><div class="m-progress-fill" style="width:40%;background:#58CC02;"></div></div>
+          </div>
+          <div style="color:#FF4B4B;font-size:11px;">&#10084; 4</div>
+        </div>
+        <div style="height:10px;"></div>
+        <div style="color:#fff;font-size:12px;font-weight:700;margin-bottom:10px;">Que retourne typeof null en JavaScript ?</div>
+        <div style="background:#1A2C34;border-radius:6px;padding:6px 10px;font-family:monospace;font-size:10px;color:#1CB0F6;margin-bottom:12px;">console.log(typeof null);</div>
+
+        <div class="m-card" style="border:2px solid transparent;cursor:pointer;">
+          <div style="color:#fff;font-size:10px;">"null"</div>
+        </div>
+        <div class="m-card" style="border:2px solid #58CC02;background:#1a3a1a;cursor:pointer;">
+          <div style="color:#58CC02;font-size:10px;">&#9679; "object"</div>
+        </div>
+        <div class="m-card" style="border:2px solid transparent;cursor:pointer;">
+          <div style="color:#fff;font-size:10px;">"undefined"</div>
+        </div>
+        <div class="m-card" style="border:2px solid transparent;cursor:pointer;">
+          <div style="color:#fff;font-size:10px;">"number"</div>
+        </div>
+
+        <div class="spacer"></div>
+        <div class="feedback-bar feedback-correct">&#9989; Correct ! +10 XP</div>
+        <div class="m-btn m-btn-primary mt-6">CONTINUER</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fill Code -->
+  <div class="mockup-card">
+    <h3>3.2 Completion de code</h3>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="flex-row mb-4">
+          <div style="font-size:14px;">&#10005;</div>
+          <div style="flex:1;">
+            <div class="m-progress-bar"><div class="m-progress-fill" style="width:60%;background:#58CC02;"></div></div>
+          </div>
+          <div style="color:#FF4B4B;font-size:11px;">&#10084; 5</div>
+        </div>
+        <div style="height:10px;"></div>
+        <div style="color:#fff;font-size:12px;font-weight:700;margin-bottom:10px;">Complete le code pour declarer une variable :</div>
+        <div style="background:#1A2C34;border-radius:6px;padding:10px;font-family:monospace;font-size:10px;color:#ccc;margin-bottom:12px;">
+          <span style="color:#FF9600;">const</span> name = <span style="background:#2A3A42;border:1px dashed #58CC02;padding:1px 12px;border-radius:3px;color:#58CC02;">______</span> ;
+          <br><br>
+          <span style="color:#888;">console.log(name);</span>
+          <br>
+          <span style="color:#888;">// Affiche: Alice</span>
+        </div>
+
+        <div class="m-input" style="border-color:#58CC02;color:#fff;">Tape ta reponse ici...</div>
+        <div style="height:6px;"></div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;">
+          <span class="m-chip m-chip-inactive">"Alice"</span>
+          <span class="m-chip m-chip-inactive">42</span>
+          <span class="m-chip m-chip-inactive">true</span>
+          <span class="m-chip m-chip-inactive">null</span>
+        </div>
+
+        <div class="spacer"></div>
+        <div class="m-btn m-btn-primary">VERIFIER</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- True/False -->
+  <div class="mockup-card">
+    <h3>3.3 Vrai ou Faux</h3>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="flex-row mb-4">
+          <div style="font-size:14px;">&#10005;</div>
+          <div style="flex:1;">
+            <div class="m-progress-bar"><div class="m-progress-fill" style="width:80%;background:#58CC02;"></div></div>
+          </div>
+          <div style="color:#FF4B4B;font-size:11px;">&#10084; 3</div>
+        </div>
+        <div style="height:10px;"></div>
+        <div style="color:#fff;font-size:12px;font-weight:700;margin-bottom:10px;">En Python, les listes commencent a l'index 1.</div>
+        <div style="background:#1A2C34;border-radius:6px;padding:8px 10px;font-family:monospace;font-size:10px;color:#1CB0F6;margin-bottom:20px;">
+          fruits = ["pomme", "banane"]<br>
+          print(fruits[0])
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:20px;">
+          <div style="flex:1;background:#1A2C34;border:2px solid #2A3A42;border-radius:12px;padding:20px;text-align:center;cursor:pointer;">
+            <div style="font-size:28px;">&#9989;</div>
+            <div style="color:#58CC02;font-size:14px;font-weight:800;margin-top:4px;">VRAI</div>
+          </div>
+          <div style="flex:1;background:#3a1a1a;border:2px solid #FF4B4B;border-radius:12px;padding:20px;text-align:center;cursor:pointer;">
+            <div style="font-size:28px;">&#10060;</div>
+            <div style="color:#FF4B4B;font-size:14px;font-weight:800;margin-top:4px;">FAUX</div>
+          </div>
+        </div>
+
+        <div class="spacer"></div>
+        <div class="feedback-bar feedback-wrong">&#10060; Faux ! Les listes commencent a l'index 0.</div>
+        <div class="m-btn m-btn-primary mt-6">CONTINUER</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Code -->
+  <div class="mockup-card">
+    <h3>3.4 Ordonner le code</h3>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="flex-row mb-4">
+          <div style="font-size:14px;">&#10005;</div>
+          <div style="flex:1;">
+            <div class="m-progress-bar"><div class="m-progress-fill" style="width:20%;background:#58CC02;"></div></div>
+          </div>
+          <div style="color:#FF4B4B;font-size:11px;">&#10084; 5</div>
+        </div>
+        <div style="height:10px;"></div>
+        <div style="color:#fff;font-size:12px;font-weight:700;margin-bottom:14px;">Remets les lignes dans le bon ordre pour creer une fonction :</div>
+
+        <div style="color:#888;font-size:9px;margin-bottom:6px;">&#9650; Glisse pour reordonner</div>
+
+        <div class="m-card" style="border-left:3px solid #FF9600;">
+          <div style="color:#888;font-size:9px;margin-right:4px;">&#9776;</div>
+          <div style="font-family:monospace;font-size:10px;color:#1CB0F6;">  return a + b;</div>
+        </div>
+        <div class="m-card" style="border-left:3px solid #58CC02;">
+          <div style="color:#888;font-size:9px;margin-right:4px;">&#9776;</div>
+          <div style="font-family:monospace;font-size:10px;color:#1CB0F6;">function add(a, b) {</div>
+        </div>
+        <div class="m-card" style="border-left:3px solid #1CB0F6;">
+          <div style="color:#888;font-size:9px;margin-right:4px;">&#9776;</div>
+          <div style="font-family:monospace;font-size:10px;color:#1CB0F6;">}</div>
+        </div>
+        <div class="m-card" style="border-left:3px solid #CE82FF;">
+          <div style="color:#888;font-size:9px;margin-right:4px;">&#9776;</div>
+          <div style="font-family:monospace;font-size:10px;color:#1CB0F6;">console.log(add(2, 3));</div>
+        </div>
+
+        <div class="spacer"></div>
+        <div class="m-btn m-btn-primary">VERIFIER L'ORDRE</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== RESULT + PROFILE + LEADERBOARD ========== -->
+<h1>4. Resultats, profil et classement</h1>
+<p class="desc">Ecrans de fin de lecon, profil utilisateur et tableau de classement.</p>
+
+<div class="mockup-grid">
+
+  <!-- Result -->
+  <div class="mockup-card">
+    <h3>4.1 Resultat de lecon</h3>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen center">
+        <div class="spacer"></div>
+        <div style="font-size:50px;">&#127942;</div>
+        <div class="m-title" style="margin:8px 0;">Lecon terminee !</div>
+        <div class="m-subtitle">Tu as ete genial !</div>
+        <div style="height:16px;"></div>
+        <div style="display:flex;gap:8px;justify-content:center;">
+          <div style="background:#1A2C34;border-radius:8px;padding:10px 14px;text-align:center;">
+            <div style="font-size:20px;color:#FF9600;font-weight:800;">35</div>
+            <div style="font-size:8px;color:#888;">XP gagnes</div>
+          </div>
+          <div style="background:#1A2C34;border-radius:8px;padding:10px 14px;text-align:center;">
+            <div style="font-size:20px;color:#58CC02;font-weight:800;">4/5</div>
+            <div style="font-size:8px;color:#888;">Score</div>
+          </div>
+          <div style="background:#1A2C34;border-radius:8px;padding:10px 14px;text-align:center;">
+            <div style="font-size:20px;color:#FF4B4B;font-weight:800;">&#128293;6</div>
+            <div style="font-size:8px;color:#888;">Serie</div>
+          </div>
+        </div>
+        <div style="height:8px;"></div>
+        <div style="background:#1a3a1a;border:1px solid #58CC02;border-radius:8px;padding:8px;margin:8px 0;">
+          <div style="font-size:9px;color:#58CC02;font-weight:700;">&#127775; NOUVEAU SUCCES</div>
+          <div style="font-size:10px;color:#fff;">Premiere lecon parfaite !</div>
+        </div>
+        <div class="spacer"></div>
+        <div class="m-btn m-btn-primary">CONTINUER</div>
+        <div class="m-btn m-btn-outline">RECOMMENCER</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile -->
+  <div class="mockup-card">
+    <h3>4.2 Profil</h3>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div style="height:10px;"></div>
+        <div class="m-avatar">A</div>
+        <div class="center">
+          <div style="color:#fff;font-size:14px;font-weight:700;">Alex_Dev</div>
+          <div style="color:#888;font-size:9px;">Niveau 8 &bull; Membre depuis mars 2026</div>
+        </div>
+        <div style="height:10px;"></div>
+        <div style="display:flex;gap:4px;">
+          <div style="flex:1;background:#1A2C34;border-radius:8px;padding:8px;text-align:center;">
+            <div style="font-size:14px;color:#FF9600;font-weight:800;">1250</div>
+            <div style="font-size:8px;color:#888;">XP Total</div>
+          </div>
+          <div style="flex:1;background:#1A2C34;border-radius:8px;padding:8px;text-align:center;">
+            <div style="font-size:14px;color:#FF4B4B;font-weight:800;">&#128293; 12</div>
+            <div style="font-size:8px;color:#888;">Serie</div>
+          </div>
+          <div style="flex:1;background:#1A2C34;border-radius:8px;padding:8px;text-align:center;">
+            <div style="font-size:14px;color:#58CC02;font-weight:800;">15</div>
+            <div style="font-size:8px;color:#888;">Lecons</div>
+          </div>
+        </div>
+        <div style="height:8px;"></div>
+        <div style="font-size:10px;color:#888;margin-bottom:4px;">XP vers niveau 9</div>
+        <div class="m-progress-bar" style="height:8px;">
+          <div class="m-progress-fill" style="width:62%;background:linear-gradient(90deg,#58CC02,#46a302);"></div>
+        </div>
+        <div style="font-size:8px;color:#888;text-align:right;">1250 / 2000 XP</div>
+        <div style="height:10px;"></div>
+        <div style="font-size:11px;color:#fff;font-weight:700;margin-bottom:6px;">&#127942; Succes</div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;">
+          <div style="background:#FF960033;border-radius:6px;padding:4px 8px;font-size:8px;color:#FF9600;">&#127775; Premiere lecon</div>
+          <div style="background:#58CC0233;border-radius:6px;padding:4px 8px;font-size:8px;color:#58CC02;">&#128293; Serie de 7j</div>
+          <div style="background:#1CB0F633;border-radius:6px;padding:4px 8px;font-size:8px;color:#1CB0F6;">&#9889; 1000 XP</div>
+        </div>
+        <div class="spacer"></div>
+        <div class="m-btn" style="background:#FF4B4B33;color:#FF4B4B;border:1px solid #FF4B4B44;">DECONNEXION</div>
+        <div style="height:4px;"></div>
+        <div class="m-tab-bar">
+          <div class="m-tab"><span class="m-tab-icon">&#127968;</span>Home</div>
+          <div class="m-tab"><span class="m-tab-icon">&#127942;</span>Classement</div>
+          <div class="m-tab active"><span class="m-tab-icon">&#128100;</span>Profil</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaderboard -->
+  <div class="mockup-card">
+    <h3>4.3 Classement</h3>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="m-title" style="font-size:16px;margin:8px 0;">&#127942; Classement</div>
+        <div class="m-subtitle mb-8">Top apprenants cette semaine</div>
+
+        <div class="leaderboard-row" style="background:#58CC0222;border:1px solid #58CC0244;">
+          <div class="lb-rank" style="color:#FFD700;">&#129351;</div>
+          <div class="lb-avatar" style="background:#58CC02;"></div>
+          <div class="lb-name">CodeMaster42</div>
+          <div class="lb-xp">3200 XP</div>
+        </div>
+        <div class="leaderboard-row">
+          <div class="lb-rank" style="color:#C0C0C0;">&#129352;</div>
+          <div class="lb-avatar" style="background:#1CB0F6;"></div>
+          <div class="lb-name">PyGirl</div>
+          <div class="lb-xp">2850 XP</div>
+        </div>
+        <div class="leaderboard-row">
+          <div class="lb-rank" style="color:#CD7F32;">&#129353;</div>
+          <div class="lb-avatar" style="background:#CE82FF;"></div>
+          <div class="lb-name">WebNinja</div>
+          <div class="lb-xp">2100 XP</div>
+        </div>
+        <div class="leaderboard-row">
+          <div class="lb-rank" style="color:#888;">4</div>
+          <div class="lb-avatar" style="background:#FF9600;"></div>
+          <div class="lb-name">DevJunior</div>
+          <div class="lb-xp">1800 XP</div>
+        </div>
+        <div class="leaderboard-row" style="background:#1CB0F622;border:1px solid #1CB0F644;">
+          <div class="lb-rank" style="color:#1CB0F6;">5</div>
+          <div class="lb-avatar" style="background:#1CB0F6;"></div>
+          <div class="lb-name" style="color:#1CB0F6;font-weight:700;">Toi (Alex_Dev)</div>
+          <div class="lb-xp">1250 XP</div>
+        </div>
+        <div class="leaderboard-row">
+          <div class="lb-rank" style="color:#888;">6</div>
+          <div class="lb-avatar"></div>
+          <div class="lb-name">HTMLero</div>
+          <div class="lb-xp">980 XP</div>
+        </div>
+        <div class="leaderboard-row">
+          <div class="lb-rank" style="color:#888;">7</div>
+          <div class="lb-avatar"></div>
+          <div class="lb-name">LoopMaster</div>
+          <div class="lb-xp">750 XP</div>
+        </div>
+
+        <div class="spacer"></div>
+        <div class="m-tab-bar">
+          <div class="m-tab"><span class="m-tab-icon">&#127968;</span>Home</div>
+          <div class="m-tab active"><span class="m-tab-icon">&#127942;</span>Classement</div>
+          <div class="m-tab"><span class="m-tab-icon">&#128100;</span>Profil</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
