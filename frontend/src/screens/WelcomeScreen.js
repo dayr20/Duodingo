@@ -10,9 +10,11 @@ const WelcomeScreen = ({ navigation }) => {
 
       <View style={styles.topSection}>
         <View style={styles.logoContainer}>
-          <View style={styles.logoCircle}>
-            <Ionicons name="code-slash" size={60} color={COLORS.primary} />
-          </View>
+          <Image
+            source={require('../../assets/glitch.png')}
+            style={styles.mascot}
+            resizeMode="contain"
+          />
         </View>
         <Text style={styles.title}>Duodingo</Text>
         <Text style={styles.subtitle}>Apprends à coder.{'\n'}Gratuitement. Fun.</Text>
@@ -20,15 +22,15 @@ const WelcomeScreen = ({ navigation }) => {
 
       <View style={styles.features}>
         <View style={styles.featureRow}>
-          <Ionicons name="game-controller-outline" size={24} color={COLORS.primary} />
+          <Ionicons name="game-controller-outline" size={20} color={COLORS.primary} />
           <Text style={styles.featureText}>Leçons interactives et gamifiées</Text>
         </View>
         <View style={styles.featureRow}>
-          <Ionicons name="trophy-outline" size={24} color={COLORS.xp} />
+          <Ionicons name="trophy-outline" size={20} color={COLORS.xp} />
           <Text style={styles.featureText}>Gagne de l'XP et monte en niveau</Text>
         </View>
         <View style={styles.featureRow}>
-          <Ionicons name="flame-outline" size={24} color={COLORS.streak} />
+          <Ionicons name="flame-outline" size={20} color={COLORS.streak} />
           <Text style={styles.featureText}>Garde ta série quotidienne</Text>
         </View>
       </View>
@@ -57,53 +59,48 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.background,
     justifyContent: 'space-between',
-    paddingHorizontal: SIZES.padding * 1.5,
-    paddingTop: 60,
+    paddingHorizontal: SIZES.padding,
+    paddingTop: 50,
     paddingBottom: 40,
   },
   topSection: {
     alignItems: 'center',
   },
   logoContainer: {
-    marginBottom: 20,
+    marginBottom: 12,
   },
-  logoCircle: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: COLORS.surface,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 3,
-    borderColor: COLORS.primary,
+  mascot: {
+    width: 140,
+    height: 140,
+    borderRadius: 20,
   },
   title: {
-    fontSize: SIZES.title,
+    fontSize: 30,
     color: COLORS.primary,
     ...FONTS.bold,
-    marginBottom: 10,
+    marginBottom: 6,
   },
   subtitle: {
-    fontSize: SIZES.xl,
+    fontSize: SIZES.lg,
     color: COLORS.textSecondary,
     textAlign: 'center',
-    lineHeight: 28,
+    lineHeight: 24,
     ...FONTS.medium,
   },
   features: {
-    gap: 16,
+    gap: 10,
   },
   featureRow: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.surface,
-    padding: 16,
+    padding: 12,
     borderRadius: SIZES.radius,
-    gap: 12,
+    gap: 10,
   },
   featureText: {
     color: COLORS.white,
-    fontSize: SIZES.lg,
+    fontSize: SIZES.md,
     ...FONTS.medium,
     flex: 1,
   },
@@ -112,7 +109,7 @@ const styles = StyleSheet.create({
   },
   startButton: {
     backgroundColor: COLORS.primary,
-    paddingVertical: 16,
+    paddingVertical: 14,
     borderRadius: SIZES.radius,
     alignItems: 'center',
     shadowColor: COLORS.primaryDark,
@@ -130,7 +127,7 @@ const styles = StyleSheet.create({
   loginButton: {
     borderWidth: 2,
     borderColor: COLORS.surfaceLight,
-    paddingVertical: 16,
+    paddingVertical: 14,
     borderRadius: SIZES.radius,
     alignItems: 'center',
   },
