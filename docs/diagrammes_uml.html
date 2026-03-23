@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Diagrammes UML - Duodingo</title>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <style>
   @page { margin: 1.5cm; size: A4; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -17,6 +16,8 @@
     max-width: 960px;
     margin: 0 auto;
   }
+
+  /* Cover */
   .cover {
     text-align: center;
     padding: 80px 20px;
@@ -30,22 +31,30 @@
   .cover h2 { font-size: 20px; font-weight: 400; color: #afafaf; margin-bottom: 30px; }
   .cover .meta { font-size: 14px; color: #777; margin-top: 40px; }
   .cover .meta p { margin: 4px 0; }
-  h1 { font-size: 28px; color: #131F24; border-bottom: 3px solid #58CC02; padding-bottom: 8px; margin: 40px 0 20px; }
-  h2 { font-size: 22px; color: #1A2C34; margin: 30px 0 14px; }
-  h3 { font-size: 18px; color: #333; margin: 24px 0 10px; }
+
+  /* Headings */
+  h1 { font-size: 28px; color: #131F24; border-bottom: 3px solid #58CC02; padding-bottom: 8px; margin: 40px 0 20px; page-break-before: always; page-break-after: avoid; }
+  h2 { font-size: 22px; color: #1A2C34; margin: 30px 0 14px; page-break-after: avoid; }
+  h3 { font-size: 18px; color: #333; margin: 24px 0 10px; page-break-after: avoid; }
   p { margin: 8px 0; font-size: 14px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; page-break-inside: avoid; }
+  th { background: #131F24; color: #58CC02; padding: 10px 12px; text-align: left; font-weight: 600; }
+  td { padding: 8px 12px; border-bottom: 1px solid #e0e0e0; }
+  tr:nth-child(even) { background: #f8f9fa; }
+
+  /* Diagram containers */
   .diagram-container {
     background: #f8f9fa;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 20px;
     margin: 16px 0 30px;
-    overflow-x: auto;
+    page-break-inside: avoid;
   }
-  .diagram-container .mermaid {
-    display: flex;
-    justify-content: center;
-  }
+
+  /* Legend */
   .legend {
     background: #131F24;
     color: #ccc;
@@ -53,19 +62,292 @@
     border-radius: 6px;
     font-size: 13px;
     margin: 8px 0 20px;
+    page-break-inside: avoid;
   }
   .legend strong { color: #58CC02; }
-  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; }
-  th { background: #131F24; color: #58CC02; padding: 10px 12px; text-align: left; font-weight: 600; }
-  td { padding: 8px 12px; border-bottom: 1px solid #e0e0e0; }
-  tr:nth-child(even) { background: #f8f9fa; }
-  .toc { background: #f0f7f0; border-radius: 8px; padding: 20px 24px; margin: 20px 0 30px; }
+
+  /* TOC */
+  .toc { background: #f0f7f0; border-radius: 8px; padding: 20px 24px; margin: 20px 0 30px; page-break-after: always; }
   .toc h3 { margin-top: 0; color: #58CC02; }
   .toc ol { margin-left: 20px; }
   .toc li { margin: 6px 0; }
   .toc a { color: #1A2C34; text-decoration: none; }
-  .toc a:hover { color: #58CC02; }
-  @media print { .cover { page-break-after: always; } h1 { page-break-before: always; } }
+
+  /* Section wrapper */
+  .section { page-break-inside: avoid; }
+
+  /* Images */
+  img { page-break-inside: avoid; }
+  pre { page-break-inside: avoid; }
+
+  /* ===================== */
+  /* USE CASE DIAGRAM      */
+  /* ===================== */
+  .usecase-diagram {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .usecase-actor {
+    text-align: center;
+    padding: 20px 10px;
+    min-width: 80px;
+  }
+  .usecase-actor-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #131F24;
+    border: 3px solid #58CC02;
+    color: #58CC02;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin: 0 auto 8px;
+  }
+  .usecase-actor-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #131F24;
+  }
+  .usecase-system {
+    border: 2px solid #58CC02;
+    border-radius: 12px;
+    padding: 20px;
+    background: #fff;
+    flex: 1;
+    max-width: 600px;
+  }
+  .usecase-system-title {
+    text-align: center;
+    font-weight: 700;
+    font-size: 14px;
+    color: #58CC02;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .usecase-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+  .usecase-item {
+    background: #131F24;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1px solid #58CC02;
+  }
+
+  /* ===================== */
+  /* CLASS DIAGRAM         */
+  /* ===================== */
+  .class-diagram {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+  }
+  .class-box {
+    border: 2px solid #131F24;
+    border-radius: 8px;
+    width: 200px;
+    background: #fff;
+    overflow: hidden;
+    font-size: 11px;
+  }
+  .class-box-header {
+    background: #131F24;
+    color: #58CC02;
+    padding: 8px 10px;
+    font-weight: 700;
+    font-size: 13px;
+    text-align: center;
+  }
+  .class-box-section {
+    padding: 6px 10px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .class-box-section:last-child {
+    border-bottom: none;
+  }
+  .class-box-section div {
+    padding: 1px 0;
+    color: #333;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+  }
+  .class-box-section .method {
+    color: #1CB0F6;
+    font-style: italic;
+  }
+  .class-relations {
+    margin-top: 16px;
+    padding: 12px;
+    background: #f0f0f0;
+    border-radius: 6px;
+    font-size: 12px;
+  }
+  .class-relations div {
+    padding: 3px 0;
+    color: #333;
+  }
+  .class-relations strong {
+    color: #58CC02;
+  }
+
+  /* ===================== */
+  /* SEQUENCE DIAGRAM      */
+  /* ===================== */
+  .seq-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .seq-table th {
+    background: #131F24;
+    color: #58CC02;
+    padding: 8px 10px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .seq-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid #e8e8e8;
+    vertical-align: middle;
+  }
+  .seq-step {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    background: #58CC02;
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-size: 10px;
+    font-weight: 700;
+  }
+  .seq-arrow {
+    color: #1CB0F6;
+    font-weight: 700;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .seq-alt {
+    background: #FFC80015;
+    font-size: 11px;
+    font-style: italic;
+    color: #c89600;
+    padding: 4px 10px;
+  }
+  .seq-alt-err {
+    background: #FF4B4B10;
+    font-size: 11px;
+    font-style: italic;
+    color: #FF4B4B;
+    padding: 4px 10px;
+  }
+
+  /* ===================== */
+  /* ACTIVITY / FLOWCHART  */
+  /* ===================== */
+  .flow-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .flow-table th {
+    background: #131F24;
+    color: #58CC02;
+    padding: 8px 10px;
+    text-align: left;
+    font-size: 12px;
+  }
+  .flow-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid #e8e8e8;
+    vertical-align: middle;
+  }
+  .flow-node {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+  }
+  .flow-start { background: #58CC02; border-radius: 20px; }
+  .flow-action { background: #1CB0F6; }
+  .flow-decision { background: #FF9600; border-radius: 4px; }
+  .flow-end { background: #FF4B4B; border-radius: 20px; }
+  .flow-arrow {
+    color: #999;
+    font-size: 14px;
+    padding: 0 4px;
+  }
+
+  /* ===================== */
+  /* ARCHITECTURE DIAGRAM  */
+  /* ===================== */
+  .archi-diagram {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+  .archi-layer {
+    border: 2px solid;
+    border-radius: 10px;
+    padding: 16px;
+    width: 100%;
+    max-width: 700px;
+  }
+  .archi-layer-title {
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+  }
+  .archi-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+  .archi-item {
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+  }
+  .archi-connector {
+    text-align: center;
+    font-size: 20px;
+    color: #999;
+    padding: 2px 0;
+  }
+
+  @media print {
+    body { padding: 0; }
+    .cover { border-radius: 0; page-break-after: always; }
+    .toc { page-break-after: always; }
+    table { page-break-inside: avoid; }
+    .section, .component-box, .diagram-container { page-break-inside: avoid; }
+    h1 { page-break-before: always; page-break-after: avoid; }
+    h2, h3 { page-break-after: avoid; }
+    img { page-break-inside: avoid; }
+    pre { page-break-inside: avoid; }
+  }
 </style>
 </head>
 <body>
@@ -98,39 +380,28 @@
 <p>Ce diagramme presente les interactions principales entre l'utilisateur et le systeme Duodingo.</p>
 
 <div class="diagram-container">
-  <pre class="mermaid">
-graph LR
-  User((Utilisateur))
-
-  subgraph Duodingo["Application Duodingo"]
-    UC1["S'inscrire"]
-    UC2["Se connecter"]
-    UC3["Choisir un langage"]
-    UC4["Parcourir les topics"]
-    UC5["Jouer une lecon"]
-    UC6["Repondre aux exercices"]
-    UC7["Gagner de l'XP"]
-    UC8["Voir son profil"]
-    UC9["Voir le classement"]
-    UC10["Maintenir sa serie"]
-    UC11["Debloquer des succes"]
-  end
-
-  User --> UC1
-  User --> UC2
-  User --> UC3
-  User --> UC4
-  User --> UC5
-  User --> UC8
-  User --> UC9
-
-  UC5 --> UC6
-  UC6 --> UC7
-  UC7 --> UC10
-  UC7 --> UC11
-  UC3 --> UC4
-  UC4 --> UC5
-  </pre>
+  <div class="usecase-diagram">
+    <div class="usecase-actor">
+      <div class="usecase-actor-icon">&#128100;</div>
+      <div class="usecase-actor-label">Utilisateur</div>
+    </div>
+    <div class="usecase-system">
+      <div class="usecase-system-title">Application Duodingo</div>
+      <div class="usecase-grid">
+        <div class="usecase-item">S'inscrire</div>
+        <div class="usecase-item">Se connecter</div>
+        <div class="usecase-item">Choisir un langage</div>
+        <div class="usecase-item">Parcourir les topics</div>
+        <div class="usecase-item">Jouer une lecon</div>
+        <div class="usecase-item">Repondre aux exercices</div>
+        <div class="usecase-item">Gagner de l'XP</div>
+        <div class="usecase-item">Voir son profil</div>
+        <div class="usecase-item">Voir le classement</div>
+        <div class="usecase-item">Maintenir sa serie</div>
+        <div class="usecase-item">Debloquer des succes</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="legend">
@@ -154,76 +425,103 @@ graph LR
 <p>Modele de donnees MongoDB represente sous forme de classes UML avec les relations entre entites.</p>
 
 <div class="diagram-container">
-  <pre class="mermaid">
-classDiagram
-    class User {
-        +String username
-        +String email
-        +String password
-        +Number xp
-        +Number level
-        +Number hearts
-        +Number streak
-        +Date lastActivity
-        +Array~String~ completedLessons
-        +Array~Object~ achievements
-        +Date createdAt
-        +comparePassword(candidatePassword) Boolean
-        +calculateLevel() Number
-    }
+  <div class="class-diagram">
+    <!-- User -->
+    <div class="class-box">
+      <div class="class-box-header">User</div>
+      <div class="class-box-section">
+        <div>+username : String</div>
+        <div>+email : String</div>
+        <div>+password : String</div>
+        <div>+xp : Number</div>
+        <div>+level : Number</div>
+        <div>+hearts : Number</div>
+        <div>+streak : Number</div>
+        <div>+lastActivity : Date</div>
+        <div>+completedLessons : Array</div>
+        <div>+achievements : Array</div>
+        <div>+createdAt : Date</div>
+      </div>
+      <div class="class-box-section">
+        <div class="method">+comparePassword() : Boolean</div>
+        <div class="method">+calculateLevel() : Number</div>
+      </div>
+    </div>
 
-    class Language {
-        +String name
-        +String slug
-        +String icon
-        +String color
-        +String description
-        +Number order
-    }
+    <!-- Language -->
+    <div class="class-box">
+      <div class="class-box-header">Language</div>
+      <div class="class-box-section">
+        <div>+name : String</div>
+        <div>+slug : String</div>
+        <div>+icon : String</div>
+        <div>+color : String</div>
+        <div>+description : String</div>
+        <div>+order : Number</div>
+      </div>
+    </div>
 
-    class Topic {
-        +String name
-        +String slug
-        +String icon
-        +ObjectId language
-        +Number order
-        +Number requiredXP
-    }
+    <!-- Topic -->
+    <div class="class-box">
+      <div class="class-box-header">Topic</div>
+      <div class="class-box-section">
+        <div>+name : String</div>
+        <div>+slug : String</div>
+        <div>+icon : String</div>
+        <div>+language : ObjectId</div>
+        <div>+order : Number</div>
+        <div>+requiredXP : Number</div>
+      </div>
+    </div>
 
-    class Lesson {
-        +String title
-        +String description
-        +ObjectId topic
-        +Number order
-        +Number totalXP
-        +String difficulty
-        +Array~Exercise~ exercises
-    }
+    <!-- Lesson -->
+    <div class="class-box">
+      <div class="class-box-header">Lesson</div>
+      <div class="class-box-section">
+        <div>+title : String</div>
+        <div>+description : String</div>
+        <div>+topic : ObjectId</div>
+        <div>+order : Number</div>
+        <div>+totalXP : Number</div>
+        <div>+difficulty : String</div>
+        <div>+exercises : Array&lt;Exercise&gt;</div>
+      </div>
+    </div>
 
-    class Exercise {
-        +String type
-        +String question
-        +String codeSnippet
-        +Array~String~ options
-        +String correctAnswer
-        +String explanation
-        +Number xpReward
-    }
+    <!-- Exercise -->
+    <div class="class-box">
+      <div class="class-box-header">Exercise</div>
+      <div class="class-box-section">
+        <div>+type : String</div>
+        <div>+question : String</div>
+        <div>+codeSnippet : String</div>
+        <div>+options : Array</div>
+        <div>+correctAnswer : Mixed</div>
+        <div>+explanation : String</div>
+        <div>+xpReward : Number</div>
+      </div>
+    </div>
 
-    class UserProgress {
-        +ObjectId user
-        +ObjectId language
-        +Number totalXP
-        +Array~ObjectId~ completedTopics
-        +Array~Object~ lessonScores
-    }
+    <!-- UserProgress -->
+    <div class="class-box">
+      <div class="class-box-header">UserProgress</div>
+      <div class="class-box-section">
+        <div>+user : ObjectId</div>
+        <div>+language : ObjectId</div>
+        <div>+totalXP : Number</div>
+        <div>+completedTopics : Array</div>
+        <div>+lessonScores : Array</div>
+      </div>
+    </div>
+  </div>
 
-    Language "1" --> "*" Topic : contient
-    Topic "1" --> "*" Lesson : contient
-    Lesson "1" --> "*" Exercise : compose
-    User "1" --> "*" UserProgress : possede
-    UserProgress "*" --> "1" Language : concerne
-</pre>
+  <div class="class-relations">
+    <div><strong>Language</strong> 1 ---- * <strong>Topic</strong> : contient</div>
+    <div><strong>Topic</strong> 1 ---- * <strong>Lesson</strong> : contient</div>
+    <div><strong>Lesson</strong> 1 ---- * <strong>Exercise</strong> : compose de (embarque)</div>
+    <div><strong>User</strong> 1 ---- * <strong>UserProgress</strong> : possede</div>
+    <div><strong>UserProgress</strong> * ---- 1 <strong>Language</strong> : concerne</div>
+  </div>
 </div>
 
 <div class="legend">
@@ -241,61 +539,146 @@ classDiagram
 
 <h3>3.1 Inscription</h3>
 <div class="diagram-container">
-  <pre class="mermaid">
-sequenceDiagram
-    actor U as Utilisateur
-    participant App as App React Native
-    participant API as Serveur Express
-    participant DB as MongoDB
-
-    U->>App: Saisit pseudo, email, mot de passe
-    App->>API: POST /api/auth/register
-    API->>DB: Verifier email unique
-    alt Email deja utilise
-        DB-->>API: Email existe
-        API-->>App: 400 - Email deja utilise
-        App-->>U: Affiche erreur
-    else Email disponible
-        API->>API: Hash mot de passe (bcrypt)
-        API->>DB: Creer User
-        DB-->>API: User cree
-        API->>API: Generer JWT
-        API-->>App: 201 + token + user
-        App->>App: Stocker token (AsyncStorage)
-        App-->>U: Redirection vers Home
-    end
-  </pre>
+  <table class="seq-table" style="page-break-inside: avoid;">
+    <tr>
+      <th style="width:30px;">#</th>
+      <th>De</th>
+      <th>Vers</th>
+      <th>Action</th>
+    </tr>
+    <tr>
+      <td><span class="seq-step">1</span></td>
+      <td>Utilisateur</td>
+      <td>App React Native</td>
+      <td>Saisit pseudo, email, mot de passe</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">2</span></td>
+      <td>App</td>
+      <td>Serveur Express</td>
+      <td><span class="seq-arrow">POST /api/auth/register &rarr;</span></td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">3</span></td>
+      <td>Serveur</td>
+      <td>MongoDB</td>
+      <td>Verifier email unique</td>
+    </tr>
+    <tr>
+      <td colspan="4" class="seq-alt-err">&laquo; alt &raquo; Email deja utilise : 400 - Email deja utilise &rarr; Affiche erreur</td>
+    </tr>
+    <tr>
+      <td colspan="4" class="seq-alt">&laquo; else &raquo; Email disponible :</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">4</span></td>
+      <td>Serveur</td>
+      <td>Serveur</td>
+      <td>Hash mot de passe (bcrypt)</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">5</span></td>
+      <td>Serveur</td>
+      <td>MongoDB</td>
+      <td>Creer User</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">6</span></td>
+      <td>Serveur</td>
+      <td>Serveur</td>
+      <td>Generer JWT</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">7</span></td>
+      <td>Serveur</td>
+      <td>App</td>
+      <td><span class="seq-arrow">&larr; 201 + token + user</span></td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">8</span></td>
+      <td>App</td>
+      <td>AsyncStorage</td>
+      <td>Stocker token</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">9</span></td>
+      <td>App</td>
+      <td>Utilisateur</td>
+      <td>Redirection vers Home</td>
+    </tr>
+  </table>
 </div>
 
 <h3>3.2 Connexion</h3>
 <div class="diagram-container">
-  <pre class="mermaid">
-sequenceDiagram
-    actor U as Utilisateur
-    participant App as App React Native
-    participant API as Serveur Express
-    participant DB as MongoDB
-
-    U->>App: Saisit email et mot de passe
-    App->>API: POST /api/auth/login
-    API->>DB: Chercher User par email
-    alt User non trouve
-        DB-->>API: null
-        API-->>App: 401 - Identifiants invalides
-        App-->>U: Affiche erreur
-    else User trouve
-        API->>API: Comparer mot de passe (bcrypt)
-        alt Mot de passe incorrect
-            API-->>App: 401 - Identifiants invalides
-            App-->>U: Affiche erreur
-        else Mot de passe correct
-            API->>API: Generer JWT
-            API-->>App: 200 + token + user
-            App->>App: Stocker token (AsyncStorage)
-            App-->>U: Redirection vers Home
-        end
-    end
-  </pre>
+  <table class="seq-table" style="page-break-inside: avoid;">
+    <tr>
+      <th style="width:30px;">#</th>
+      <th>De</th>
+      <th>Vers</th>
+      <th>Action</th>
+    </tr>
+    <tr>
+      <td><span class="seq-step">1</span></td>
+      <td>Utilisateur</td>
+      <td>App React Native</td>
+      <td>Saisit email et mot de passe</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">2</span></td>
+      <td>App</td>
+      <td>Serveur Express</td>
+      <td><span class="seq-arrow">POST /api/auth/login &rarr;</span></td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">3</span></td>
+      <td>Serveur</td>
+      <td>MongoDB</td>
+      <td>Chercher User par email</td>
+    </tr>
+    <tr>
+      <td colspan="4" class="seq-alt-err">&laquo; alt &raquo; User non trouve : 401 - Identifiants invalides &rarr; Affiche erreur</td>
+    </tr>
+    <tr>
+      <td colspan="4" class="seq-alt">&laquo; else &raquo; User trouve :</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">4</span></td>
+      <td>Serveur</td>
+      <td>Serveur</td>
+      <td>Comparer mot de passe (bcrypt)</td>
+    </tr>
+    <tr>
+      <td colspan="4" class="seq-alt-err">&laquo; alt &raquo; Mot de passe incorrect : 401 - Identifiants invalides &rarr; Affiche erreur</td>
+    </tr>
+    <tr>
+      <td colspan="4" class="seq-alt">&laquo; else &raquo; Mot de passe correct :</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">5</span></td>
+      <td>Serveur</td>
+      <td>Serveur</td>
+      <td>Generer JWT</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">6</span></td>
+      <td>Serveur</td>
+      <td>App</td>
+      <td><span class="seq-arrow">&larr; 200 + token + user</span></td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">7</span></td>
+      <td>App</td>
+      <td>AsyncStorage</td>
+      <td>Stocker token</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">8</span></td>
+      <td>App</td>
+      <td>Utilisateur</td>
+      <td>Redirection vers Home</td>
+    </tr>
+  </table>
 </div>
 
 <!-- ===================== 4. SEQUENCE LESSON ===================== -->
@@ -303,52 +686,134 @@ sequenceDiagram
 <p>Parcours complet d'une lecon depuis la selection jusqu'au resultat.</p>
 
 <div class="diagram-container">
-  <pre class="mermaid">
-sequenceDiagram
-    actor U as Utilisateur
-    participant App as App React Native
-    participant API as Serveur Express
-    participant DB as MongoDB
-
-    U->>App: Selectionne un langage
-    App->>API: GET /api/languages/:id/topics
-    API->>DB: Charger topics du langage
-    DB-->>API: Liste topics
-    API-->>App: Topics avec requiredXP
-
-    U->>App: Clique sur un topic debloque
-    App->>API: GET /api/languages/:langId/topics/:topicId/lessons
-    API->>DB: Charger lecons du topic
-    DB-->>API: Liste lecons
-    API-->>App: Lecons disponibles
-
-    U->>App: Demarre une lecon
-    App->>API: GET /api/lessons/:id
-    API->>DB: Charger lecon + exercices
-    DB-->>API: Lecon complete
-    API-->>App: Exercices de la lecon
-
-    loop Pour chaque exercice
-        App-->>U: Affiche exercice (QCM/Code/V-F/Ordre)
-        U->>App: Soumet sa reponse
-        App->>App: Verifie reponse + calcule score
-        alt Reponse correcte
-            App-->>U: Feedback vert + explication
-        else Reponse incorrecte
-            App-->>U: Feedback rouge + bonne reponse
-            App->>App: Retire 1 coeur
-        end
-    end
-
-    App->>API: POST /api/lessons/:id/complete
-    Note over API: score, temps, reponses
-    API->>API: Calculer XP gagne
-    API->>DB: Mettre a jour User (XP, streak, achievements)
-    API->>DB: Mettre a jour UserProgress
-    DB-->>API: Donnees mises a jour
-    API-->>App: Resultat + XP + badges
-    App-->>U: Ecran resultat avec animation
-  </pre>
+  <table class="seq-table" style="page-break-inside: avoid;">
+    <tr>
+      <th style="width:30px;">#</th>
+      <th>De</th>
+      <th>Vers</th>
+      <th>Action</th>
+    </tr>
+    <tr>
+      <td><span class="seq-step">1</span></td>
+      <td>Utilisateur</td>
+      <td>App</td>
+      <td>Selectionne un langage</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">2</span></td>
+      <td>App</td>
+      <td>API</td>
+      <td><span class="seq-arrow">GET /api/languages/:id/topics &rarr;</span></td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">3</span></td>
+      <td>API</td>
+      <td>MongoDB</td>
+      <td>Charger topics du langage</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">4</span></td>
+      <td>API</td>
+      <td>App</td>
+      <td><span class="seq-arrow">&larr; Topics avec requiredXP</span></td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">5</span></td>
+      <td>Utilisateur</td>
+      <td>App</td>
+      <td>Clique sur un topic debloque</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">6</span></td>
+      <td>App</td>
+      <td>API</td>
+      <td><span class="seq-arrow">GET /api/languages/:langId/topics/:topicId/lessons &rarr;</span></td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">7</span></td>
+      <td>API</td>
+      <td>App</td>
+      <td><span class="seq-arrow">&larr; Lecons disponibles</span></td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">8</span></td>
+      <td>Utilisateur</td>
+      <td>App</td>
+      <td>Demarre une lecon</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">9</span></td>
+      <td>App</td>
+      <td>API</td>
+      <td><span class="seq-arrow">GET /api/lessons/:id &rarr;</span></td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">10</span></td>
+      <td>API</td>
+      <td>App</td>
+      <td><span class="seq-arrow">&larr; Exercices de la lecon</span></td>
+    </tr>
+    <tr>
+      <td colspan="4" class="seq-alt">&laquo; loop &raquo; Pour chaque exercice :</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">11</span></td>
+      <td>App</td>
+      <td>Utilisateur</td>
+      <td>Affiche exercice (QCM / Code / V-F / Ordre)</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">12</span></td>
+      <td>Utilisateur</td>
+      <td>App</td>
+      <td>Soumet sa reponse</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">13</span></td>
+      <td>App</td>
+      <td>App</td>
+      <td>Verifie reponse + calcule score</td>
+    </tr>
+    <tr>
+      <td colspan="4" class="seq-alt">&laquo; alt &raquo; Correct : Feedback vert + explication</td>
+    </tr>
+    <tr>
+      <td colspan="4" class="seq-alt-err">&laquo; alt &raquo; Incorrect : Feedback rouge + bonne reponse, retire 1 coeur</td>
+    </tr>
+    <tr>
+      <td colspan="4" class="seq-alt">&laquo; end loop &raquo;</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">14</span></td>
+      <td>App</td>
+      <td>API</td>
+      <td><span class="seq-arrow">POST /api/lessons/:id/complete (score, temps, reponses) &rarr;</span></td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">15</span></td>
+      <td>API</td>
+      <td>API</td>
+      <td>Calculer XP gagne</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">16</span></td>
+      <td>API</td>
+      <td>MongoDB</td>
+      <td>Mettre a jour User (XP, streak, achievements) + UserProgress</td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">17</span></td>
+      <td>API</td>
+      <td>App</td>
+      <td><span class="seq-arrow">&larr; Resultat + XP + badges</span></td>
+    </tr>
+    <tr>
+      <td><span class="seq-step">18</span></td>
+      <td>App</td>
+      <td>Utilisateur</td>
+      <td>Ecran resultat avec animation</td>
+    </tr>
+  </table>
 </div>
 
 <!-- ===================== 5. ACTIVITY ===================== -->
@@ -356,48 +821,120 @@ sequenceDiagram
 <p>Flux global de l'application du lancement a l'utilisation quotidienne.</p>
 
 <div class="diagram-container">
-  <pre class="mermaid">
-flowchart TD
-    A([Lancer l'app]) --> B{Token stocke ?}
-    B -->|Non| C[Ecran Welcome]
-    C --> D{Choix utilisateur}
-    D -->|Nouveau| E[Ecran Inscription]
-    D -->|Existant| F[Ecran Connexion]
-    E --> G{Inscription reussie ?}
-    G -->|Non| E
-    G -->|Oui| H[Ecran Home]
-    F --> I{Connexion reussie ?}
-    I -->|Non| F
-    I -->|Oui| H
-    B -->|Oui| J[Verification token]
-    J -->|Valide| H
-    J -->|Expire| C
-
-    H --> K[Choisir un langage]
-    K --> L[Voir les topics]
-    L --> M{Topic debloque ?}
-    M -->|Non| N[Gagner plus d'XP]
-    N --> L
-    M -->|Oui| O[Voir les lecons]
-    O --> P[Demarrer une lecon]
-    P --> Q[Repondre aux exercices]
-    Q --> R{Coeurs restants ?}
-    R -->|Non| S[Lecon echouee - Attendre]
-    S --> O
-    R -->|Oui| T{Exercices termines ?}
-    T -->|Non| Q
-    T -->|Oui| U[Ecran Resultat]
-    U --> V[XP + Streak + Badges]
-    V --> H
-
-    H --> W[Voir Profil]
-    H --> X[Voir Classement]
-
-    style A fill:#58CC02,color:#fff
-    style H fill:#1CB0F6,color:#fff
-    style U fill:#FF9600,color:#fff
-    style S fill:#FF4B4B,color:#fff
-  </pre>
+  <table class="flow-table" style="page-break-inside: avoid;">
+    <tr>
+      <th style="width:35px;">#</th>
+      <th style="width:140px;">Etape</th>
+      <th style="width:70px;">Type</th>
+      <th>Description</th>
+      <th>Suivant</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td><span class="flow-node flow-start">Lancer l'app</span></td>
+      <td>Debut</td>
+      <td>L'utilisateur ouvre l'application</td>
+      <td>&rarr; 2</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><span class="flow-node flow-decision">Token stocke ?</span></td>
+      <td>Decision</td>
+      <td>Verification d'un token JWT dans AsyncStorage</td>
+      <td>Oui &rarr; 3 / Non &rarr; 4</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><span class="flow-node flow-decision">Token valide ?</span></td>
+      <td>Decision</td>
+      <td>Validation du token cote serveur</td>
+      <td>Oui &rarr; 7 / Non &rarr; 4</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><span class="flow-node flow-action">Ecran Welcome</span></td>
+      <td>Ecran</td>
+      <td>Afficher l'ecran de bienvenue</td>
+      <td>&rarr; 5 ou 6</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><span class="flow-node flow-action">Inscription</span></td>
+      <td>Ecran</td>
+      <td>Formulaire d'inscription (pseudo, email, mdp)</td>
+      <td>Succes &rarr; 7 / Echec &rarr; 5</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td><span class="flow-node flow-action">Connexion</span></td>
+      <td>Ecran</td>
+      <td>Formulaire de connexion (email, mdp)</td>
+      <td>Succes &rarr; 7 / Echec &rarr; 6</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td><span class="flow-node flow-start">Ecran Home</span></td>
+      <td>Ecran</td>
+      <td>Hub principal avec choix de langage</td>
+      <td>&rarr; 8, 14, 15</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td><span class="flow-node flow-action">Choisir langage</span></td>
+      <td>Action</td>
+      <td>Selectionner JS, Python ou HTML/CSS</td>
+      <td>&rarr; 9</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td><span class="flow-node flow-action">Voir topics</span></td>
+      <td>Ecran</td>
+      <td>Liste des topics du langage choisi</td>
+      <td>&rarr; 10</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td><span class="flow-node flow-decision">Topic debloque ?</span></td>
+      <td>Decision</td>
+      <td>Verification si l'XP requis est atteint</td>
+      <td>Oui &rarr; 11 / Non &rarr; 9</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td><span class="flow-node flow-action">Demarrer lecon</span></td>
+      <td>Action</td>
+      <td>Charger les exercices de la lecon</td>
+      <td>&rarr; 12</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td><span class="flow-node flow-decision">Coeurs restants ?</span></td>
+      <td>Decision</td>
+      <td>Verifier si l'utilisateur a encore des coeurs</td>
+      <td>Oui &rarr; exercice / Non &rarr; 13</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td><span class="flow-node flow-end">Lecon echouee</span></td>
+      <td>Fin</td>
+      <td>Plus de coeurs, retour a la liste</td>
+      <td>&rarr; 9</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td><span class="flow-node flow-action">Ecran Resultat</span></td>
+      <td>Ecran</td>
+      <td>XP gagnes + Streak + Badges debloques</td>
+      <td>&rarr; 7</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td><span class="flow-node flow-action">Profil / Classement</span></td>
+      <td>Ecran</td>
+      <td>Voir ses stats ou le leaderboard</td>
+      <td>&rarr; 7</td>
+    </tr>
+  </table>
 </div>
 
 <!-- ===================== 6. ARCHITECTURE ===================== -->
@@ -405,51 +942,50 @@ flowchart TD
 <p>Vue d'ensemble de l'architecture client-serveur de Duodingo.</p>
 
 <div class="diagram-container">
-  <pre class="mermaid">
-graph TB
-    subgraph Client["Client Mobile (React Native / Expo)"]
-        UI["Ecrans UI"]
-        Nav["React Navigation"]
-        Ctx["AuthContext"]
-        SVC["Services API"]
-        AS["AsyncStorage"]
+  <div class="archi-diagram">
 
-        UI --> Nav
-        UI --> Ctx
-        UI --> SVC
-        Ctx --> AS
-    end
+    <!-- Client Layer -->
+    <div class="archi-layer" style="border-color:#1CB0F6; background:#1A2C3410;">
+      <div class="archi-layer-title" style="color:#1CB0F6;">Client Mobile (React Native / Expo)</div>
+      <div class="archi-items">
+        <div class="archi-item" style="background:#1CB0F620; border:1px solid #1CB0F6; color:#1A2C34;">Ecrans UI</div>
+        <div class="archi-item" style="background:#1CB0F620; border:1px solid #1CB0F6; color:#1A2C34;">React Navigation</div>
+        <div class="archi-item" style="background:#1CB0F620; border:1px solid #1CB0F6; color:#1A2C34;">AuthContext</div>
+        <div class="archi-item" style="background:#1CB0F620; border:1px solid #1CB0F6; color:#1A2C34;">Services API</div>
+        <div class="archi-item" style="background:#1CB0F620; border:1px solid #1CB0F6; color:#1A2C34;">AsyncStorage</div>
+      </div>
+    </div>
 
-    subgraph Server["Serveur Backend (Node.js / Express)"]
-        Routes["Routes API"]
-        MW["Middleware Auth (JWT)"]
-        Ctrl["Logique metier"]
-        Models["Modeles Mongoose"]
+    <div class="archi-connector">&darr; HTTP REST / JWT Bearer &darr;</div>
 
-        Routes --> MW
-        MW --> Ctrl
-        Ctrl --> Models
-    end
+    <!-- Server Layer -->
+    <div class="archi-layer" style="border-color:#58CC02; background:#58CC0210;">
+      <div class="archi-layer-title" style="color:#58CC02;">Serveur Backend (Node.js / Express)</div>
+      <div class="archi-items">
+        <div class="archi-item" style="background:#58CC0220; border:1px solid #58CC02; color:#1A2C34;">Routes API</div>
+        <div class="archi-item" style="background:#58CC0220; border:1px solid #58CC02; color:#1A2C34;">Middleware Auth (JWT)</div>
+        <div class="archi-item" style="background:#58CC0220; border:1px solid #58CC02; color:#1A2C34;">Logique metier</div>
+        <div class="archi-item" style="background:#58CC0220; border:1px solid #58CC02; color:#1A2C34;">Modeles Mongoose</div>
+      </div>
+      <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:6px; justify-content:center;">
+        <div class="archi-item" style="background:#131F24; color:#58CC02; font-size:10px;">/api/auth/*</div>
+        <div class="archi-item" style="background:#131F24; color:#58CC02; font-size:10px;">/api/languages/*</div>
+        <div class="archi-item" style="background:#131F24; color:#58CC02; font-size:10px;">/api/lessons/*</div>
+        <div class="archi-item" style="background:#131F24; color:#58CC02; font-size:10px;">/api/progress/*</div>
+      </div>
+    </div>
 
-    subgraph Database["Base de donnees"]
-        MongoDB[(MongoDB)]
-    end
+    <div class="archi-connector">&darr; Mongoose &darr;</div>
 
-    SVC <-->|"HTTP REST\nJWT Bearer"| Routes
-    Models <-->|Mongoose| MongoDB
+    <!-- Database Layer -->
+    <div class="archi-layer" style="border-color:#FF9600; background:#FF960010;">
+      <div class="archi-layer-title" style="color:#FF9600;">Base de donnees</div>
+      <div class="archi-items">
+        <div class="archi-item" style="background:#FF960020; border:1px solid #FF9600; color:#1A2C34; font-size:14px; font-weight:700; padding:12px 24px;">MongoDB</div>
+      </div>
+    </div>
 
-    subgraph APIs["Routes API"]
-        direction LR
-        R1["/api/auth/*"]
-        R2["/api/languages/*"]
-        R3["/api/lessons/*"]
-        R4["/api/progress/*"]
-    end
-
-    style Client fill:#1A2C34,color:#fff
-    style Server fill:#2D4A3E,color:#fff
-    style Database fill:#4A2D1A,color:#fff
-  </pre>
+  </div>
 </div>
 
 <div class="legend">
@@ -460,16 +996,6 @@ graph TB
   - <strong>Authentification :</strong> JWT (jsonwebtoken) + bcryptjs<br>
   - <strong>Stockage local :</strong> AsyncStorage
 </div>
-
-<script>
-  mermaid.initialize({
-    startOnLoad: true,
-    theme: 'default',
-    securityLevel: 'loose',
-    flowchart: { useMaxWidth: true, htmlLabels: true },
-    sequence: { useMaxWidth: true, showSequenceNumbers: false }
-  });
-</script>
 
 </body>
 </html>

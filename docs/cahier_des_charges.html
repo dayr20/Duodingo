@@ -16,6 +16,8 @@
     max-width: 900px;
     margin: 0 auto;
   }
+
+  /* Cover page */
   .cover {
     text-align: center;
     padding: 80px 20px;
@@ -30,18 +32,26 @@
   .cover h2 { font-size: 20px; font-weight: 400; color: #afafaf; margin-bottom: 30px; }
   .cover .meta { font-size: 14px; color: #777; margin-top: 40px; }
   .cover .meta p { margin: 4px 0; }
-  h1 { font-size: 28px; color: #131F24; border-bottom: 3px solid #58CC02; padding-bottom: 8px; margin: 40px 0 20px; }
-  h2 { font-size: 22px; color: #1A2C34; margin: 30px 0 14px; }
-  h3 { font-size: 18px; color: #333; margin: 24px 0 10px; }
-  h4 { font-size: 15px; color: #58CC02; margin: 18px 0 8px; }
+
+  /* Headings */
+  h1 { font-size: 28px; color: #131F24; border-bottom: 3px solid #58CC02; padding-bottom: 8px; margin: 40px 0 20px; page-break-before: always; page-break-after: avoid; }
+  h2 { font-size: 22px; color: #1A2C34; margin: 30px 0 14px; page-break-after: avoid; }
+  h3 { font-size: 18px; color: #333; margin: 24px 0 10px; page-break-after: avoid; }
+  h4 { font-size: 15px; color: #58CC02; margin: 18px 0 8px; page-break-after: avoid; }
+
+  /* Text */
   p { margin: 8px 0; font-size: 14px; }
   ul, ol { margin: 8px 0 8px 24px; font-size: 14px; }
   li { margin: 4px 0; }
   strong { color: #131F24; }
-  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; page-break-inside: avoid; }
   th { background: #131F24; color: #58CC02; padding: 10px 12px; text-align: left; font-weight: 600; }
   td { padding: 8px 12px; border-bottom: 1px solid #e0e0e0; }
   tr:nth-child(even) { background: #f8f9fa; }
+
+  /* Code */
   code, pre {
     font-family: 'Courier New', monospace;
     background: #131F24;
@@ -56,21 +66,46 @@
     font-size: 12px;
     line-height: 1.5;
     white-space: pre;
+    page-break-inside: avoid;
   }
+
+  /* Sections */
   .section { page-break-inside: avoid; }
+  .component-box { page-break-inside: avoid; }
+  .diagram-container { page-break-inside: avoid; }
+
+  /* Badges */
   .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
   .badge-critique { background: #FF4B4B20; color: #FF4B4B; }
   .badge-importante { background: #FFC80020; color: #c89600; }
   .badge-souhaitable { background: #1CB0F620; color: #1CB0F6; }
+
   hr { border: none; border-top: 2px solid #e0e0e0; margin: 30px 0; }
-  .toc { background: #f8f9fa; padding: 24px; border-radius: 8px; margin: 20px 0 40px; }
+
+  /* TOC */
+  .toc { background: #f8f9fa; padding: 24px; border-radius: 8px; margin: 20px 0 40px; page-break-after: always; }
   .toc h3 { margin-top: 0; color: #131F24; }
   .toc ol { margin-left: 20px; }
   .toc li { margin: 6px 0; }
   .toc a { color: #1CB0F6; text-decoration: none; }
+
+  /* Functional section wrapper */
+  .func-section { page-break-inside: avoid; }
+
+  /* Images */
+  img { page-break-inside: avoid; }
+
   @media print {
     body { padding: 0; }
-    .cover { border-radius: 0; }
+    .cover { border-radius: 0; page-break-after: always; }
+    .toc { page-break-after: always; }
+    table { page-break-inside: avoid; }
+    .section, .component-box, .diagram-container { page-break-inside: avoid; }
+    h1 { page-break-before: always; page-break-after: avoid; }
+    h2, h3 { page-break-after: avoid; }
+    img { page-break-inside: avoid; }
+    pre { page-break-inside: avoid; }
+    .func-section { page-break-inside: avoid; }
   }
 </style>
 </head>
@@ -146,13 +181,12 @@
   <li>Paiements / version premium</li>
 </ul>
 
-<hr>
-
 <!-- 2. SPECS FONCTIONNELLES -->
 <h1 id="s2">2. Specifications fonctionnelles</h1>
 
 <h2>2.1 Fonctionnalites critiques (Must Have)</h2>
 
+<div class="func-section">
 <h3>F1 - Authentification</h3>
 <table>
   <tr><th>ID</th><th>Fonctionnalite</th><th>Description</th><th>Priorite</th></tr>
@@ -170,7 +204,9 @@
   <li>Le token JWT expire apres 30 jours</li>
   <li>Le mot de passe est hashe avec bcrypt (salt 10 rounds)</li>
 </ul>
+</div>
 
+<div class="func-section">
 <h3>F2 - Catalogue de langages</h3>
 <table>
   <tr><th>ID</th><th>Fonctionnalite</th><th>Description</th><th>Priorite</th></tr>
@@ -178,7 +214,9 @@
   <tr><td>F2.2</td><td>Selection de langage</td><td>Choisir un langage pour voir ses topics</td><td><span class="badge badge-critique">Critique</span></td></tr>
   <tr><td>F2.3</td><td>Information langage</td><td>Afficher nom, icone, couleur, description</td><td><span class="badge badge-critique">Critique</span></td></tr>
 </table>
+</div>
 
+<div class="func-section">
 <h3>F3 - Parcours de lecons (Skill Tree)</h3>
 <table>
   <tr><th>ID</th><th>Fonctionnalite</th><th>Description</th><th>Priorite</th></tr>
@@ -194,7 +232,9 @@
   <li>Le premier topic de chaque langage est toujours debloque (0 XP requis)</li>
   <li>Les topics alternent gauche/droite dans le parcours visuel</li>
 </ul>
+</div>
 
+<div class="func-section">
 <h3>F4 - Systeme d'exercices interactifs</h3>
 <table>
   <tr><th>ID</th><th>Fonctionnalite</th><th>Description</th><th>Priorite</th></tr>
@@ -214,7 +254,9 @@
   <li>Les bonnes reponses sont surlignees en vert, les mauvaises en rouge</li>
   <li>L'explication s'affiche uniquement en cas de mauvaise reponse</li>
 </ul>
+</div>
 
+<div class="func-section">
 <h3>F5 - Gamification et progression</h3>
 <table>
   <tr><th>ID</th><th>Fonctionnalite</th><th>Description</th><th>Priorite</th></tr>
@@ -234,7 +276,9 @@
   <li>Coeurs : 5 maximum, -1 par mauvaise reponse, si 0 coeur = fin de lecon</li>
   <li>Score de lecon = (bonnes reponses / total exercices) &times; 100</li>
 </ul>
+</div>
 
+<div class="func-section">
 <h3>F6 - Profil utilisateur</h3>
 <table>
   <tr><th>ID</th><th>Fonctionnalite</th><th>Description</th><th>Priorite</th></tr>
@@ -243,7 +287,9 @@
   <tr><td>F6.3</td><td>Barre de niveau</td><td>Progression vers le prochain niveau</td><td><span class="badge badge-critique">Critique</span></td></tr>
   <tr><td>F6.4</td><td>Badges</td><td>Affichage des badges debloques</td><td><span class="badge badge-importante">Importante</span></td></tr>
 </table>
+</div>
 
+<div class="func-section">
 <h3>Badges prevus</h3>
 <table>
   <tr><th>Badge</th><th>Condition</th><th>Icone</th></tr>
@@ -251,9 +297,11 @@
   <tr><td>Serie de 7 jours</td><td>Streak de 7 jours</td><td>Feu</td></tr>
   <tr><td>500 XP</td><td>Atteindre 500 XP</td><td>Etoile</td></tr>
 </table>
+</div>
 
 <h2>2.2 Fonctionnalites importantes (Should Have)</h2>
 
+<div class="func-section">
 <h3>F7 - Classement (Leaderboard)</h3>
 <table>
   <tr><th>ID</th><th>Fonctionnalite</th><th>Description</th><th>Priorite</th></tr>
@@ -261,7 +309,9 @@
   <tr><td>F7.2</td><td>Position du joueur</td><td>Mise en evidence de la position du joueur</td><td><span class="badge badge-importante">Importante</span></td></tr>
   <tr><td>F7.3</td><td>Medailles</td><td>Or, argent, bronze pour le top 3</td><td><span class="badge badge-importante">Importante</span></td></tr>
 </table>
+</div>
 
+<div class="func-section">
 <h3>F8 - Navigation</h3>
 <table>
   <tr><th>ID</th><th>Fonctionnalite</th><th>Description</th><th>Priorite</th></tr>
@@ -269,6 +319,7 @@
   <tr><td>F8.2</td><td>Navigation empilee</td><td>Navigation entre ecrans (push/pop)</td><td><span class="badge badge-critique">Critique</span></td></tr>
   <tr><td>F8.3</td><td>Header avec stats</td><td>Afficher streak, coeurs, XP en haut de l'ecran home</td><td><span class="badge badge-importante">Importante</span></td></tr>
 </table>
+</div>
 
 <h2>2.3 Fonctionnalites futures (Could Have - v2)</h2>
 <table>
@@ -283,8 +334,6 @@
   <tr><td>F9.8</td><td>Communaute</td><td>Forum de discussion entre apprenants</td><td><span class="badge badge-souhaitable">Souhaitable</span></td></tr>
   <tr><td>F9.9</td><td>Certificats</td><td>Generer un certificat apres un parcours complet</td><td><span class="badge badge-souhaitable">Souhaitable</span></td></tr>
 </table>
-
-<hr>
 
 <!-- 3. SPECS TECHNIQUES -->
 <h1 id="s3">3. Specifications techniques</h1>
@@ -338,6 +387,7 @@
 
 <h2>3.4 Modele de donnees</h2>
 
+<div class="func-section">
 <h3>Collection Users</h3>
 <pre>{
   _id: ObjectId,
@@ -354,7 +404,9 @@
   achievements: [{ name: String, icon: String, unlockedAt: Date }],
   createdAt: Date, updatedAt: Date
 }</pre>
+</div>
 
+<div class="func-section">
 <h3>Collection Languages</h3>
 <pre>{
   _id: ObjectId,
@@ -365,7 +417,9 @@
   description: String,
   order: Number
 }</pre>
+</div>
 
+<div class="func-section">
 <h3>Collection Topics</h3>
 <pre>{
   _id: ObjectId,
@@ -377,7 +431,9 @@
   requiredXP: Number (default: 0),
   description: String
 }</pre>
+</div>
 
+<div class="func-section">
 <h3>Collection Lessons</h3>
 <pre>{
   _id: ObjectId,
@@ -396,7 +452,9 @@
     xpReward: Number (default: 10)
   }]
 }</pre>
+</div>
 
+<div class="func-section">
 <h3>Collection UserProgress</h3>
 <pre>{
   _id: ObjectId,
@@ -412,6 +470,7 @@
   }]
 }
 Index unique: { user, language }</pre>
+</div>
 
 <h2>3.5 Securite</h2>
 <table>
@@ -423,8 +482,6 @@ Index unique: { user, language }</pre>
   <tr><td>CORS</td><td>Active pour le domaine de l'app</td></tr>
   <tr><td>Variables sensibles</td><td>Fichier .env non versionne (.gitignore)</td></tr>
 </table>
-
-<hr>
 
 <!-- 4. UI -->
 <h1 id="s4">4. Specifications de l'interface utilisateur</h1>
@@ -451,6 +508,7 @@ App
 
 <h2>4.2 Description des ecrans</h2>
 
+<div class="func-section">
 <h3>Welcome Screen</h3>
 <ul>
   <li>Logo Duodingo anime avec icone code</li>
@@ -460,7 +518,9 @@ App
   <li>Bouton "C'EST PARTI" (vert) &rarr; Inscription</li>
   <li>Bouton "J'AI DEJA UN COMPTE" (outline) &rarr; Connexion</li>
 </ul>
+</div>
 
+<div class="func-section">
 <h3>Login / Register Screen</h3>
 <ul>
   <li>Bouton retour, titre, sous-titre</li>
@@ -468,7 +528,9 @@ App
   <li>Toggle visibilite mot de passe</li>
   <li>Bouton d'action principal + lien vers l'autre ecran</li>
 </ul>
+</div>
 
+<div class="func-section">
 <h3>Home Screen (Apprendre)</h3>
 <ul>
   <li>Header : streak (flamme), titre, coeurs, XP</li>
@@ -476,7 +538,9 @@ App
   <li>Parcours vertical des topics en zigzag</li>
   <li>Topics verrouilles avec cadenas + opacite reduite</li>
 </ul>
+</div>
 
+<div class="func-section">
 <h3>Lesson Play Screen</h3>
 <ul>
   <li>Barre : bouton fermer, progression animee, coeurs</li>
@@ -484,14 +548,18 @@ App
   <li>Feedback en bas (vert/rouge) avec explication si erreur</li>
   <li>Bouton "CONTINUER" ou "TERMINER"</li>
 </ul>
+</div>
 
+<div class="func-section">
 <h3>Lesson Result Screen</h3>
 <ul>
   <li>Grande icone animee (trophee/etoile selon score)</li>
   <li>3 cartes stats : XP gagnes, correct/total, serie</li>
   <li>Barre de score en pourcentage + bouton continuer</li>
 </ul>
+</div>
 
+<div class="func-section">
 <h3>Profile Screen</h3>
 <ul>
   <li>Avatar avec badge de niveau, username, email</li>
@@ -499,8 +567,7 @@ App
   <li>Grille de stats (streak, XP, coeurs, lecons)</li>
   <li>Section badges + bouton deconnexion</li>
 </ul>
-
-<hr>
+</div>
 
 <!-- 5. CONTENU -->
 <h1 id="s5">5. Contenu pedagogique</h1>
@@ -515,6 +582,7 @@ Langage
 
 <h2>5.2 Contenu initial (v1)</h2>
 
+<div class="func-section">
 <h3>JavaScript (6 topics, 7 lecons)</h3>
 <table>
   <tr><th>Topic</th><th>Lecons</th><th>XP Requis</th></tr>
@@ -525,7 +593,9 @@ Langage
   <tr><td>Fonctions</td><td>Creer une fonction</td><td>300</td></tr>
   <tr><td>Tableaux</td><td>(a venir)</td><td>400</td></tr>
 </table>
+</div>
 
+<div class="func-section">
 <h3>Python (3 topics, 2 lecons)</h3>
 <table>
   <tr><th>Topic</th><th>Lecons</th><th>XP Requis</th></tr>
@@ -533,13 +603,16 @@ Langage
   <tr><td>Variables</td><td>Variables Python</td><td>50</td></tr>
   <tr><td>Conditions</td><td>(a venir)</td><td>120</td></tr>
 </table>
+</div>
 
+<div class="func-section">
 <h3>HTML/CSS (2 topics, 2 lecons)</h3>
 <table>
   <tr><th>Topic</th><th>Lecons</th><th>XP Requis</th></tr>
   <tr><td>Bases HTML</td><td>Structure HTML</td><td>0</td></tr>
   <tr><td>Bases CSS</td><td>Premiers styles CSS</td><td>50</td></tr>
 </table>
+</div>
 
 <h2>5.3 Types d'exercices</h2>
 <table>
@@ -550,8 +623,6 @@ Langage
   <tr><td>Remise en ordre</td><td>Ordonner des lignes de code</td><td>Remettre un programme dans l'ordre</td></tr>
   <tr><td>Association (v2)</td><td>Relier code et resultat</td><td>Matcher des paires</td></tr>
 </table>
-
-<hr>
 
 <!-- 6. PLANNING -->
 <h1 id="s6">6. Planning et livrables</h1>
@@ -579,8 +650,6 @@ Langage
   <tr><td>Cahier des charges complet</td><td>Ce document</td></tr>
 </table>
 
-<hr>
-
 <!-- 7. CONTRAINTES -->
 <h1 id="s7">7. Contraintes</h1>
 
@@ -606,8 +675,6 @@ Langage
   <li>Boutons avec zones de toucher minimum 44x44 points</li>
   <li>Messages d'erreur clairs et en francais</li>
 </ul>
-
-<hr>
 
 <!-- 8. GLOSSAIRE -->
 <h1 id="s8">8. Glossaire</h1>

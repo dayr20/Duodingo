@@ -16,6 +16,8 @@
     max-width: 900px;
     margin: 0 auto;
   }
+
+  /* Cover */
   .cover {
     text-align: center;
     padding: 80px 20px;
@@ -30,21 +32,33 @@
   .cover h2 { font-size: 20px; font-weight: 400; color: #afafaf; margin-bottom: 30px; }
   .cover .meta { font-size: 14px; color: #777; margin-top: 40px; }
   .cover .meta p { margin: 4px 0; }
-  h1 { font-size: 28px; color: #131F24; border-bottom: 3px solid #58CC02; padding-bottom: 8px; margin: 40px 0 20px; }
-  h2 { font-size: 22px; color: #1A2C34; margin: 30px 0 14px; }
-  h3 { font-size: 18px; color: #333; margin: 24px 0 10px; }
-  h4 { font-size: 15px; color: #58CC02; margin: 18px 0 8px; }
+
+  /* Headings */
+  h1 { font-size: 28px; color: #131F24; border-bottom: 3px solid #58CC02; padding-bottom: 8px; margin: 40px 0 20px; page-break-before: always; page-break-after: avoid; }
+  h2 { font-size: 22px; color: #1A2C34; margin: 30px 0 14px; page-break-after: avoid; }
+  h3 { font-size: 18px; color: #333; margin: 24px 0 10px; page-break-after: avoid; }
+  h4 { font-size: 15px; color: #58CC02; margin: 18px 0 8px; page-break-after: avoid; }
+
+  /* Text */
   p { margin: 8px 0; font-size: 14px; }
   ul, ol { margin: 8px 0 8px 24px; font-size: 14px; }
   li { margin: 4px 0; }
   strong { color: #131F24; }
-  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; page-break-inside: avoid; }
   th { background: #131F24; color: #58CC02; padding: 10px 12px; text-align: left; font-weight: 600; }
   td { padding: 8px 12px; border-bottom: 1px solid #e0e0e0; }
   tr:nth-child(even) { background: #f8f9fa; }
+
+  /* Code */
+  code { font-family: 'Courier New', monospace; background: #131F24; color: #1CB0F6; border-radius: 4px; padding: 2px 6px; font-size: 13px; }
+  pre { page-break-inside: avoid; }
+
   hr { border: none; border-top: 2px solid #e0e0e0; margin: 30px 0; }
 
-  .color-grid { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
+  /* Color grid */
+  .color-grid { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0; page-break-inside: avoid; }
   .color-card {
     width: 130px;
     border-radius: 8px;
@@ -66,13 +80,24 @@
   }
   .color-info .name { font-weight: 700; font-size: 12px; margin-bottom: 2px; }
 
+  /* Component boxes */
   .component-box {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 20px;
     margin: 12px 0;
     background: #fafafa;
+    page-break-inside: avoid;
   }
+
+  /* Section wrapper for print */
+  .section { page-break-inside: avoid; }
+  .diagram-container { page-break-inside: avoid; }
+
+  /* Images */
+  img { page-break-inside: avoid; }
+
+  /* Buttons */
   .btn-demo {
     display: inline-block;
     padding: 14px 32px;
@@ -90,6 +115,7 @@
   .btn-error { background: #FF4B4B; color: white; }
   .btn-disabled { background: #58CC02; color: white; opacity: 0.7; }
 
+  /* Input demos */
   .input-demo {
     display: flex;
     align-items: center;
@@ -103,6 +129,7 @@
   .input-demo .icon { color: #777; margin-right: 12px; font-size: 16px; }
   .input-demo .placeholder { color: #777; font-size: 14px; }
 
+  /* Option demos */
   .option-demo {
     border: 2px solid #37464F;
     background: #1A2C34;
@@ -118,6 +145,7 @@
   .option-wrong { border-color: #FF4B4B; background: rgba(255,75,75,0.12); color: #FF4B4B; }
   .option-selected { border-color: #1CB0F6; background: #233A44; }
 
+  /* Chip demos */
   .chip-demo {
     display: inline-flex;
     align-items: center;
@@ -130,7 +158,8 @@
     margin: 4px;
   }
 
-  .typo-demo { margin: 12px 0; }
+  /* Typography demos */
+  .typo-demo { margin: 12px 0; page-break-inside: avoid; }
   .typo-row {
     display: flex;
     align-items: baseline;
@@ -141,7 +170,8 @@
   .typo-label { width: 120px; font-size: 11px; color: #777; }
   .typo-size { width: 60px; font-size: 11px; color: #999; }
 
-  .spacing-demo { display: flex; gap: 8px; align-items: flex-end; margin: 16px 0; }
+  /* Spacing demos */
+  .spacing-demo { display: flex; gap: 8px; align-items: flex-end; margin: 16px 0; page-break-inside: avoid; }
   .spacing-block {
     background: #58CC02;
     border-radius: 4px;
@@ -159,9 +189,22 @@
     border-radius: 8px;
   }
 
+  /* TOC */
+  .toc-wrapper { page-break-after: always; }
+
   @media print {
     body { padding: 0; }
-    .cover { border-radius: 0; }
+    .cover { border-radius: 0; page-break-after: always; }
+    .toc-wrapper { page-break-after: always; }
+    table { page-break-inside: avoid; }
+    .section, .component-box, .diagram-container { page-break-inside: avoid; }
+    .color-grid { page-break-inside: avoid; }
+    h1 { page-break-before: always; page-break-after: avoid; }
+    h2, h3 { page-break-after: avoid; }
+    img { page-break-inside: avoid; }
+    pre { page-break-inside: avoid; }
+    .typo-demo { page-break-inside: avoid; }
+    .spacing-demo { page-break-inside: avoid; }
   }
 </style>
 </head>
@@ -180,6 +223,7 @@
 </div>
 
 <!-- TABLE DES MATIERES -->
+<div class="toc-wrapper">
 <div style="background:#f8f9fa; padding:24px; border-radius:8px; margin:20px 0 40px;">
   <h3 style="margin-top:0; color:#131F24;">Table des matieres</h3>
   <ol style="margin-left:20px;">
@@ -193,6 +237,7 @@
     <li><a href="#s8" style="color:#1CB0F6; text-decoration:none;">Ton et voix</a></li>
     <li><a href="#s9" style="color:#1CB0F6; text-decoration:none;">Accessibilite</a></li>
   </ol>
+</div>
 </div>
 
 <!-- 1. IDENTITE -->
@@ -219,11 +264,10 @@
   <li>Versions : logo complet (icone + texte), icone seule (pour app icon)</li>
 </ul>
 
-<hr>
-
 <!-- 2. COULEURS -->
 <h1 id="s2">2. Palette de couleurs</h1>
 
+<div class="section">
 <h2>2.1 Couleurs principales</h2>
 <div class="color-grid">
   <div class="color-card">
@@ -246,7 +290,9 @@
   <tr><td>Primary Dark</td><td><code>#46A302</code></td><td>Ombres des boutons principaux</td></tr>
   <tr><td>Secondary Blue</td><td><code>#1CB0F6</code></td><td>Liens, code, elements secondaires</td></tr>
 </table>
+</div>
 
+<div class="section">
 <h2>2.2 Couleurs de fond (Theme sombre)</h2>
 <div class="color-grid">
   <div class="color-card">
@@ -266,7 +312,9 @@
     <div class="color-info"><div class="name">Border</div>#37464F</div>
   </div>
 </div>
+</div>
 
+<div class="section">
 <h2>2.3 Couleurs fonctionnelles</h2>
 <div class="color-grid">
   <div class="color-card">
@@ -286,7 +334,9 @@
     <div class="color-info"><div class="name">Streak</div>#FF9600</div>
   </div>
 </div>
+</div>
 
+<div class="section">
 <h2>2.4 Couleurs des langages</h2>
 <div class="color-grid">
   <div class="color-card">
@@ -302,6 +352,7 @@
     <div class="color-info"><div class="name">HTML/CSS</div>#E34F26</div>
   </div>
 </div>
+</div>
 
 <h2>2.5 Couleurs de texte</h2>
 <table>
@@ -310,8 +361,6 @@
   <tr><td>Text Secondary</td><td><code>#AFAFAF</code></td><td>Sous-titres, descriptions</td></tr>
   <tr><td>Text Muted</td><td><code>#777777</code></td><td>Texte desactive, placeholders</td></tr>
 </table>
-
-<hr>
 
 <!-- 3. TYPOGRAPHIE -->
 <h1 id="s3">3. Typographie</h1>
@@ -377,11 +426,10 @@
   <li><strong>Interligne</strong> : 1.4x la taille de police pour le texte courant</li>
 </ul>
 
-<hr>
-
 <!-- 4. COMPOSANTS -->
 <h1 id="s4">4. Composants UI</h1>
 
+<div class="section">
 <h2>4.1 Boutons</h2>
 
 <div class="component-box" style="text-align:center;">
@@ -407,7 +455,9 @@
   <tr><td>Etat presse</td><td>Opacite 0.8</td></tr>
   <tr><td>Etat desactive</td><td>Opacite 0.7</td></tr>
 </table>
+</div>
 
+<div class="section">
 <h2>4.2 Champs de formulaire</h2>
 <div class="component-box">
   <div class="input-demo">
@@ -429,7 +479,9 @@
   <tr><td>Texte saisi</td><td>#FFFFFF, 16px</td></tr>
   <tr><td>Placeholder</td><td>#777777, 16px</td></tr>
 </table>
+</div>
 
+<div class="section">
 <h2>4.3 Options d'exercices (QCM)</h2>
 <div class="component-box dark-bg">
   <div style="font-size:12px; color:#777; margin-bottom:6px;">Normal</div>
@@ -441,7 +493,9 @@
   <div style="font-size:12px; color:#777; margin:10px 0 6px;">Mauvaise reponse</div>
   <div class="option-demo option-wrong">alert() &#10008;</div>
 </div>
+</div>
 
+<div class="section">
 <h2>4.4 Chips (Selecteur de langage)</h2>
 <div class="component-box" style="background:#131F24;">
   <span class="chip-demo" style="border-color:#F7DF1E; background:#233A44; color:white;">
@@ -454,7 +508,9 @@
     <span>&lt;/&gt;</span> HTML/CSS
   </span>
 </div>
+</div>
 
+<div class="section">
 <h2>4.5 Barre de progression</h2>
 <div class="component-box dark-bg">
   <div style="height:12px; background:#1A2C34; border-radius:6px; overflow:hidden;">
@@ -470,7 +526,9 @@
   <tr><td>Border radius</td><td>6px</td></tr>
   <tr><td>Animation</td><td>300ms ease</td></tr>
 </table>
+</div>
 
+<div class="section">
 <h2>4.6 Barre de feedback</h2>
 <div class="component-box">
   <div style="background:rgba(88,204,2,0.1); padding:16px; border-radius:12px; margin-bottom:12px;">
@@ -489,8 +547,7 @@
     <button class="btn-demo btn-error" style="width:100%; margin:0;">CONTINUER</button>
   </div>
 </div>
-
-<hr>
+</div>
 
 <!-- 5. ICONES -->
 <h1 id="s5">5. Iconographie</h1>
@@ -526,11 +583,10 @@
   <li><strong>Couleur inactive</strong> : #777777 (Text Muted)</li>
 </ul>
 
-<hr>
-
 <!-- 6. ESPACEMENT -->
 <h1 id="s6">6. Espacement et grille</h1>
 
+<div class="section">
 <h2>6.1 Unites d'espacement</h2>
 <div class="spacing-demo">
   <div><div class="spacing-block" style="width:16px; height:16px;">4</div><div style="font-size:10px; text-align:center; color:#777;">xs</div></div>
@@ -552,7 +608,9 @@
   <tr><td>xxl</td><td>24px</td><td>Marges de section</td></tr>
   <tr><td>xxxl</td><td>32px</td><td>Separation majeure</td></tr>
 </table>
+</div>
 
+<div class="section">
 <h2>6.2 Rayons de bordure</h2>
 <div class="component-box" style="display:flex; gap:20px; align-items:center;">
   <div style="text-align:center;">
@@ -572,8 +630,7 @@
     <div style="font-size:11px; color:#777; margin-top:4px;">50%<br>circle</div>
   </div>
 </div>
-
-<hr>
+</div>
 
 <!-- 7. ANIMATIONS -->
 <h1 id="s7">7. Animations et transitions</h1>
@@ -592,8 +649,6 @@
   <li><strong>Performant</strong> : toujours <code>useNativeDriver: true</code></li>
   <li><strong>Subtil</strong> : les animations guident, pas distraient</li>
 </ul>
-
-<hr>
 
 <!-- 8. TON ET VOIX -->
 <h1 id="s8">8. Ton et voix</h1>
@@ -632,8 +687,6 @@
   <li>TERMINER</li>
   <li>VERIFIER</li>
 </ul>
-
-<hr>
 
 <!-- 9. ACCESSIBILITE -->
 <h1 id="s9">9. Accessibilite</h1>
