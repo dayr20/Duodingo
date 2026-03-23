@@ -14,6 +14,8 @@
     padding: 16px;
     color: #172b4d;
   }
+
+  /* Header */
   .header {
     display: flex;
     align-items: center;
@@ -23,13 +25,36 @@
   }
   .header img { width: 36px; height: 36px; border-radius: 6px; }
   .header h1 { color: #fff; font-size: 20px; font-weight: 700; }
-  .header .badge {
+  .header .badge-label {
     background: rgba(255,255,255,0.2);
     color: #fff;
     padding: 4px 10px;
     border-radius: 4px;
     font-size: 12px;
   }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    gap: 16px;
+    padding: 8px 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #fff;
+    font-size: 12px;
+  }
+  .legend-dot {
+    width: 16px;
+    height: 8px;
+    border-radius: 4px;
+  }
+
+  /* Board - horizontal on screen */
   .board {
     display: flex;
     gap: 12px;
@@ -37,6 +62,8 @@
     padding-bottom: 20px;
     align-items: flex-start;
   }
+
+  /* Columns */
   .column {
     min-width: 280px;
     max-width: 280px;
@@ -44,6 +71,7 @@
     border-radius: 8px;
     padding: 10px;
     flex-shrink: 0;
+    page-break-inside: avoid;
   }
   .column-header {
     font-size: 14px;
@@ -61,16 +89,16 @@
     font-size: 11px;
     color: #666;
   }
+
+  /* Cards */
   .card {
     background: #fff;
     border-radius: 6px;
     padding: 8px 10px;
     margin-bottom: 8px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.12);
-    cursor: pointer;
     position: relative;
   }
-  .card:hover { background: #f4f5f7; }
   .card-labels {
     display: flex;
     gap: 4px;
@@ -117,37 +145,47 @@
     background: #61bd4f;
     color: #fff;
   }
-  .priority {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    font-size: 10px;
-  }
 
-  /* Labels legende */
-  .legend {
-    display: flex;
-    gap: 16px;
-    padding: 8px 16px;
-    flex-wrap: wrap;
-  }
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: #fff;
-    font-size: 12px;
-  }
-  .legend-dot {
-    width: 16px;
-    height: 8px;
-    border-radius: 4px;
-  }
-
+  /* Print-specific: stack columns vertically, one per page */
   @media print {
-    body { background: #fff; }
-    .board { flex-wrap: wrap; }
-    .column { page-break-inside: avoid; margin-bottom: 12px; }
+    body {
+      background: #fff;
+      padding: 8px;
+    }
+    .header {
+      page-break-after: avoid;
+    }
+    .header h1 { color: #172b4d; }
+    .header .badge-label { background: #e0e0e0; color: #172b4d; }
+    .legend { margin-bottom: 8px; }
+    .legend-item { color: #172b4d; }
+
+    .board {
+      display: block;
+      overflow: visible;
+    }
+    .column {
+      min-width: 100%;
+      max-width: 100%;
+      width: 100%;
+      margin-bottom: 16px;
+      page-break-inside: avoid;
+      page-break-after: always;
+    }
+    .column:last-child {
+      page-break-after: auto;
+    }
+    .card {
+      page-break-inside: avoid;
+    }
+
+    /* General print rules */
+    table { page-break-inside: avoid; }
+    .section, .component-box, .diagram-container { page-break-inside: avoid; }
+    h1 { page-break-after: avoid; }
+    h2, h3 { page-break-after: avoid; }
+    img { page-break-inside: avoid; }
+    pre { page-break-inside: avoid; }
   }
 </style>
 </head>
@@ -156,8 +194,8 @@
 <div class="header">
   <img src="glitch.png" alt="Glitch">
   <h1>Duodingo - Board Projet</h1>
-  <div class="badge">Mars 2026</div>
-  <div class="badge">Livrable intermediaire</div>
+  <div class="badge-label">Mars 2026</div>
+  <div class="badge-label">Livrable intermediaire</div>
 </div>
 
 <div class="legend">
