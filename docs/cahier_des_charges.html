@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cahier des Charges - Duodingo</title>
+<style>
+  @page { margin: 1.5cm; size: A4; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #1a1a2e;
+    line-height: 1.6;
+    background: #fff;
+    padding: 40px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .cover {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #131F24, #1A2C34);
+    color: white;
+    border-radius: 12px;
+    margin-bottom: 40px;
+    page-break-after: always;
+  }
+  .cover .logo { font-size: 64px; margin-bottom: 16px; }
+  .cover h1 { font-size: 42px; color: #58CC02; margin-bottom: 8px; }
+  .cover h2 { font-size: 20px; font-weight: 400; color: #afafaf; margin-bottom: 30px; }
+  .cover .meta { font-size: 14px; color: #777; margin-top: 40px; }
+  .cover .meta p { margin: 4px 0; }
+  h1 { font-size: 28px; color: #131F24; border-bottom: 3px solid #58CC02; padding-bottom: 8px; margin: 40px 0 20px; }
+  h2 { font-size: 22px; color: #1A2C34; margin: 30px 0 14px; }
+  h3 { font-size: 18px; color: #333; margin: 24px 0 10px; }
+  h4 { font-size: 15px; color: #58CC02; margin: 18px 0 8px; }
+  p { margin: 8px 0; font-size: 14px; }
+  ul, ol { margin: 8px 0 8px 24px; font-size: 14px; }
+  li { margin: 4px 0; }
+  strong { color: #131F24; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; }
+  th { background: #131F24; color: #58CC02; padding: 10px 12px; text-align: left; font-weight: 600; }
+  td { padding: 8px 12px; border-bottom: 1px solid #e0e0e0; }
+  tr:nth-child(even) { background: #f8f9fa; }
+  code, pre {
+    font-family: 'Courier New', monospace;
+    background: #131F24;
+    color: #1CB0F6;
+    border-radius: 4px;
+  }
+  code { padding: 2px 6px; font-size: 13px; }
+  pre {
+    padding: 16px;
+    margin: 12px 0;
+    overflow-x: auto;
+    font-size: 12px;
+    line-height: 1.5;
+    white-space: pre;
+  }
+  .section { page-break-inside: avoid; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .badge-critique { background: #FF4B4B20; color: #FF4B4B; }
+  .badge-importante { background: #FFC80020; color: #c89600; }
+  .badge-souhaitable { background: #1CB0F620; color: #1CB0F6; }
+  hr { border: none; border-top: 2px solid #e0e0e0; margin: 30px 0; }
+  .toc { background: #f8f9fa; padding: 24px; border-radius: 8px; margin: 20px 0 40px; }
+  .toc h3 { margin-top: 0; color: #131F24; }
+  .toc ol { margin-left: 20px; }
+  .toc li { margin: 6px 0; }
+  .toc a { color: #1CB0F6; text-decoration: none; }
+  @media print {
+    body { padding: 0; }
+    .cover { border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE DE GARDE -->
+<div class="cover">
+  <img src="glitch.png" alt="Glitch - Mascotte Duodingo" style="width: 120px; height: 120px; margin-bottom: 16px;">
+  <h1>Duodingo</h1>
+  <h2>Cahier des Charges</h2>
+  <p style="font-size:18px; color:#ccc;">Application mobile pour apprendre a coder</p>
+  <div class="meta">
+    <p>Version 1.0</p>
+    <p>Date : 23 mars 2026</p>
+    <p>Projet Mobile - Livrable intermediaire</p>
+  </div>
+</div>
+
+<!-- TABLE DES MATIERES -->
+<div class="toc">
+  <h3>Table des matieres</h3>
+  <ol>
+    <li><a href="#s1">Presentation du projet</a></li>
+    <li><a href="#s2">Specifications fonctionnelles</a></li>
+    <li><a href="#s3">Specifications techniques</a></li>
+    <li><a href="#s4">Specifications de l'interface utilisateur</a></li>
+    <li><a href="#s5">Contenu pedagogique</a></li>
+    <li><a href="#s6">Planning et livrables</a></li>
+    <li><a href="#s7">Contraintes</a></li>
+    <li><a href="#s8">Glossaire</a></li>
+  </ol>
+</div>
+
+<!-- 1. PRESENTATION -->
+<h1 id="s1">1. Presentation du projet</h1>
+
+<h2>1.1 Contexte</h2>
+<p>L'apprentissage de la programmation est devenu une competence essentielle dans le monde numerique. Cependant, les ressources existantes sont souvent trop academiques, peu engageantes et decourageantes pour les debutants. Le modele gamifie de Duolingo a prouve son efficacite dans l'apprentissage des langues avec plus de 500 millions d'utilisateurs.</p>
+<p><strong>Duodingo</strong> applique ce meme concept a l'apprentissage du code : des lecons courtes, interactives et gamifiees qui rendent la programmation accessible et addictive.</p>
+
+<h2>1.2 Objectifs du projet</h2>
+<ul>
+  <li>Rendre l'apprentissage du code accessible aux debutants complets</li>
+  <li>Proposer une experience gamifiee qui motive la pratique quotidienne</li>
+  <li>Couvrir les langages les plus demandes (JavaScript, Python, HTML/CSS)</li>
+  <li>Offrir une progression structuree du niveau debutant a intermediaire</li>
+  <li>Fonctionner sur iOS et Android avec une seule base de code</li>
+</ul>
+
+<h2>1.3 Public cible</h2>
+<table>
+  <tr><th>Cible</th><th>Description</th></tr>
+  <tr><td><strong>Etudiants</strong> (16-25 ans)</td><td>Etudiants souhaitant decouvrir ou completer leur apprentissage du code</td></tr>
+  <tr><td><strong>Reconversion pro</strong> (25-45 ans)</td><td>Professionnels voulant apprendre les bases de la programmation</td></tr>
+  <tr><td><strong>Curieux du numerique</strong> (tout age)</td><td>Personnes motivees par la culture numerique</td></tr>
+  <tr><td><strong>Lyceens</strong> (15-18 ans)</td><td>Preparation aux etudes superieures en informatique</td></tr>
+</table>
+
+<h2>1.4 Perimetre du projet</h2>
+<p><strong>Inclus dans le projet :</strong></p>
+<ul>
+  <li>Application mobile cross-platform (iOS + Android)</li>
+  <li>Backend API REST</li>
+  <li>Base de donnees avec contenu pedagogique</li>
+  <li>Systeme d'authentification</li>
+  <li>Systeme de gamification complet</li>
+</ul>
+<p><strong>Exclus du projet (v1) :</strong></p>
+<ul>
+  <li>Application web</li>
+  <li>Mode multijoueur en temps reel</li>
+  <li>Editeur de code integre avec execution</li>
+  <li>Paiements / version premium</li>
+</ul>
+
+<hr>
+
+<!-- 2. SPECS FONCTIONNELLES -->
+<h1 id="s2">2. Specifications fonctionnelles</h1>
+
+<h2>2.1 Fonctionnalites critiques (Must Have)</h2>
+
+<h3>F1 - Authentification</h3>
+<table>
+  <tr><th>ID</th><th>Fonctionnalite</th><th>Description</th><th>Priorite</th></tr>
+  <tr><td>F1.1</td><td>Inscription</td><td>Creer un compte avec username, email, mot de passe</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F1.2</td><td>Connexion</td><td>Se connecter avec email et mot de passe</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F1.3</td><td>Deconnexion</td><td>Se deconnecter de l'application</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F1.4</td><td>Persistance de session</td><td>Rester connecte entre les sessions (token JWT)</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F1.5</td><td>Validation formulaire</td><td>Validation des champs (email valide, mdp 6+ chars)</td><td><span class="badge badge-critique">Critique</span></td></tr>
+</table>
+<h4>Regles metier :</h4>
+<ul>
+  <li>Le nom d'utilisateur doit etre unique (3-20 caracteres)</li>
+  <li>L'email doit etre unique et au format valide</li>
+  <li>Le mot de passe doit contenir au minimum 6 caracteres</li>
+  <li>Le token JWT expire apres 30 jours</li>
+  <li>Le mot de passe est hashe avec bcrypt (salt 10 rounds)</li>
+</ul>
+
+<h3>F2 - Catalogue de langages</h3>
+<table>
+  <tr><th>ID</th><th>Fonctionnalite</th><th>Description</th><th>Priorite</th></tr>
+  <tr><td>F2.1</td><td>Liste des langages</td><td>Afficher les langages disponibles (JS, Python, HTML/CSS)</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F2.2</td><td>Selection de langage</td><td>Choisir un langage pour voir ses topics</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F2.3</td><td>Information langage</td><td>Afficher nom, icone, couleur, description</td><td><span class="badge badge-critique">Critique</span></td></tr>
+</table>
+
+<h3>F3 - Parcours de lecons (Skill Tree)</h3>
+<table>
+  <tr><th>ID</th><th>Fonctionnalite</th><th>Description</th><th>Priorite</th></tr>
+  <tr><td>F3.1</td><td>Arbre de competences</td><td>Afficher les topics dans un parcours visuel (chemin)</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F3.2</td><td>Verrouillage progressif</td><td>Les topics se debloquent selon l'XP de l'utilisateur</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F3.3</td><td>Liste des lecons</td><td>Afficher les lecons d'un topic avec etat (fait/pas fait)</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F3.4</td><td>Indicateur de progression</td><td>Montrer visuellement l'avancement dans chaque topic</td><td><span class="badge badge-critique">Critique</span></td></tr>
+</table>
+<h4>Regles metier :</h4>
+<ul>
+  <li>Chaque topic a un seuil d'XP requis pour etre debloque</li>
+  <li>Les topics verrouilles sont affiches avec un cadenas</li>
+  <li>Le premier topic de chaque langage est toujours debloque (0 XP requis)</li>
+  <li>Les topics alternent gauche/droite dans le parcours visuel</li>
+</ul>
+
+<h3>F4 - Systeme d'exercices interactifs</h3>
+<table>
+  <tr><th>ID</th><th>Fonctionnalite</th><th>Description</th><th>Priorite</th></tr>
+  <tr><td>F4.1</td><td>QCM (Choix multiples)</td><td>Question avec 4 options, une seule correcte</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F4.2</td><td>Completion de code</td><td>Remplir le blanc dans un extrait de code</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F4.3</td><td>Vrai/Faux</td><td>Affirmer si un enonce sur le code est vrai ou faux</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F4.4</td><td>Remise en ordre</td><td>Remettre des lignes de code dans le bon ordre</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F4.5</td><td>Affichage du code</td><td>Afficher les extraits de code avec mise en forme</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F4.6</td><td>Feedback immediat</td><td>Indiquer si la reponse est correcte ou incorrecte</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F4.7</td><td>Explication</td><td>Afficher une explication apres chaque reponse</td><td><span class="badge badge-critique">Critique</span></td></tr>
+</table>
+<h4>Regles metier :</h4>
+<ul>
+  <li>Chaque lecon contient 3 a 5 exercices</li>
+  <li>Les exercices sont presentes sequentiellement</li>
+  <li>Apres une reponse, l'utilisateur voit le feedback avant de passer au suivant</li>
+  <li>Les bonnes reponses sont surlignees en vert, les mauvaises en rouge</li>
+  <li>L'explication s'affiche uniquement en cas de mauvaise reponse</li>
+</ul>
+
+<h3>F5 - Gamification et progression</h3>
+<table>
+  <tr><th>ID</th><th>Fonctionnalite</th><th>Description</th><th>Priorite</th></tr>
+  <tr><td>F5.1</td><td>Points d'experience (XP)</td><td>Gagner de l'XP en completant des exercices</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F5.2</td><td>Systeme de niveaux</td><td>Monter en niveau tous les 100 XP</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F5.3</td><td>Serie quotidienne (Streak)</td><td>Compteur de jours consecutifs de pratique</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F5.4</td><td>Systeme de vies (Coeurs)</td><td>5 vies max, perte d'une vie par mauvaise reponse</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F5.5</td><td>Ecran de resultats</td><td>Afficher le score, XP gagnes et statistiques apres chaque lecon</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F5.6</td><td>Barre de progression</td><td>Barre animee pendant la lecon</td><td><span class="badge badge-critique">Critique</span></td></tr>
+</table>
+<h4>Regles metier :</h4>
+<ul>
+  <li>XP par exercice reussi : 10 XP</li>
+  <li>XP bonus pour lecon complete : proportionnel au score</li>
+  <li>Niveau = (XP total / 100) + 1</li>
+  <li>Streak : incremente si derniere pratique = hier, reset si &gt; 48h sans pratique</li>
+  <li>Coeurs : 5 maximum, -1 par mauvaise reponse, si 0 coeur = fin de lecon</li>
+  <li>Score de lecon = (bonnes reponses / total exercices) &times; 100</li>
+</ul>
+
+<h3>F6 - Profil utilisateur</h3>
+<table>
+  <tr><th>ID</th><th>Fonctionnalite</th><th>Description</th><th>Priorite</th></tr>
+  <tr><td>F6.1</td><td>Affichage profil</td><td>Avatar, username, email, niveau</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F6.2</td><td>Statistiques</td><td>XP total, streak, coeurs, lecons completees</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F6.3</td><td>Barre de niveau</td><td>Progression vers le prochain niveau</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F6.4</td><td>Badges</td><td>Affichage des badges debloques</td><td><span class="badge badge-importante">Importante</span></td></tr>
+</table>
+
+<h3>Badges prevus</h3>
+<table>
+  <tr><th>Badge</th><th>Condition</th><th>Icone</th></tr>
+  <tr><td>Premiere lecon</td><td>Completer 1 lecon</td><td>Cible</td></tr>
+  <tr><td>Serie de 7 jours</td><td>Streak de 7 jours</td><td>Feu</td></tr>
+  <tr><td>500 XP</td><td>Atteindre 500 XP</td><td>Etoile</td></tr>
+</table>
+
+<h2>2.2 Fonctionnalites importantes (Should Have)</h2>
+
+<h3>F7 - Classement (Leaderboard)</h3>
+<table>
+  <tr><th>ID</th><th>Fonctionnalite</th><th>Description</th><th>Priorite</th></tr>
+  <tr><td>F7.1</td><td>Tableau de classement</td><td>Classement des joueurs par XP</td><td><span class="badge badge-importante">Importante</span></td></tr>
+  <tr><td>F7.2</td><td>Position du joueur</td><td>Mise en evidence de la position du joueur</td><td><span class="badge badge-importante">Importante</span></td></tr>
+  <tr><td>F7.3</td><td>Medailles</td><td>Or, argent, bronze pour le top 3</td><td><span class="badge badge-importante">Importante</span></td></tr>
+</table>
+
+<h3>F8 - Navigation</h3>
+<table>
+  <tr><th>ID</th><th>Fonctionnalite</th><th>Description</th><th>Priorite</th></tr>
+  <tr><td>F8.1</td><td>Barre de navigation</td><td>Onglets : Apprendre, Classement, Profil</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F8.2</td><td>Navigation empilee</td><td>Navigation entre ecrans (push/pop)</td><td><span class="badge badge-critique">Critique</span></td></tr>
+  <tr><td>F8.3</td><td>Header avec stats</td><td>Afficher streak, coeurs, XP en haut de l'ecran home</td><td><span class="badge badge-importante">Importante</span></td></tr>
+</table>
+
+<h2>2.3 Fonctionnalites futures (Could Have - v2)</h2>
+<table>
+  <tr><th>ID</th><th>Fonctionnalite</th><th>Description</th><th>Priorite</th></tr>
+  <tr><td>F9.1</td><td>Notifications push</td><td>Rappels quotidiens de pratique</td><td><span class="badge badge-souhaitable">Souhaitable</span></td></tr>
+  <tr><td>F9.2</td><td>Mode hors-ligne</td><td>Telecharger les lecons pour une utilisation offline</td><td><span class="badge badge-souhaitable">Souhaitable</span></td></tr>
+  <tr><td>F9.3</td><td>Editeur de code</td><td>Editeur integre avec execution du code</td><td><span class="badge badge-souhaitable">Souhaitable</span></td></tr>
+  <tr><td>F9.4</td><td>Mode duel</td><td>Defier un autre joueur en temps reel</td><td><span class="badge badge-souhaitable">Souhaitable</span></td></tr>
+  <tr><td>F9.5</td><td>Langages supplementaires</td><td>Ajouter Java, C#, SQL, React, etc.</td><td><span class="badge badge-souhaitable">Souhaitable</span></td></tr>
+  <tr><td>F9.6</td><td>Mode sombre/clair</td><td>Basculer entre theme sombre et clair</td><td><span class="badge badge-souhaitable">Souhaitable</span></td></tr>
+  <tr><td>F9.7</td><td>Connexion sociale</td><td>Connexion via Google, Apple, GitHub</td><td><span class="badge badge-souhaitable">Souhaitable</span></td></tr>
+  <tr><td>F9.8</td><td>Communaute</td><td>Forum de discussion entre apprenants</td><td><span class="badge badge-souhaitable">Souhaitable</span></td></tr>
+  <tr><td>F9.9</td><td>Certificats</td><td>Generer un certificat apres un parcours complet</td><td><span class="badge badge-souhaitable">Souhaitable</span></td></tr>
+</table>
+
+<hr>
+
+<!-- 3. SPECS TECHNIQUES -->
+<h1 id="s3">3. Specifications techniques</h1>
+
+<h2>3.1 Architecture globale</h2>
+<pre>
++---------------------+      +----------------------+      +---------------+
+|   Application       |      |    API REST          |      |   Base de     |
+|   React Native      |&lt;---&gt;|    Node.js/Express   |&lt;---&gt;|   donnees     |
+|   (Expo)            | HTTP |                      |      |   MongoDB     |
+|                     | JSON |    Port 5000         |      |               |
++---------------------+      +----------------------+      +---------------+
+       |                              |
+       |                              |
+  +----+-----+                  +-----+------+
+  | iOS App  |                  | JWT Auth   |
+  | Android  |                  | Middleware |
+  +----------+                  +------------+
+</pre>
+
+<h2>3.2 Stack technique</h2>
+<table>
+  <tr><th>Couche</th><th>Technologie</th><th>Version</th><th>Justification</th></tr>
+  <tr><td>Frontend</td><td>React Native</td><td>via Expo SDK 52</td><td>Cross-platform, communaute large, performance native</td></tr>
+  <tr><td>Navigation</td><td>React Navigation 7</td><td>v7.x</td><td>Standard pour React Native, stack + tabs</td></tr>
+  <tr><td>State</td><td>React Context API</td><td>integ. React</td><td>Suffisant pour la taille du projet</td></tr>
+  <tr><td>Stockage local</td><td>AsyncStorage</td><td>v2.x</td><td>Persistance du token JWT cote client</td></tr>
+  <tr><td>Icones</td><td>Expo Vector Icons</td><td>via Expo</td><td>Ionicons inclus, large choix</td></tr>
+  <tr><td>Backend</td><td>Node.js + Express</td><td>Node 18+, Express 5</td><td>Rapide a developper, ecosysteme riche</td></tr>
+  <tr><td>Base de donnees</td><td>MongoDB + Mongoose</td><td>v9.x</td><td>Schema flexible, ideal pour contenu pedagogique</td></tr>
+  <tr><td>Auth</td><td>JSON Web Tokens</td><td>v9.x</td><td>Stateless, scalable, standard industrie</td></tr>
+  <tr><td>Hash password</td><td>bcryptjs</td><td>v3.x</td><td>Hash securise avec salt</td></tr>
+  <tr><td>Dev tools</td><td>Nodemon</td><td>v3.x</td><td>Rechargement automatique en dev</td></tr>
+</table>
+
+<h2>3.3 API REST - Endpoints</h2>
+<table>
+  <tr><th>Methode</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr>
+  <tr><td><code>POST</code></td><td>/api/auth/register</td><td>Non</td><td>Inscription d'un nouvel utilisateur</td></tr>
+  <tr><td><code>POST</code></td><td>/api/auth/login</td><td>Non</td><td>Connexion et obtention du token</td></tr>
+  <tr><td><code>GET</code></td><td>/api/auth/me</td><td>Oui</td><td>Recuperer le profil utilisateur connecte</td></tr>
+  <tr><td><code>GET</code></td><td>/api/languages</td><td>Non</td><td>Lister tous les langages disponibles</td></tr>
+  <tr><td><code>GET</code></td><td>/api/languages/:id/topics</td><td>Non</td><td>Lister les topics d'un langage</td></tr>
+  <tr><td><code>GET</code></td><td>/api/languages/:langId/topics/:topicId/lessons</td><td>Non</td><td>Lister les lecons d'un topic</td></tr>
+  <tr><td><code>GET</code></td><td>/api/lessons/:id</td><td>Oui</td><td>Detail d'une lecon avec exercices</td></tr>
+  <tr><td><code>POST</code></td><td>/api/lessons/:id/complete</td><td>Oui</td><td>Marquer une lecon comme completee</td></tr>
+  <tr><td><code>GET</code></td><td>/api/progress</td><td>Oui</td><td>Progression de l'utilisateur</td></tr>
+  <tr><td><code>GET</code></td><td>/api/progress/stats</td><td>Oui</td><td>Statistiques de l'utilisateur</td></tr>
+  <tr><td><code>POST</code></td><td>/api/progress/hearts</td><td>Oui</td><td>Mettre a jour les coeurs</td></tr>
+</table>
+
+<h2>3.4 Modele de donnees</h2>
+
+<h3>Collection Users</h3>
+<pre>{
+  _id: ObjectId,
+  username: String (unique, 3-20 chars),
+  email: String (unique, lowercase),
+  password: String (hashe bcrypt),
+  avatar: String (default: "default"),
+  xp: Number (default: 0),
+  level: Number (default: 1),
+  hearts: Number (default: 5, max: 5),
+  streak: Number (default: 0),
+  lastPractice: Date,
+  completedLessons: [ObjectId -&gt; Lesson],
+  achievements: [{ name: String, icon: String, unlockedAt: Date }],
+  createdAt: Date, updatedAt: Date
+}</pre>
+
+<h3>Collection Languages</h3>
+<pre>{
+  _id: ObjectId,
+  name: String (unique),
+  slug: String (unique),
+  icon: String,
+  color: String (hex),
+  description: String,
+  order: Number
+}</pre>
+
+<h3>Collection Topics</h3>
+<pre>{
+  _id: ObjectId,
+  name: String,
+  slug: String,
+  icon: String,
+  language: ObjectId -&gt; Language,
+  order: Number,
+  requiredXP: Number (default: 0),
+  description: String
+}</pre>
+
+<h3>Collection Lessons</h3>
+<pre>{
+  _id: ObjectId,
+  title: String,
+  topic: ObjectId -&gt; Topic,
+  order: Number,
+  xpReward: Number (default: 20),
+  description: String,
+  exercises: [{
+    type: Enum('qcm','fill_code','true_false','order_code','match_pairs'),
+    question: String,
+    codeSnippet: String (nullable),
+    options: [{ text: String, isCorrect: Boolean }],
+    correctAnswer: Mixed,
+    explanation: String,
+    xpReward: Number (default: 10)
+  }]
+}</pre>
+
+<h3>Collection UserProgress</h3>
+<pre>{
+  _id: ObjectId,
+  user: ObjectId -&gt; User,
+  language: ObjectId -&gt; Language,
+  completedLessons: [{
+    lesson: ObjectId -&gt; Lesson,
+    completedAt: Date, score: Number, xpEarned: Number
+  }],
+  topicProgress: [{
+    topic: ObjectId -&gt; Topic,
+    lessonsCompleted: Number, totalLessons: Number
+  }]
+}
+Index unique: { user, language }</pre>
+
+<h2>3.5 Securite</h2>
+<table>
+  <tr><th>Mesure</th><th>Implementation</th></tr>
+  <tr><td>Hash des mots de passe</td><td>bcrypt avec salt 10 rounds</td></tr>
+  <tr><td>Authentification</td><td>JWT avec expiration 30 jours</td></tr>
+  <tr><td>Protection des routes</td><td>Middleware auth sur les endpoints sensibles</td></tr>
+  <tr><td>Validation des entrees</td><td>Verification cote serveur de tous les champs</td></tr>
+  <tr><td>CORS</td><td>Active pour le domaine de l'app</td></tr>
+  <tr><td>Variables sensibles</td><td>Fichier .env non versionne (.gitignore)</td></tr>
+</table>
+
+<hr>
+
+<!-- 4. UI -->
+<h1 id="s4">4. Specifications de l'interface utilisateur</h1>
+
+<h2>4.1 Arborescence des ecrans</h2>
+<pre>
+App
++-- (Non connecte)
+|   +-- Welcome Screen        # Ecran d'accueil avec CTA
+|   +-- Login Screen          # Formulaire de connexion
+|   +-- Register Screen       # Formulaire d'inscription
+|
++-- (Connecte)
+    +-- Tab: Apprendre
+    |   +-- Home Screen           # Parcours avec selector de langage
+    |   +-- Topic Lessons Screen  # Liste des lecons d'un topic
+    |   +-- Lesson Play Screen    # Flow d'exercices
+    |   +-- Lesson Result Screen  # Score et XP gagnes
+    +-- Tab: Classement
+    |   +-- Leaderboard Screen    # Classement des joueurs
+    +-- Tab: Profil
+        +-- Profile Screen        # Stats, badges, deconnexion
+</pre>
+
+<h2>4.2 Description des ecrans</h2>
+
+<h3>Welcome Screen</h3>
+<ul>
+  <li>Logo Duodingo anime avec icone code</li>
+  <li>Titre "Duodingo" en vert primaire</li>
+  <li>Sous-titre "Apprends a coder. Gratuitement. Fun."</li>
+  <li>3 features highlights avec icones</li>
+  <li>Bouton "C'EST PARTI" (vert) &rarr; Inscription</li>
+  <li>Bouton "J'AI DEJA UN COMPTE" (outline) &rarr; Connexion</li>
+</ul>
+
+<h3>Login / Register Screen</h3>
+<ul>
+  <li>Bouton retour, titre, sous-titre</li>
+  <li>Champs avec icones (username, email, mot de passe)</li>
+  <li>Toggle visibilite mot de passe</li>
+  <li>Bouton d'action principal + lien vers l'autre ecran</li>
+</ul>
+
+<h3>Home Screen (Apprendre)</h3>
+<ul>
+  <li>Header : streak (flamme), titre, coeurs, XP</li>
+  <li>Selecteur horizontal de langages (chips)</li>
+  <li>Parcours vertical des topics en zigzag</li>
+  <li>Topics verrouilles avec cadenas + opacite reduite</li>
+</ul>
+
+<h3>Lesson Play Screen</h3>
+<ul>
+  <li>Barre : bouton fermer, progression animee, coeurs</li>
+  <li>Zone d'exercice variable selon le type</li>
+  <li>Feedback en bas (vert/rouge) avec explication si erreur</li>
+  <li>Bouton "CONTINUER" ou "TERMINER"</li>
+</ul>
+
+<h3>Lesson Result Screen</h3>
+<ul>
+  <li>Grande icone animee (trophee/etoile selon score)</li>
+  <li>3 cartes stats : XP gagnes, correct/total, serie</li>
+  <li>Barre de score en pourcentage + bouton continuer</li>
+</ul>
+
+<h3>Profile Screen</h3>
+<ul>
+  <li>Avatar avec badge de niveau, username, email</li>
+  <li>Carte XP avec barre de progression</li>
+  <li>Grille de stats (streak, XP, coeurs, lecons)</li>
+  <li>Section badges + bouton deconnexion</li>
+</ul>
+
+<hr>
+
+<!-- 5. CONTENU -->
+<h1 id="s5">5. Contenu pedagogique</h1>
+
+<h2>5.1 Structure du contenu</h2>
+<pre>
+Langage
++-- Topic (theme)
+    +-- Lecon
+        +-- Exercice (3-5 par lecon)
+</pre>
+
+<h2>5.2 Contenu initial (v1)</h2>
+
+<h3>JavaScript (6 topics, 7 lecons)</h3>
+<table>
+  <tr><th>Topic</th><th>Lecons</th><th>XP Requis</th></tr>
+  <tr><td>Variables</td><td>Declarer une variable, Nommer ses variables</td><td>0</td></tr>
+  <tr><td>Types de donnees</td><td>Strings et Numbers</td><td>50</td></tr>
+  <tr><td>Conditions</td><td>If et Else</td><td>120</td></tr>
+  <tr><td>Boucles</td><td>La boucle for</td><td>200</td></tr>
+  <tr><td>Fonctions</td><td>Creer une fonction</td><td>300</td></tr>
+  <tr><td>Tableaux</td><td>(a venir)</td><td>400</td></tr>
+</table>
+
+<h3>Python (3 topics, 2 lecons)</h3>
+<table>
+  <tr><th>Topic</th><th>Lecons</th><th>XP Requis</th></tr>
+  <tr><td>Introduction</td><td>Premier programme</td><td>0</td></tr>
+  <tr><td>Variables</td><td>Variables Python</td><td>50</td></tr>
+  <tr><td>Conditions</td><td>(a venir)</td><td>120</td></tr>
+</table>
+
+<h3>HTML/CSS (2 topics, 2 lecons)</h3>
+<table>
+  <tr><th>Topic</th><th>Lecons</th><th>XP Requis</th></tr>
+  <tr><td>Bases HTML</td><td>Structure HTML</td><td>0</td></tr>
+  <tr><td>Bases CSS</td><td>Premiers styles CSS</td><td>50</td></tr>
+</table>
+
+<h2>5.3 Types d'exercices</h2>
+<table>
+  <tr><th>Type</th><th>Description</th><th>Exemple</th></tr>
+  <tr><td>QCM</td><td>4 choix, 1 bonne reponse</td><td>"Que va afficher ce code ?"</td></tr>
+  <tr><td>Completion de code</td><td>Remplir le blanc dans du code</td><td>"Completez : ___ age = 25;"</td></tr>
+  <tr><td>Vrai / Faux</td><td>Juger une affirmation</td><td>"const empeche la reassignation"</td></tr>
+  <tr><td>Remise en ordre</td><td>Ordonner des lignes de code</td><td>Remettre un programme dans l'ordre</td></tr>
+  <tr><td>Association (v2)</td><td>Relier code et resultat</td><td>Matcher des paires</td></tr>
+</table>
+
+<hr>
+
+<!-- 6. PLANNING -->
+<h1 id="s6">6. Planning et livrables</h1>
+
+<h2>6.1 Planning previsionnel</h2>
+<table>
+  <tr><th>Phase</th><th>Periode</th><th>Livrables</th></tr>
+  <tr><td>Phase 1 : Conception</td><td>Semaines 1-2</td><td>Cahier des charges, maquettes, diagrammes</td></tr>
+  <tr><td>Phase 2 : Backend</td><td>Semaines 2-3</td><td>API REST fonctionnelle, modeles, seed data</td></tr>
+  <tr><td>Phase 3 : Frontend Auth</td><td>Semaine 3</td><td>Ecrans Welcome, Login, Register</td></tr>
+  <tr><td>Phase 4 : Frontend Core</td><td>Semaines 3-4</td><td>Home, lecons, exercices, resultats</td></tr>
+  <tr><td>Phase 5 : Gamification</td><td>Semaine 4</td><td>XP, niveaux, streak, coeurs, badges</td></tr>
+  <tr><td>Phase 6 : Polish</td><td>Semaine 5</td><td>Profil, classement, animations, tests</td></tr>
+  <tr style="background:#58CC0215;"><td><strong>Livrable intermediaire</strong></td><td><strong>23 mars 2026</strong></td><td><strong>Code fonctionnel + docs</strong></td></tr>
+</table>
+
+<h2>6.2 Livrable intermediaire (23 mars 2026)</h2>
+<table>
+  <tr><th>Element</th><th>Statut</th></tr>
+  <tr><td>Lien GitHub du projet</td><td>Fait</td></tr>
+  <tr><td>Premieres fonctionnalites operationnelles</td><td>Fait</td></tr>
+  <tr><td>Lien Trello pour les taches</td><td>A fournir</td></tr>
+  <tr><td>Diagrammes de conception</td><td>A fournir</td></tr>
+  <tr><td>Maquettes</td><td>A fournir</td></tr>
+  <tr><td>Cahier des charges complet</td><td>Ce document</td></tr>
+</table>
+
+<hr>
+
+<!-- 7. CONTRAINTES -->
+<h1 id="s7">7. Contraintes</h1>
+
+<h2>7.1 Contraintes techniques</h2>
+<ul>
+  <li>L'application doit fonctionner sur iOS 13+ et Android 8+</li>
+  <li>Le backend doit etre lance avec Node.js 18+</li>
+  <li>MongoDB 6+ requis (local ou Atlas)</li>
+  <li>Connexion internet requise (pas de mode hors-ligne en v1)</li>
+</ul>
+
+<h2>7.2 Contraintes de performance</h2>
+<ul>
+  <li>Temps de chargement d'un ecran : &lt; 2 secondes</li>
+  <li>Temps de reponse API : &lt; 500ms</li>
+  <li>L'application doit rester fluide a 60 FPS sur les animations</li>
+</ul>
+
+<h2>7.3 Contraintes d'accessibilite</h2>
+<ul>
+  <li>Textes lisibles (taille minimum 14px)</li>
+  <li>Contraste suffisant entre texte et fond</li>
+  <li>Boutons avec zones de toucher minimum 44x44 points</li>
+  <li>Messages d'erreur clairs et en francais</li>
+</ul>
+
+<hr>
+
+<!-- 8. GLOSSAIRE -->
+<h1 id="s8">8. Glossaire</h1>
+<table>
+  <tr><th>Terme</th><th>Definition</th></tr>
+  <tr><td><strong>XP</strong></td><td>Points d'experience gagnes en completant des exercices</td></tr>
+  <tr><td><strong>Streak</strong></td><td>Nombre de jours consecutifs de pratique</td></tr>
+  <tr><td><strong>Topic</strong></td><td>Theme/sujet au sein d'un langage (ex: Variables, Boucles)</td></tr>
+  <tr><td><strong>Lecon</strong></td><td>Ensemble de 3-5 exercices sur un sujet precis</td></tr>
+  <tr><td><strong>Coeurs</strong></td><td>Systeme de vies (5 max), on en perd un par erreur</td></tr>
+  <tr><td><strong>QCM</strong></td><td>Question a choix multiples</td></tr>
+  <tr><td><strong>Fill code</strong></td><td>Exercice de completion de code</td></tr>
+  <tr><td><strong>Skill tree</strong></td><td>Arbre de competences / parcours de progression</td></tr>
+  <tr><td><strong>JWT</strong></td><td>JSON Web Token, standard d'authentification</td></tr>
+  <tr><td><strong>Seed</strong></td><td>Donnees initiales inserees dans la base de donnees</td></tr>
+</table>
+
+<div style="text-align:center; margin-top:60px; padding:20px; color:#777; font-size:12px;">
+  <p>Duodingo - Cahier des Charges v1.0</p>
+  <p>Projet Mobile - Mars 2026</p>
+</div>
+
+</body>
+</html>
