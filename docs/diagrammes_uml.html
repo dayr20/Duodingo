@@ -1,0 +1,492 @@
+commit 61233acc7e598d7a159bc45e83ce21d8004c3a61
+Author: dayr20 <ryadsenhadji213@gmail.com>
+Date:   Mon Mar 23 10:30:28 2026 +0100
+
+    Ajout diagrammes UML et mockups
+    
+    - Diagrammes UML : cas d'utilisation, classes, séquences (auth + leçon), activité, architecture
+    - Mockups HTML : 10 écrans (welcome, auth, home, topics, 4 types d'exercices, résultat, profil, classement)
+    
+    Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
+diff --git a/docs/diagrammes_uml.html b/docs/diagrammes_uml.html
+new file mode 100644
+index 0000000..1b23129
+--- /dev/null
++++ b/docs/diagrammes_uml.html
+@@ -0,0 +1,475 @@
++<!DOCTYPE html>
++<html lang="fr">
++<head>
++<meta charset="UTF-8">
++<meta name="viewport" content="width=device-width, initial-scale=1.0">
++<title>Diagrammes UML - Duodingo</title>
++<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
++<style>
++  @page { margin: 1.5cm; size: A4; }
++  * { margin: 0; padding: 0; box-sizing: border-box; }
++  body {
++    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
++    color: #1a1a2e;
++    line-height: 1.6;
++    background: #fff;
++    padding: 40px;
++    max-width: 960px;
++    margin: 0 auto;
++  }
++  .cover {
++    text-align: center;
++    padding: 80px 20px;
++    background: linear-gradient(135deg, #131F24, #1A2C34);
++    color: white;
++    border-radius: 12px;
++    margin-bottom: 40px;
++    page-break-after: always;
++  }
++  .cover h1 { font-size: 42px; color: #58CC02; margin-bottom: 8px; }
++  .cover h2 { font-size: 20px; font-weight: 400; color: #afafaf; margin-bottom: 30px; }
++  .cover .meta { font-size: 14px; color: #777; margin-top: 40px; }
++  .cover .meta p { margin: 4px 0; }
++  h1 { font-size: 28px; color: #131F24; border-bottom: 3px solid #58CC02; padding-bottom: 8px; margin: 40px 0 20px; }
++  h2 { font-size: 22px; color: #1A2C34; margin: 30px 0 14px; }
++  h3 { font-size: 18px; color: #333; margin: 24px 0 10px; }
++  p { margin: 8px 0; font-size: 14px; }
++  .diagram-container {
++    background: #f8f9fa;
++    border: 1px solid #e0e0e0;
++    border-radius: 8px;
++    padding: 20px;
++    margin: 16px 0 30px;
++    overflow-x: auto;
++  }
++  .diagram-container .mermaid {
++    display: flex;
++    justify-content: center;
++  }
++  .legend {
++    background: #131F24;
++    color: #ccc;
++    padding: 12px 16px;
++    border-radius: 6px;
++    font-size: 13px;
++    margin: 8px 0 20px;
++  }
++  .legend strong { color: #58CC02; }
++  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; }
++  th { background: #131F24; color: #58CC02; padding: 10px 12px; text-align: left; font-weight: 600; }
++  td { padding: 8px 12px; border-bottom: 1px solid #e0e0e0; }
++  tr:nth-child(even) { background: #f8f9fa; }
++  .toc { background: #f0f7f0; border-radius: 8px; padding: 20px 24px; margin: 20px 0 30px; }
++  .toc h3 { margin-top: 0; color: #58CC02; }
++  .toc ol { margin-left: 20px; }
++  .toc li { margin: 6px 0; }
++  .toc a { color: #1A2C34; text-decoration: none; }
++  .toc a:hover { color: #58CC02; }
++  @media print { .cover { page-break-after: always; } h1 { page-break-before: always; } }
++</style>
++</head>
++<body>
++
++<div class="cover">
++  <img src="glitch.png" alt="Glitch" style="width: 120px; height: 120px; margin-bottom: 16px;">
++  <h1>Duodingo</h1>
++  <h2>Diagrammes UML</h2>
++  <p style="font-size:18px; color:#ccc;">Architecture et conception technique</p>
++  <div class="meta">
++    <p>Version 1.0 - Mars 2026</p>
++    <p>Application mobile pour apprendre a coder</p>
++  </div>
++</div>
++
++<div class="toc">
++  <h3>Sommaire</h3>
++  <ol>
++    <li><a href="#usecase">Diagramme de cas d'utilisation</a></li>
++    <li><a href="#class">Diagramme de classes</a></li>
++    <li><a href="#seq-auth">Diagramme de sequence - Authentification</a></li>
++    <li><a href="#seq-lesson">Diagramme de sequence - Deroulement d'une lecon</a></li>
++    <li><a href="#activity">Diagramme d'activite - Parcours utilisateur</a></li>
++    <li><a href="#archi">Diagramme d'architecture technique</a></li>
++  </ol>
++</div>
++
++<!-- ===================== 1. USE CASE ===================== -->
++<h1 id="usecase">1. Diagramme de cas d'utilisation</h1>
++<p>Ce diagramme presente les interactions principales entre l'utilisateur et le systeme Duodingo.</p>
++
++<div class="diagram-container">
++  <pre class="mermaid">
++graph LR
++  User((Utilisateur))
++
++  subgraph Duodingo["Application Duodingo"]
++    UC1["S'inscrire"]
++    UC2["Se connecter"]
++    UC3["Choisir un langage"]
++    UC4["Parcourir les topics"]
++    UC5["Jouer une lecon"]
++    UC6["Repondre aux exercices"]
++    UC7["Gagner de l'XP"]
++    UC8["Voir son profil"]
++    UC9["Voir le classement"]
++    UC10["Maintenir sa serie"]
++    UC11["Debloquer des succes"]
++  end
++
++  User --> UC1
++  User --> UC2
++  User --> UC3
++  User --> UC4
++  User --> UC5
++  User --> UC8
++  User --> UC9
++
++  UC5 --> UC6
++  UC6 --> UC7
++  UC7 --> UC10
++  UC7 --> UC11
++  UC3 --> UC4
++  UC4 --> UC5
++  </pre>
++</div>
++
++<div class="legend">
++  <strong>Acteurs :</strong> Utilisateur (non authentifie / authentifie)<br>
++  <strong>Cas principaux :</strong> Inscription, Connexion, Navigation langages/topics, Jeu de lecons, Progression (XP, series, succes), Classement
++</div>
++
++<table>
++  <tr><th>Cas d'utilisation</th><th>Description</th><th>Priorite</th></tr>
++  <tr><td>S'inscrire</td><td>Creer un compte avec pseudo, email et mot de passe</td><td>Haute</td></tr>
++  <tr><td>Se connecter</td><td>Authentification par email/mot de passe</td><td>Haute</td></tr>
++  <tr><td>Choisir un langage</td><td>Selectionner JavaScript, Python ou HTML/CSS</td><td>Haute</td></tr>
++  <tr><td>Jouer une lecon</td><td>Parcourir les exercices d'une lecon (QCM, code, vrai/faux, ordre)</td><td>Haute</td></tr>
++  <tr><td>Gagner de l'XP</td><td>Recevoir des points d'experience selon le score</td><td>Haute</td></tr>
++  <tr><td>Voir le classement</td><td>Consulter le top des utilisateurs par XP</td><td>Moyenne</td></tr>
++  <tr><td>Debloquer des succes</td><td>Obtenir des badges en atteignant des objectifs</td><td>Moyenne</td></tr>
++</table>
++
++<!-- ===================== 2. CLASS DIAGRAM ===================== -->
++<h1 id="class">2. Diagramme de classes</h1>
++<p>Modele de donnees MongoDB represente sous forme de classes UML avec les relations entre entites.</p>
++
++<div class="diagram-container">
++  <pre class="mermaid">
++classDiagram
++    class User {
++        +String username
++        +String email
++        +String password
++        +Number xp
++        +Number level
++        +Number hearts
++        +Number streak
++        +Date lastActivity
++        +Array~String~ completedLessons
++        +Array~Object~ achievements
++        +Date createdAt
++        +comparePassword(candidatePassword) Boolean
++        +calculateLevel() Number
++    }
++
++    class Language {
++        +String name
++        +String slug
++        +String icon
++        +String color
++        +String description
++        +Number order
++    }
++
++    class Topic {
++        +String name
++        +String slug
++        +String icon
++        +ObjectId language
++        +Number order
++        +Number requiredXP
++    }
++
++    class Lesson {
++        +String title
++        +String description
++        +ObjectId topic
++        +Number order
++        +Number totalXP
++        +String difficulty
++        +Array~Exercise~ exercises
++    }
++
++    class Exercise {
++        +String type
++        +String question
++        +String codeSnippet
++        +Array~String~ options
++        +String correctAnswer
++        +String explanation
++        +Number xpReward
++    }
++
++    class UserProgress {
++        +ObjectId user
++        +ObjectId language
++        +Number totalXP
++        +Array~ObjectId~ completedTopics
++        +Array~Object~ lessonScores
++    }
++
++    Language "1" --> "*" Topic : contient
++    Topic "1" --> "*" Lesson : contient
++    Lesson "1" --> "*" Exercise : compose
++    User "1" --> "*" UserProgress : possede
++    UserProgress "*" --> "1" Language : concerne
++</pre>
++</div>
++
++<div class="legend">
++  <strong>Relations :</strong><br>
++  - Un <strong>Language</strong> contient plusieurs <strong>Topics</strong><br>
++  - Un <strong>Topic</strong> contient plusieurs <strong>Lessons</strong><br>
++  - Une <strong>Lesson</strong> est composee de plusieurs <strong>Exercises</strong> (embarques)<br>
++  - Un <strong>User</strong> a plusieurs <strong>UserProgress</strong> (un par langage)<br>
++  - Les types d'exercices : <strong>qcm</strong>, <strong>fill_code</strong>, <strong>true_false</strong>, <strong>order_code</strong>
++</div>
++
++<!-- ===================== 3. SEQUENCE AUTH ===================== -->
++<h1 id="seq-auth">3. Diagramme de sequence - Authentification</h1>
++<p>Flux d'inscription et de connexion d'un utilisateur.</p>
++
++<h3>3.1 Inscription</h3>
++<div class="diagram-container">
++  <pre class="mermaid">
++sequenceDiagram
++    actor U as Utilisateur
++    participant App as App React Native
++    participant API as Serveur Express
++    participant DB as MongoDB
++
++    U->>App: Saisit pseudo, email, mot de passe
++    App->>API: POST /api/auth/register
++    API->>DB: Verifier email unique
++    alt Email deja utilise
++        DB-->>API: Email existe
++        API-->>App: 400 - Email deja utilise
++        App-->>U: Affiche erreur
++    else Email disponible
++        API->>API: Hash mot de passe (bcrypt)
++        API->>DB: Creer User
++        DB-->>API: User cree
++        API->>API: Generer JWT
++        API-->>App: 201 + token + user
++        App->>App: Stocker token (AsyncStorage)
++        App-->>U: Redirection vers Home
++    end
++  </pre>
++</div>
++
++<h3>3.2 Connexion</h3>
++<div class="diagram-container">
++  <pre class="mermaid">
++sequenceDiagram
++    actor U as Utilisateur
++    participant App as App React Native
++    participant API as Serveur Express
++    participant DB as MongoDB
++
++    U->>App: Saisit email et mot de passe
++    App->>API: POST /api/auth/login
++    API->>DB: Chercher User par email
++    alt User non trouve
++        DB-->>API: null
++        API-->>App: 401 - Identifiants invalides
++        App-->>U: Affiche erreur
++    else User trouve
++        API->>API: Comparer mot de passe (bcrypt)
++        alt Mot de passe incorrect
++            API-->>App: 401 - Identifiants invalides
++            App-->>U: Affiche erreur
++        else Mot de passe correct
++            API->>API: Generer JWT
++            API-->>App: 200 + token + user
++            App->>App: Stocker token (AsyncStorage)
++            App-->>U: Redirection vers Home
++        end
++    end
++  </pre>
++</div>
++
++<!-- ===================== 4. SEQUENCE LESSON ===================== -->
++<h1 id="seq-lesson">4. Diagramme de sequence - Deroulement d'une lecon</h1>
++<p>Parcours complet d'une lecon depuis la selection jusqu'au resultat.</p>
++
++<div class="diagram-container">
++  <pre class="mermaid">
++sequenceDiagram
++    actor U as Utilisateur
++    participant App as App React Native
++    participant API as Serveur Express
++    participant DB as MongoDB
++
++    U->>App: Selectionne un langage
++    App->>API: GET /api/languages/:id/topics
++    API->>DB: Charger topics du langage
++    DB-->>API: Liste topics
++    API-->>App: Topics avec requiredXP
++
++    U->>App: Clique sur un topic debloque
++    App->>API: GET /api/languages/:langId/topics/:topicId/lessons
++    API->>DB: Charger lecons du topic
++    DB-->>API: Liste lecons
++    API-->>App: Lecons disponibles
++
++    U->>App: Demarre une lecon
++    App->>API: GET /api/lessons/:id
++    API->>DB: Charger lecon + exercices
++    DB-->>API: Lecon complete
++    API-->>App: Exercices de la lecon
++
++    loop Pour chaque exercice
++        App-->>U: Affiche exercice (QCM/Code/V-F/Ordre)
++        U->>App: Soumet sa reponse
++        App->>App: Verifie reponse + calcule score
++        alt Reponse correcte
++            App-->>U: Feedback vert + explication
++        else Reponse incorrecte
++            App-->>U: Feedback rouge + bonne reponse
++            App->>App: Retire 1 coeur
++        end
++    end
++
++    App->>API: POST /api/lessons/:id/complete
++    Note over API: score, temps, reponses
++    API->>API: Calculer XP gagne
++    API->>DB: Mettre a jour User (XP, streak, achievements)
++    API->>DB: Mettre a jour UserProgress
++    DB-->>API: Donnees mises a jour
++    API-->>App: Resultat + XP + badges
++    App-->>U: Ecran resultat avec animation
++  </pre>
++</div>
++
++<!-- ===================== 5. ACTIVITY ===================== -->
++<h1 id="activity">5. Diagramme d'activite - Parcours utilisateur</h1>
++<p>Flux global de l'application du lancement a l'utilisation quotidienne.</p>
++
++<div class="diagram-container">
++  <pre class="mermaid">
++flowchart TD
++    A([Lancer l'app]) --> B{Token stocke ?}
++    B -->|Non| C[Ecran Welcome]
++    C --> D{Choix utilisateur}
++    D -->|Nouveau| E[Ecran Inscription]
++    D -->|Existant| F[Ecran Connexion]
++    E --> G{Inscription reussie ?}
++    G -->|Non| E
++    G -->|Oui| H[Ecran Home]
++    F --> I{Connexion reussie ?}
++    I -->|Non| F
++    I -->|Oui| H
++    B -->|Oui| J[Verification token]
++    J -->|Valide| H
++    J -->|Expire| C
++
++    H --> K[Choisir un langage]
++    K --> L[Voir les topics]
++    L --> M{Topic debloque ?}
++    M -->|Non| N[Gagner plus d'XP]
++    N --> L
++    M -->|Oui| O[Voir les lecons]
++    O --> P[Demarrer une lecon]
++    P --> Q[Repondre aux exercices]
++    Q --> R{Coeurs restants ?}
++    R -->|Non| S[Lecon echouee - Attendre]
++    S --> O
++    R -->|Oui| T{Exercices termines ?}
++    T -->|Non| Q
++    T -->|Oui| U[Ecran Resultat]
++    U --> V[XP + Streak + Badges]
++    V --> H
++
++    H --> W[Voir Profil]
++    H --> X[Voir Classement]
++
++    style A fill:#58CC02,color:#fff
++    style H fill:#1CB0F6,color:#fff
++    style U fill:#FF9600,color:#fff
++    style S fill:#FF4B4B,color:#fff
++  </pre>
++</div>
++
++<!-- ===================== 6. ARCHITECTURE ===================== -->
++<h1 id="archi">6. Diagramme d'architecture technique</h1>
++<p>Vue d'ensemble de l'architecture client-serveur de Duodingo.</p>
++
++<div class="diagram-container">
++  <pre class="mermaid">
++graph TB
++    subgraph Client["Client Mobile (React Native / Expo)"]
++        UI["Ecrans UI"]
++        Nav["React Navigation"]
++        Ctx["AuthContext"]
++        SVC["Services API"]
++        AS["AsyncStorage"]
++
++        UI --> Nav
++        UI --> Ctx
++        UI --> SVC
++        Ctx --> AS
++    end
++
++    subgraph Server["Serveur Backend (Node.js / Express)"]
++        Routes["Routes API"]
++        MW["Middleware Auth (JWT)"]
++        Ctrl["Logique metier"]
++        Models["Modeles Mongoose"]
++
++        Routes --> MW
++        MW --> Ctrl
++        Ctrl --> Models
++    end
++
++    subgraph Database["Base de donnees"]
++        MongoDB[(MongoDB)]
++    end
++
++    SVC <-->|"HTTP REST\nJWT Bearer"| Routes
++    Models <-->|Mongoose| MongoDB
++
++    subgraph APIs["Routes API"]
++        direction LR
++        R1["/api/auth/*"]
++        R2["/api/languages/*"]
++        R3["/api/lessons/*"]
++        R4["/api/progress/*"]
++    end
++
++    style Client fill:#1A2C34,color:#fff
++    style Server fill:#2D4A3E,color:#fff
++    style Database fill:#4A2D1A,color:#fff
++  </pre>
++</div>
++
++<div class="legend">
++  <strong>Stack technique :</strong><br>
++  - <strong>Frontend :</strong> React Native 0.83 + Expo SDK 55 + React Navigation 7<br>
++  - <strong>Backend :</strong> Node.js + Express 5 + Mongoose<br>
++  - <strong>Base de donnees :</strong> MongoDB<br>
++  - <strong>Authentification :</strong> JWT (jsonwebtoken) + bcryptjs<br>
++  - <strong>Stockage local :</strong> AsyncStorage
++</div>
++
++<script>
++  mermaid.initialize({
++    startOnLoad: true,
++    theme: 'default',
++    securityLevel: 'loose',
++    flowchart: { useMaxWidth: true, htmlLabels: true },
++    sequence: { useMaxWidth: true, showSequenceNumbers: false }
++  });
++</script>
++
++</body>
++</html>
