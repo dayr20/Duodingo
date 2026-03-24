@@ -1,0 +1,393 @@
+commit e77b70ec423a07413bf3eaae33f3d0932feaec6c
+Author: dayr20 <ryadsenhadji213@gmail.com>
+Date:   Mon Mar 23 14:38:28 2026 +0100
+
+    Ajout board Trello visuel (HTML)
+    
+    - Board avec 4 colonnes : Fait (18 tâches), En cours (3), À faire Sprint 2 (8), Backlog (6)
+    - Labels par catégorie : Backend, Frontend, Design, Documentation, DevOps
+    
+    Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
+diff --git a/docs/trello_board.html b/docs/trello_board.html
+new file mode 100644
+index 0000000..bc1dfc8
+--- /dev/null
++++ b/docs/trello_board.html
+@@ -0,0 +1,376 @@
++<!DOCTYPE html>
++<html lang="fr">
++<head>
++<meta charset="UTF-8">
++<meta name="viewport" content="width=device-width, initial-scale=1.0">
++<title>Trello Board - Duodingo</title>
++<style>
++  @page { margin: 1cm; size: A4 landscape; }
++  * { margin: 0; padding: 0; box-sizing: border-box; }
++  body {
++    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
++    background: linear-gradient(135deg, #0079BF, #026AA7);
++    min-height: 100vh;
++    padding: 16px;
++    color: #172b4d;
++  }
++  .header {
++    display: flex;
++    align-items: center;
++    gap: 12px;
++    padding: 8px 16px;
++    margin-bottom: 16px;
++  }
++  .header img { width: 36px; height: 36px; border-radius: 6px; }
++  .header h1 { color: #fff; font-size: 20px; font-weight: 700; }
++  .header .badge {
++    background: rgba(255,255,255,0.2);
++    color: #fff;
++    padding: 4px 10px;
++    border-radius: 4px;
++    font-size: 12px;
++  }
++  .board {
++    display: flex;
++    gap: 12px;
++    overflow-x: auto;
++    padding-bottom: 20px;
++    align-items: flex-start;
++  }
++  .column {
++    min-width: 280px;
++    max-width: 280px;
++    background: #ebecf0;
++    border-radius: 8px;
++    padding: 10px;
++    flex-shrink: 0;
++  }
++  .column-header {
++    font-size: 14px;
++    font-weight: 700;
++    color: #172b4d;
++    padding: 4px 6px 10px;
++    display: flex;
++    align-items: center;
++    gap: 8px;
++  }
++  .column-count {
++    background: #ddd;
++    border-radius: 10px;
++    padding: 1px 7px;
++    font-size: 11px;
++    color: #666;
++  }
++  .card {
++    background: #fff;
++    border-radius: 6px;
++    padding: 8px 10px;
++    margin-bottom: 8px;
++    box-shadow: 0 1px 2px rgba(0,0,0,0.12);
++    cursor: pointer;
++    position: relative;
++  }
++  .card:hover { background: #f4f5f7; }
++  .card-labels {
++    display: flex;
++    gap: 4px;
++    margin-bottom: 6px;
++    flex-wrap: wrap;
++  }
++  .label {
++    height: 8px;
++    border-radius: 4px;
++    width: 40px;
++  }
++  .label-green { background: #61bd4f; }
++  .label-blue { background: #0079bf; }
++  .label-orange { background: #ff9f1a; }
++  .label-red { background: #eb5a46; }
++  .label-purple { background: #c377e0; }
++  .label-yellow { background: #f2d600; }
++  .card-title {
++    font-size: 13px;
++    color: #172b4d;
++    line-height: 1.4;
++  }
++  .card-footer {
++    display: flex;
++    align-items: center;
++    gap: 10px;
++    margin-top: 6px;
++    font-size: 11px;
++    color: #999;
++  }
++  .card-footer .tag {
++    display: flex;
++    align-items: center;
++    gap: 3px;
++  }
++  .card-checklist {
++    font-size: 11px;
++    color: #5e6c84;
++    background: #ebecf0;
++    padding: 2px 6px;
++    border-radius: 3px;
++  }
++  .card-checklist.done {
++    background: #61bd4f;
++    color: #fff;
++  }
++  .priority {
++    position: absolute;
++    top: 8px;
++    right: 8px;
++    font-size: 10px;
++  }
++
++  /* Labels legende */
++  .legend {
++    display: flex;
++    gap: 16px;
++    padding: 8px 16px;
++    flex-wrap: wrap;
++  }
++  .legend-item {
++    display: flex;
++    align-items: center;
++    gap: 6px;
++    color: #fff;
++    font-size: 12px;
++  }
++  .legend-dot {
++    width: 16px;
++    height: 8px;
++    border-radius: 4px;
++  }
++
++  @media print {
++    body { background: #fff; }
++    .board { flex-wrap: wrap; }
++    .column { page-break-inside: avoid; margin-bottom: 12px; }
++  }
++</style>
++</head>
++<body>
++
++<div class="header">
++  <img src="glitch.png" alt="Glitch">
++  <h1>Duodingo - Board Projet</h1>
++  <div class="badge">Mars 2026</div>
++  <div class="badge">Livrable intermediaire</div>
++</div>
++
++<div class="legend">
++  <div class="legend-item"><div class="legend-dot" style="background:#61bd4f;"></div> Backend</div>
++  <div class="legend-item"><div class="legend-dot" style="background:#0079bf;"></div> Frontend</div>
++  <div class="legend-item"><div class="legend-dot" style="background:#ff9f1a;"></div> Design/UX</div>
++  <div class="legend-item"><div class="legend-dot" style="background:#c377e0;"></div> Documentation</div>
++  <div class="legend-item"><div class="legend-dot" style="background:#eb5a46;"></div> Bug/Fix</div>
++  <div class="legend-item"><div class="legend-dot" style="background:#f2d600;"></div> DevOps</div>
++</div>
++
++<div class="board">
++
++  <!-- FAIT -->
++  <div class="column">
++    <div class="column-header">&#9989; Fait <span class="column-count">18</span></div>
++
++    <div class="card">
++      <div class="card-labels"><div class="label label-green"></div><div class="label label-yellow"></div></div>
++      <div class="card-title">Initialisation projet (Git, structure dossiers)</div>
++      <div class="card-footer"><span class="card-checklist done">&#10003; 3/3</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-green"></div></div>
++      <div class="card-title">Configuration serveur Express + MongoDB</div>
++      <div class="card-footer"><span class="card-checklist done">&#10003; 4/4</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-green"></div></div>
++      <div class="card-title">Modeles Mongoose (User, Language, Topic, Lesson, UserProgress)</div>
++      <div class="card-footer"><span class="card-checklist done">&#10003; 5/5</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-green"></div></div>
++      <div class="card-title">API Authentification (register, login, JWT)</div>
++      <div class="card-footer"><span class="card-checklist done">&#10003; 3/3</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-green"></div></div>
++      <div class="card-title">API Langages, Topics, Lecons</div>
++      <div class="card-footer"><span class="card-checklist done">&#10003; 4/4</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-green"></div></div>
++      <div class="card-title">API Progression + completion lecon (XP, streak, badges)</div>
++      <div class="card-footer"><span class="card-checklist done">&#10003; 3/3</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-green"></div></div>
++      <div class="card-title">Seed database (3 langages, 11 topics, 10 lecons)</div>
++      <div class="card-footer"><span class="card-checklist done">&#10003; 1/1</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-blue"></div></div>
++      <div class="card-title">Ecran Welcome avec mascotte Glitch</div>
++      <div class="card-footer"><span class="card-checklist done">&#10003; 2/2</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-blue"></div></div>
++      <div class="card-title">Ecrans Login / Register</div>
++      <div class="card-footer"><span class="card-checklist done">&#10003; 2/2</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-blue"></div></div>
++      <div class="card-title">AuthContext + AsyncStorage (gestion session)</div>
++      <div class="card-footer"><span class="card-checklist done">&#10003; 3/3</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-blue"></div></div>
++      <div class="card-title">Navigation (Stack auth + Bottom tabs)</div>
++      <div class="card-footer"><span class="card-checklist done">&#10003; 2/2</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-blue"></div></div>
++      <div class="card-title">Home : selection langage + parcours zigzag topics</div>
++      <div class="card-footer"><span class="card-checklist done">&#10003; 3/3</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-blue"></div></div>
++      <div class="card-title">4 composants exercices (QCM, Fill, V/F, Ordre)</div>
++      <div class="card-footer"><span class="card-checklist done">&#10003; 4/4</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-blue"></div></div>
++      <div class="card-title">Ecran LessonPlay (barre progression, coeurs, feedback)</div>
++      <div class="card-footer"><span class="card-checklist done">&#10003; 3/3</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-blue"></div></div>
++      <div class="card-title">Ecran Resultat (XP, score, streak, badges)</div>
++      <div class="card-footer"><span class="card-checklist done">&#10003; 2/2</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-blue"></div></div>
++      <div class="card-title">Ecran Profil + Classement</div>
++      <div class="card-footer"><span class="card-checklist done">&#10003; 2/2</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-purple"></div></div>
++      <div class="card-title">Cahier des charges + Charte graphique (HTML/PDF)</div>
++      <div class="card-footer"><span class="card-checklist done">&#10003; 4/4</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-purple"></div></div>
++      <div class="card-title">Diagrammes UML (6 diagrammes) + Mockups (10 ecrans)</div>
++      <div class="card-footer"><span class="card-checklist done">&#10003; 2/2</span></div>
++    </div>
++  </div>
++
++  <!-- EN COURS -->
++  <div class="column">
++    <div class="column-header">&#128736; En cours <span class="column-count">3</span></div>
++
++    <div class="card">
++      <div class="card-labels"><div class="label label-blue"></div><div class="label label-orange"></div></div>
++      <div class="card-title">Tests sur appareil physique (iOS / Android)</div>
++      <div class="card-footer"><span class="card-checklist">&#9744; 0/2</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-green"></div></div>
++      <div class="card-title">Deploiement backend (MongoDB Atlas + serveur)</div>
++      <div class="card-footer"><span class="card-checklist">&#9744; 0/3</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-orange"></div></div>
++      <div class="card-title">Polissage UI (animations, transitions)</div>
++      <div class="card-footer"><span class="card-checklist">&#9744; 0/4</span></div>
++    </div>
++  </div>
++
++  <!-- A FAIRE - Sprint 2 -->
++  <div class="column">
++    <div class="column-header">&#128203; A faire - Sprint 2 <span class="column-count">8</span></div>
++
++    <div class="card">
++      <div class="card-labels"><div class="label label-green"></div></div>
++      <div class="card-title">Ajouter plus de lecons et exercices (20+ lecons)</div>
++      <div class="card-footer"><span class="tag">&#128200; Contenu</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-blue"></div></div>
++      <div class="card-title">Systeme de vies : regeneration automatique (timer)</div>
++      <div class="card-footer"><span class="tag">&#9889; Gamification</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-blue"></div></div>
++      <div class="card-title">Notifications push (rappel serie quotidienne)</div>
++      <div class="card-footer"><span class="tag">&#128276; Engagement</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-green"></div><div class="label label-blue"></div></div>
++      <div class="card-title">Classement reel (API + classement dynamique)</div>
++      <div class="card-footer"><span class="tag">&#127942; Social</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-blue"></div></div>
++      <div class="card-title">Mode sombre / clair (toggle dans profil)</div>
++      <div class="card-footer"><span class="tag">&#127912; UX</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-blue"></div></div>
++      <div class="card-title">Animations Lottie (celebrations, mascotte)</div>
++      <div class="card-footer"><span class="tag">&#127912; UX</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-green"></div></div>
++      <div class="card-title">Upload avatar / photo de profil</div>
++      <div class="card-footer"><span class="tag">&#128100; Profil</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-blue"></div><div class="label label-orange"></div></div>
++      <div class="card-title">Onboarding interactif (choix langage au 1er lancement)</div>
++      <div class="card-footer"><span class="tag">&#127912; UX</span></div>
++    </div>
++  </div>
++
++  <!-- BACKLOG -->
++  <div class="column">
++    <div class="column-header">&#128161; Backlog <span class="column-count">6</span></div>
++
++    <div class="card">
++      <div class="card-labels"><div class="label label-green"></div><div class="label label-blue"></div></div>
++      <div class="card-title">Editeur de code interactif (sandbox)</div>
++      <div class="card-footer"><span class="tag">&#128187; Avance</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-green"></div></div>
++      <div class="card-title">Systeme de defis quotidiens</div>
++      <div class="card-footer"><span class="tag">&#9889; Gamification</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-green"></div><div class="label label-blue"></div></div>
++      <div class="card-title">Mode multijoueur (duels de code)</div>
++      <div class="card-footer"><span class="tag">&#127942; Social</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-green"></div></div>
++      <div class="card-title">Ajout langages (C, Java, Swift, SQL)</div>
++      <div class="card-footer"><span class="tag">&#128200; Contenu</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-blue"></div></div>
++      <div class="card-title">Accessibilite (screen reader, contraste)</div>
++      <div class="card-footer"><span class="tag">&#9855; A11y</span></div>
++    </div>
++    <div class="card">
++      <div class="card-labels"><div class="label label-yellow"></div></div>
++      <div class="card-title">Publication App Store / Google Play</div>
++      <div class="card-footer"><span class="tag">&#128640; Release</span></div>
++    </div>
++  </div>
++
++</div>
++
++</body>
++</html>
