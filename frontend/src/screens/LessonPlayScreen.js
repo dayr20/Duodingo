@@ -4,8 +4,9 @@ import {
   Alert, Animated,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SIZES, FONTS } from '../constants/theme';
+import { SIZES, FONTS } from '../constants/theme';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import * as api from '../services/api';
 import QCMExercise from '../components/QCMExercise';
 import FillCodeExercise from '../components/FillCodeExercise';
@@ -15,6 +16,7 @@ import OrderCodeExercise from '../components/OrderCodeExercise';
 const LessonPlayScreen = ({ route, navigation }) => {
   const { lessonId } = route.params;
   const { user, updateUser } = useAuth();
+  const { colors } = useTheme();
   const [lesson, setLesson] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -23,6 +25,8 @@ const LessonPlayScreen = ({ route, navigation }) => {
   const [answered, setAnswered] = useState(false);
   const [isCorrect, setIsCorrect] = useState(null);
   const [progressAnim] = useState(new Animated.Value(0));
+
+  const styles = createStyles(colors);
 
   useEffect(() => {
     loadLesson();
@@ -70,11 +74,14 @@ const LessonPlayScreen = ({ route, navigation }) => {
     } else {
       const newHearts = Math.max(0, hearts - 1);
       setHearts(newHearts);
+      api.updateHearts('lose').then((data) => {
+        updateUser({ hearts: data.hearts });
+      }).catch(() => {});
       if (newHearts === 0) {
         setTimeout(() => {
           Alert.alert(
             'Plus de vies !',
-            'Tu as perdu toutes tes vies. Réessaie plus tard !',
+            'Tu as perdu toutes tes vies.\nUne vie se régénère toutes les 30 minutes.',
             [{ text: 'OK', onPress: () => navigation.goBack() }]
           );
         }, 1000);
@@ -88,7 +95,6 @@ const LessonPlayScreen = ({ route, navigation }) => {
       setAnswered(false);
       setIsCorrect(null);
     } else {
-      // Lesson complete
       try {
         const result = await api.completeLesson(lessonId, {
           score: Math.round((correctAnswers / lesson.exercises.length) * 100),
@@ -124,7 +130,7 @@ const LessonPlayScreen = ({ route, navigation }) => {
   if (loading || !lesson) {
     return (
       <View style={[styles.container, styles.center]}>
-        <ActivityIndicator size="large" color={COLORS.primary} />
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
@@ -134,59 +140,27 @@ const LessonPlayScreen = ({ route, navigation }) => {
   const renderExercise = () => {
     switch (exercise.type) {
       case 'qcm':
-        return (
-          <QCMExercise
-            exercise={exercise}
-            onAnswer={handleAnswer}
-            answered={answered}
-            isCorrect={isCorrect}
-          />
-        );
+        return <QCMExercise exercise={exercise} onAnswer={handleAnswer} answered={answered} isCorrect={isCorrect} />;
       case 'fill_code':
-        return (
-          <FillCodeExercise
-            exercise={exercise}
-            onAnswer={handleAnswer}
-            answered={answered}
-            isCorrect={isCorrect}
-          />
-        );
+        return <FillCodeExercise exercise={exercise} onAnswer={handleAnswer} answered={answered} isCorrect={isCorrect} />;
       case 'true_false':
-        return (
-          <TrueFalseExercise
-            exercise={exercise}
-            onAnswer={handleAnswer}
-            answered={answered}
-            isCorrect={isCorrect}
-          />
-        );
+        return <TrueFalseExercise exercise={exercise} onAnswer={handleAnswer} answered={answered} isCorrect={isCorrect} />;
       case 'order_code':
-        return (
-          <OrderCodeExercise
-            exercise={exercise}
-            onAnswer={handleAnswer}
-            answered={answered}
-            isCorrect={isCorrect}
-          />
-        );
+        return <OrderCodeExercise exercise={exercise} onAnswer={handleAnswer} answered={answered} isCorrect={isCorrect} />;
       default:
-        return (
-          <QCMExercise
-            exercise={exercise}
-            onAnswer={handleAnswer}
-            answered={answered}
-            isCorrect={isCorrect}
-          />
-        );
+        return <QCMExercise exercise={exercise} onAnswer={handleAnswer} answered={answered} isCorrect={isCorrect} />;
     }
   };
 
   return (
     <View style={styles.container}>
-      {/* Top Bar */}
       <View style={styles.topBar}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="close" size={28} color={COLORS.textMuted} />
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          accessibilityRole="button"
+          accessibilityLabel="Quitter la leçon"
+        >
+          <Ionicons name="close" size={28} color={colors.textMuted} />
         </TouchableOpacity>
 
         <View style={styles.progressBar}>
@@ -204,17 +178,15 @@ const LessonPlayScreen = ({ route, navigation }) => {
         </View>
 
         <View style={styles.heartsContainer}>
-          <Ionicons name="heart" size={20} color={COLORS.heart} />
+          <Ionicons name="heart" size={20} color={colors.heart} />
           <Text style={styles.heartsText}>{hearts}</Text>
         </View>
       </View>
 
-      {/* Exercise Content */}
       <View style={styles.exerciseContainer}>
         {renderExercise()}
       </View>
 
-      {/* Bottom Feedback & Next */}
       {answered && (
         <View style={[
           styles.feedbackBar,
@@ -225,11 +197,11 @@ const LessonPlayScreen = ({ route, navigation }) => {
               <Ionicons
                 name={isCorrect ? 'checkmark-circle' : 'close-circle'}
                 size={28}
-                color={isCorrect ? COLORS.primary : COLORS.error}
+                color={isCorrect ? colors.primary : colors.error}
               />
               <Text style={[
                 styles.feedbackTitle,
-                { color: isCorrect ? COLORS.primary : COLORS.error },
+                { color: isCorrect ? colors.primary : colors.error },
               ]}>
                 {isCorrect ? 'Correct !' : 'Incorrect'}
               </Text>
@@ -243,9 +215,11 @@ const LessonPlayScreen = ({ route, navigation }) => {
           <TouchableOpacity
             style={[
               styles.nextButton,
-              { backgroundColor: isCorrect ? COLORS.primary : COLORS.error },
+              { backgroundColor: isCorrect ? colors.primary : colors.error },
             ]}
             onPress={handleNext}
+            accessibilityRole="button"
+            accessibilityLabel={currentIndex < lesson.exercises.length - 1 ? 'Continuer' : 'Terminer la leçon'}
           >
             <Text style={styles.nextButtonText}>
               {currentIndex < lesson.exercises.length - 1 ? 'CONTINUER' : 'TERMINER'}
@@ -257,10 +231,10 @@ const LessonPlayScreen = ({ route, navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: colors.background,
   },
   center: {
     justifyContent: 'center',
@@ -277,13 +251,13 @@ const styles = StyleSheet.create({
   progressBar: {
     flex: 1,
     height: 12,
-    backgroundColor: COLORS.surface,
+    backgroundColor: colors.surface,
     borderRadius: 6,
     overflow: 'hidden',
   },
   progressFill: {
     height: '100%',
-    backgroundColor: COLORS.primary,
+    backgroundColor: colors.primary,
     borderRadius: 6,
   },
   heartsContainer: {
@@ -292,7 +266,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   heartsText: {
-    color: COLORS.heart,
+    color: colors.heart,
     fontSize: SIZES.lg,
     ...FONTS.bold,
   },
@@ -307,10 +281,10 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
   },
   feedbackCorrect: {
-    backgroundColor: COLORS.primary + '15',
+    backgroundColor: colors.primary + '15',
   },
   feedbackWrong: {
-    backgroundColor: COLORS.error + '15',
+    backgroundColor: colors.error + '15',
   },
   feedbackContent: {
     marginBottom: 16,
@@ -325,7 +299,7 @@ const styles = StyleSheet.create({
     ...FONTS.bold,
   },
   feedbackExplanation: {
-    color: COLORS.textSecondary,
+    color: colors.textSecondary,
     fontSize: SIZES.md,
     ...FONTS.regular,
     marginTop: 8,
@@ -337,7 +311,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   nextButtonText: {
-    color: COLORS.white,
+    color: colors.white,
     fontSize: SIZES.lg,
     ...FONTS.bold,
     letterSpacing: 1,

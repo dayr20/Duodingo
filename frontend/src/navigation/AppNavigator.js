@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS } from '../constants/theme';
 import { useAuth } from '../context/AuthContext';
 
-// Screens
 import WelcomeScreen from '../screens/WelcomeScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
+import OnboardingScreen from '../screens/OnboardingScreen';
+import DailyChallengeScreen from '../screens/DailyChallengeScreen';
+import CodeSandboxScreen from '../screens/CodeSandboxScreen';
 import HomeScreen from '../screens/HomeScreen';
 import TopicLessonsScreen from '../screens/TopicLessonsScreen';
 import LessonPlayScreen from '../screens/LessonPlayScreen';
@@ -35,19 +38,12 @@ const MainTabs = () => (
       },
       tabBarActiveTintColor: COLORS.primary,
       tabBarInactiveTintColor: COLORS.textMuted,
-      tabBarLabelStyle: {
-        fontSize: 11,
-        fontWeight: '600',
-      },
-      tabBarIcon: ({ focused, color, size }) => {
+      tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
+      tabBarIcon: ({ focused, color }) => {
         let iconName;
-        if (route.name === 'Home') {
-          iconName = focused ? 'home' : 'home-outline';
-        } else if (route.name === 'Leaderboard') {
-          iconName = focused ? 'trophy' : 'trophy-outline';
-        } else if (route.name === 'Profile') {
-          iconName = focused ? 'person' : 'person-outline';
-        }
+        if (route.name === 'Home') iconName = focused ? 'home' : 'home-outline';
+        else if (route.name === 'Leaderboard') iconName = focused ? 'trophy' : 'trophy-outline';
+        else if (route.name === 'Profile') iconName = focused ? 'person' : 'person-outline';
         return <Ionicons name={iconName} size={24} color={color} />;
       },
     })}
@@ -60,8 +56,15 @@ const MainTabs = () => (
 
 const AppNavigator = () => {
   const { isAuthenticated, loading } = useAuth();
+  const [onboardingDone, setOnboardingDone] = useState(null);
 
-  if (loading) {
+  useEffect(() => {
+    AsyncStorage.getItem('onboardingDone').then((val) => {
+      setOnboardingDone(val === 'true');
+    });
+  }, [isAuthenticated]);
+
+  if (loading || (isAuthenticated && onboardingDone === null)) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.background }}>
         <ActivityIndicator size="large" color={COLORS.primary} />
@@ -71,13 +74,22 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator screenOptions={{
+        headerShown: false,
+        animation: 'slide_from_right',
+        animationDuration: 250,
+      }}>
         {isAuthenticated ? (
           <>
+            {!onboardingDone && (
+              <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+            )}
             <Stack.Screen name="MainTabs" component={MainTabs} />
             <Stack.Screen name="TopicLessons" component={TopicLessonsScreen} />
             <Stack.Screen name="LessonPlay" component={LessonPlayScreen} />
             <Stack.Screen name="LessonResult" component={LessonResultScreen} />
+            <Stack.Screen name="DailyChallenge" component={DailyChallengeScreen} />
+            <Stack.Screen name="CodeSandbox" component={CodeSandboxScreen} />
           </>
         ) : (
           <>

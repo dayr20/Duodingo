@@ -4,8 +4,9 @@ import {
   StatusBar, KeyboardAvoidingView, Platform, Alert, ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SIZES, FONTS } from '../constants/theme';
+import { SIZES, FONTS } from '../constants/theme';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -13,6 +14,8 @@ const LoginScreen = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const { signIn } = useAuth();
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -34,10 +37,15 @@ const LoginScreen = ({ navigation }) => {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
+      <StatusBar barStyle="light-content" backgroundColor={colors.background} />
 
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Ionicons name="arrow-back" size={24} color={COLORS.white} />
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
+        accessibilityRole="button"
+        accessibilityLabel="Retour"
+      >
+        <Ionicons name="arrow-back" size={24} color={colors.white} />
       </TouchableOpacity>
 
       <View style={styles.header}>
@@ -47,11 +55,11 @@ const LoginScreen = ({ navigation }) => {
 
       <View style={styles.form}>
         <View style={styles.inputContainer}>
-          <Ionicons name="mail-outline" size={20} color={COLORS.textMuted} style={styles.inputIcon} />
+          <Ionicons name="mail-outline" size={20} color={colors.textMuted} style={styles.inputIcon} />
           <TextInput
             style={styles.input}
             placeholder="Email"
-            placeholderTextColor={COLORS.textMuted}
+            placeholderTextColor={colors.textMuted}
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
@@ -60,20 +68,24 @@ const LoginScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.inputContainer}>
-          <Ionicons name="lock-closed-outline" size={20} color={COLORS.textMuted} style={styles.inputIcon} />
+          <Ionicons name="lock-closed-outline" size={20} color={colors.textMuted} style={styles.inputIcon} />
           <TextInput
             style={styles.input}
             placeholder="Mot de passe"
-            placeholderTextColor={COLORS.textMuted}
+            placeholderTextColor={colors.textMuted}
             value={password}
             onChangeText={setPassword}
             secureTextEntry={!showPassword}
           />
-          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)}
+            accessibilityRole="button"
+            accessibilityLabel={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+          >
             <Ionicons
               name={showPassword ? 'eye-off-outline' : 'eye-outline'}
               size={20}
-              color={COLORS.textMuted}
+              color={colors.textMuted}
             />
           </TouchableOpacity>
         </View>
@@ -82,9 +94,12 @@ const LoginScreen = ({ navigation }) => {
           style={[styles.loginButton, loading && styles.loginButtonDisabled]}
           onPress={handleLogin}
           disabled={loading}
+          accessibilityRole="button"
+          accessibilityLabel="Se connecter"
+          accessibilityState={{ disabled: loading }}
         >
           {loading ? (
-            <ActivityIndicator color={COLORS.white} />
+            <ActivityIndicator color={colors.white} />
           ) : (
             <Text style={styles.loginButtonText}>SE CONNECTER</Text>
           )}
@@ -93,7 +108,11 @@ const LoginScreen = ({ navigation }) => {
 
       <View style={styles.footer}>
         <Text style={styles.footerText}>Pas encore de compte ? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Register')}
+          accessibilityRole="link"
+          accessibilityLabel="S'inscrire"
+        >
           <Text style={styles.footerLink}>S'inscrire</Text>
         </TouchableOpacity>
       </View>
@@ -101,10 +120,10 @@ const LoginScreen = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: colors.background,
     paddingHorizontal: SIZES.padding * 1.5,
     paddingTop: 60,
   },
@@ -112,7 +131,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: COLORS.surface,
+    backgroundColor: colors.surface,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 30,
@@ -122,13 +141,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: SIZES.xxxl,
-    color: COLORS.white,
+    color: colors.white,
     ...FONTS.bold,
     marginBottom: 8,
   },
   subtitle: {
     fontSize: SIZES.lg,
-    color: COLORS.textSecondary,
+    color: colors.textSecondary,
     ...FONTS.regular,
   },
   form: {
@@ -137,24 +156,24 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.surface,
+    backgroundColor: colors.surface,
     borderRadius: SIZES.radius,
     paddingHorizontal: 16,
     height: 56,
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: colors.border,
   },
   inputIcon: {
     marginRight: 12,
   },
   input: {
     flex: 1,
-    color: COLORS.white,
+    color: colors.white,
     fontSize: SIZES.lg,
     ...FONTS.regular,
   },
   loginButton: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     borderRadius: SIZES.radius,
     alignItems: 'center',
@@ -164,7 +183,7 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   loginButtonText: {
-    color: COLORS.white,
+    color: colors.white,
     fontSize: SIZES.lg,
     ...FONTS.bold,
     letterSpacing: 1,
@@ -175,11 +194,11 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   footerText: {
-    color: COLORS.textSecondary,
+    color: colors.textSecondary,
     fontSize: SIZES.md,
   },
   footerLink: {
-    color: COLORS.secondary,
+    color: colors.secondary,
     fontSize: SIZES.md,
     ...FONTS.bold,
   },

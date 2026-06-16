@@ -12,16 +12,34 @@
       "backgroundColor": "#131F24"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.duodingo.app"
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#131F24",
         "foregroundImage": "./assets/glitch.png"
-      }
+      },
+      "package": "com.duodingo.app"
     },
     "web": {
       "favicon": "./assets/glitch.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/glitch.png",
+          "color": "#58CC02",
+          "sounds": []
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Duodingo accède à ta galerie pour changer ta photo de profil."
+        }
+      ]
+    ]
   }
 }

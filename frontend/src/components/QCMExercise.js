@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SIZES, FONTS } from '../constants/theme';
+import { SIZES, FONTS } from '../constants/theme';
+import { useTheme } from '../context/ThemeContext';
 
 const QCMExercise = ({ exercise, onAnswer, answered, isCorrect }) => {
+  const { colors } = useTheme();
   const [selected, setSelected] = useState(null);
 
   const handleSelect = (option) => {
@@ -14,11 +16,11 @@ const QCMExercise = ({ exercise, onAnswer, answered, isCorrect }) => {
 
   const getOptionStyle = (option) => {
     if (!answered) {
-      return selected === option.text ? styles.optionSelected : styles.option;
+      return selected === option.text ? styles(colors).optionSelected : styles(colors).option;
     }
-    if (option.isCorrect) return styles.optionCorrect;
-    if (selected === option.text && !option.isCorrect) return styles.optionWrong;
-    return styles.option;
+    if (option.isCorrect) return styles(colors).optionCorrect;
+    if (selected === option.text && !option.isCorrect) return styles(colors).optionWrong;
+    return styles(colors).option;
   };
 
   const getOptionIcon = (option) => {
@@ -28,28 +30,33 @@ const QCMExercise = ({ exercise, onAnswer, answered, isCorrect }) => {
     return null;
   };
 
+  const s = styles(colors);
+
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <Text style={styles.question}>{exercise.question}</Text>
+    <ScrollView style={s.container} showsVerticalScrollIndicator={false}>
+      <Text style={s.question}>{exercise.question}</Text>
 
       {exercise.codeSnippet && (
-        <View style={styles.codeBlock}>
-          <Text style={styles.codeText}>{exercise.codeSnippet}</Text>
+        <View style={s.codeBlock}>
+          <Text style={s.codeText}>{exercise.codeSnippet}</Text>
         </View>
       )}
 
-      <View style={styles.options}>
+      <View style={s.options}>
         {exercise.options.map((option, index) => (
           <TouchableOpacity
             key={index}
-            style={[styles.optionBase, getOptionStyle(option)]}
+            style={[s.optionBase, getOptionStyle(option)]}
             onPress={() => handleSelect(option)}
             disabled={answered}
+            accessibilityRole="radio"
+            accessibilityLabel={option.text}
+            accessibilityState={{ selected: selected === option.text, disabled: answered }}
           >
             <Text style={[
-              styles.optionText,
-              answered && option.isCorrect && styles.optionTextCorrect,
-              answered && selected === option.text && !option.isCorrect && styles.optionTextWrong,
+              s.optionText,
+              answered && option.isCorrect && s.optionTextCorrect,
+              answered && selected === option.text && !option.isCorrect && s.optionTextWrong,
             ]}>
               {option.text}
             </Text>
@@ -57,7 +64,7 @@ const QCMExercise = ({ exercise, onAnswer, answered, isCorrect }) => {
               <Ionicons
                 name={getOptionIcon(option)}
                 size={22}
-                color={option.isCorrect ? COLORS.primary : COLORS.error}
+                color={option.isCorrect ? colors.primary : colors.error}
               />
             )}
           </TouchableOpacity>
@@ -67,34 +74,30 @@ const QCMExercise = ({ exercise, onAnswer, answered, isCorrect }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+const styles = (colors) => StyleSheet.create({
+  container: { flex: 1 },
   question: {
     fontSize: SIZES.xl,
-    color: COLORS.white,
+    color: colors.white,
     ...FONTS.bold,
     marginBottom: 20,
     lineHeight: 28,
   },
   codeBlock: {
-    backgroundColor: COLORS.surface,
+    backgroundColor: colors.surface,
     padding: 16,
     borderRadius: SIZES.radiusSmall,
     marginBottom: 24,
     borderLeftWidth: 3,
-    borderLeftColor: COLORS.secondary,
+    borderLeftColor: colors.secondary,
   },
   codeText: {
     fontFamily: Platform?.OS === 'ios' ? 'Menlo' : 'monospace',
-    color: COLORS.secondary,
+    color: colors.secondary,
     fontSize: SIZES.md,
     lineHeight: 22,
   },
-  options: {
-    gap: 12,
-  },
+  options: { gap: 12 },
   optionBase: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -104,33 +107,29 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   option: {
-    backgroundColor: COLORS.surface,
-    borderColor: COLORS.border,
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
   },
   optionSelected: {
-    backgroundColor: COLORS.surfaceLight,
-    borderColor: COLORS.secondary,
+    backgroundColor: colors.surfaceLight,
+    borderColor: colors.secondary,
   },
   optionCorrect: {
-    backgroundColor: COLORS.primary + '20',
-    borderColor: COLORS.primary,
+    backgroundColor: colors.primary + '20',
+    borderColor: colors.primary,
   },
   optionWrong: {
-    backgroundColor: COLORS.error + '20',
-    borderColor: COLORS.error,
+    backgroundColor: colors.error + '20',
+    borderColor: colors.error,
   },
   optionText: {
-    color: COLORS.white,
+    color: colors.white,
     fontSize: SIZES.lg,
     ...FONTS.medium,
     flex: 1,
   },
-  optionTextCorrect: {
-    color: COLORS.primary,
-  },
-  optionTextWrong: {
-    color: COLORS.error,
-  },
+  optionTextCorrect: { color: colors.primary },
+  optionTextWrong: { color: colors.error },
 });
 
 export default QCMExercise;

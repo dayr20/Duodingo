@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SIZES, FONTS } from '../constants/theme';
+import { SIZES, FONTS } from '../constants/theme';
+import { useTheme } from '../context/ThemeContext';
 
 const FillCodeExercise = ({ exercise, onAnswer, answered, isCorrect }) => {
+  const { colors } = useTheme();
   const [selected, setSelected] = useState(null);
 
   const handleSelect = (option) => {
@@ -14,20 +15,20 @@ const FillCodeExercise = ({ exercise, onAnswer, answered, isCorrect }) => {
 
   const renderCodeWithBlank = () => {
     if (!exercise.codeSnippet) return null;
-
+    const s = styles(colors);
     const parts = exercise.codeSnippet.split('___');
     return (
-      <View style={styles.codeBlock}>
-        <Text style={styles.codeText}>
+      <View style={s.codeBlock}>
+        <Text style={s.codeText}>
           {parts.map((part, i) => (
             <React.Fragment key={i}>
               <Text>{part}</Text>
               {i < parts.length - 1 && (
                 <Text style={[
-                  styles.blank,
+                  s.blank,
                   selected && (answered
-                    ? (isCorrect ? styles.blankCorrect : styles.blankWrong)
-                    : styles.blankFilled),
+                    ? (isCorrect ? s.blankCorrect : s.blankWrong)
+                    : s.blankFilled),
                 ]}>
                   {selected ? ` ${selected} ` : ' ___ '}
                 </Text>
@@ -40,31 +41,37 @@ const FillCodeExercise = ({ exercise, onAnswer, answered, isCorrect }) => {
   };
 
   const getOptionStyle = (option) => {
+    const s = styles(colors);
     if (!answered) {
-      return selected === option.text ? styles.chipSelected : styles.chip;
+      return selected === option.text ? s.chipSelected : s.chip;
     }
-    if (option.isCorrect) return styles.chipCorrect;
-    if (selected === option.text && !option.isCorrect) return styles.chipWrong;
-    return styles.chip;
+    if (option.isCorrect) return s.chipCorrect;
+    if (selected === option.text && !option.isCorrect) return s.chipWrong;
+    return s.chip;
   };
 
+  const s = styles(colors);
+
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <Text style={styles.question}>{exercise.question}</Text>
+    <ScrollView style={s.container} showsVerticalScrollIndicator={false}>
+      <Text style={s.question}>{exercise.question}</Text>
       {renderCodeWithBlank()}
 
-      <View style={styles.options}>
+      <View style={s.options}>
         {exercise.options.map((option, index) => (
           <TouchableOpacity
             key={index}
-            style={[styles.chipBase, getOptionStyle(option)]}
+            style={[s.chipBase, getOptionStyle(option)]}
             onPress={() => handleSelect(option)}
             disabled={answered}
+            accessibilityRole="radio"
+            accessibilityLabel={option.text}
+            accessibilityState={{ selected: selected === option.text, disabled: answered }}
           >
             <Text style={[
-              styles.chipText,
-              answered && option.isCorrect && { color: COLORS.primary },
-              answered && selected === option.text && !option.isCorrect && { color: COLORS.error },
+              s.chipText,
+              answered && option.isCorrect && { color: colors.primary },
+              answered && selected === option.text && !option.isCorrect && { color: colors.error },
             ]}>
               {option.text}
             </Text>
@@ -75,51 +82,49 @@ const FillCodeExercise = ({ exercise, onAnswer, answered, isCorrect }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+const styles = (colors) => StyleSheet.create({
+  container: { flex: 1 },
   question: {
     fontSize: SIZES.xl,
-    color: COLORS.white,
+    color: colors.white,
     ...FONTS.bold,
     marginBottom: 20,
     lineHeight: 28,
   },
   codeBlock: {
-    backgroundColor: COLORS.surface,
+    backgroundColor: colors.surface,
     padding: 16,
     borderRadius: SIZES.radiusSmall,
     marginBottom: 24,
     borderLeftWidth: 3,
-    borderLeftColor: COLORS.warning,
+    borderLeftColor: colors.warning,
   },
   codeText: {
-    color: COLORS.secondary,
+    color: colors.secondary,
     fontSize: SIZES.lg,
     lineHeight: 26,
   },
   blank: {
-    backgroundColor: COLORS.surfaceLight,
-    color: COLORS.textMuted,
+    backgroundColor: colors.surfaceLight,
+    color: colors.textMuted,
     paddingHorizontal: 4,
     borderRadius: 4,
     borderBottomWidth: 2,
-    borderBottomColor: COLORS.textMuted,
+    borderBottomColor: colors.textMuted,
   },
   blankFilled: {
-    color: COLORS.secondary,
-    borderBottomColor: COLORS.secondary,
+    color: colors.secondary,
+    borderBottomColor: colors.secondary,
   },
   blankCorrect: {
-    color: COLORS.primary,
-    borderBottomColor: COLORS.primary,
-    backgroundColor: COLORS.primary + '20',
+    color: colors.primary,
+    borderBottomColor: colors.primary,
+    backgroundColor: colors.primary + '20',
   },
   blankWrong: {
-    color: COLORS.error,
-    borderBottomColor: COLORS.error,
-    backgroundColor: COLORS.error + '20',
+    color: colors.error,
+    borderBottomColor: colors.error,
+    backgroundColor: colors.error + '20',
   },
   options: {
     flexDirection: 'row',
@@ -133,23 +138,23 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   chip: {
-    backgroundColor: COLORS.surface,
-    borderColor: COLORS.border,
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
   },
   chipSelected: {
-    backgroundColor: COLORS.surfaceLight,
-    borderColor: COLORS.secondary,
+    backgroundColor: colors.surfaceLight,
+    borderColor: colors.secondary,
   },
   chipCorrect: {
-    backgroundColor: COLORS.primary + '20',
-    borderColor: COLORS.primary,
+    backgroundColor: colors.primary + '20',
+    borderColor: colors.primary,
   },
   chipWrong: {
-    backgroundColor: COLORS.error + '20',
-    borderColor: COLORS.error,
+    backgroundColor: colors.error + '20',
+    borderColor: colors.error,
   },
   chipText: {
-    color: COLORS.white,
+    color: colors.white,
     fontSize: SIZES.lg,
     ...FONTS.semiBold,
   },

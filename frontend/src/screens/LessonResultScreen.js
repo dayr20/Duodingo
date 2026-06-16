@@ -1,27 +1,28 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SIZES, FONTS } from '../constants/theme';
+import { SIZES, FONTS } from '../constants/theme';
+import { useTheme } from '../context/ThemeContext';
+import ConfettiAnimation from '../components/ConfettiAnimation';
+import { sendImmediateNotification } from '../services/notifications';
 
 const LessonResultScreen = ({ route, navigation }) => {
   const { xpEarned, score, correctAnswers, totalExercises, streak } = route.params;
+  const { colors } = useTheme();
   const scaleAnim = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
+  const styles = createStyles(colors);
+
   useEffect(() => {
     Animated.sequence([
-      Animated.spring(scaleAnim, {
-        toValue: 1,
-        tension: 50,
-        friction: 7,
-        useNativeDriver: true,
-      }),
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 400,
-        useNativeDriver: true,
-      }),
+      Animated.spring(scaleAnim, { toValue: 1, tension: 50, friction: 7, useNativeDriver: true }),
+      Animated.timing(fadeAnim, { toValue: 1, duration: 400, useNativeDriver: true }),
     ]).start();
+
+    if (score >= 100) {
+      sendImmediateNotification('🏆 Leçon parfaite !', `Tu as eu 100% ! +${xpEarned} XP gagnés.`);
+    }
   }, []);
 
   const getScoreEmoji = () => {
@@ -39,13 +40,16 @@ const LessonResultScreen = ({ route, navigation }) => {
   };
 
   const getScoreColor = () => {
-    if (score >= 80) return COLORS.primary;
-    if (score >= 60) return COLORS.warning;
-    return COLORS.error;
+    if (score >= 80) return colors.primary;
+    if (score >= 60) return colors.warning;
+    return colors.error;
   };
+
+  const isPerfect = score >= 80;
 
   return (
     <View style={styles.container}>
+      <ConfettiAnimation active={isPerfect} />
       <View style={styles.content}>
         <Animated.View style={[styles.trophy, { transform: [{ scale: scaleAnim }] }]}>
           <View style={[styles.trophyCircle, { backgroundColor: getScoreColor() + '20' }]}>
@@ -59,19 +63,19 @@ const LessonResultScreen = ({ route, navigation }) => {
 
         <Animated.View style={[styles.stats, { opacity: fadeAnim }]}>
           <View style={styles.statCard}>
-            <Ionicons name="star" size={28} color={COLORS.xp} />
+            <Ionicons name="star" size={28} color={colors.xp} />
             <Text style={styles.statNumber}>+{xpEarned}</Text>
             <Text style={styles.statLabel}>XP gagnés</Text>
           </View>
 
           <View style={styles.statCard}>
-            <Ionicons name="checkmark-done" size={28} color={COLORS.primary} />
+            <Ionicons name="checkmark-done" size={28} color={colors.primary} />
             <Text style={styles.statNumber}>{correctAnswers}/{totalExercises}</Text>
             <Text style={styles.statLabel}>Correct</Text>
           </View>
 
           <View style={styles.statCard}>
-            <Ionicons name="flame" size={28} color={COLORS.streak} />
+            <Ionicons name="flame" size={28} color={colors.streak} />
             <Text style={styles.statNumber}>{streak}</Text>
             <Text style={styles.statLabel}>Série</Text>
           </View>
@@ -89,6 +93,8 @@ const LessonResultScreen = ({ route, navigation }) => {
         <TouchableOpacity
           style={styles.continueButton}
           onPress={() => navigation.navigate('MainTabs')}
+          accessibilityRole="button"
+          accessibilityLabel="Continuer"
         >
           <Text style={styles.continueButtonText}>CONTINUER</Text>
         </TouchableOpacity>
@@ -97,10 +103,10 @@ const LessonResultScreen = ({ route, navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: colors.background,
     justifyContent: 'space-between',
     paddingTop: 80,
     paddingBottom: 40,
@@ -132,19 +138,19 @@ const styles = StyleSheet.create({
   },
   statCard: {
     flex: 1,
-    backgroundColor: COLORS.surface,
+    backgroundColor: colors.surface,
     padding: 16,
     borderRadius: SIZES.radius,
     alignItems: 'center',
     gap: 6,
   },
   statNumber: {
-    color: COLORS.white,
+    color: colors.white,
     fontSize: SIZES.xxl,
     ...FONTS.bold,
   },
   statLabel: {
-    color: COLORS.textSecondary,
+    color: colors.textSecondary,
     fontSize: SIZES.xs,
     ...FONTS.medium,
     textTransform: 'uppercase',
@@ -157,7 +163,7 @@ const styles = StyleSheet.create({
   scoreBarTrack: {
     width: '100%',
     height: 12,
-    backgroundColor: COLORS.surface,
+    backgroundColor: colors.surface,
     borderRadius: 6,
     overflow: 'hidden',
   },
@@ -173,13 +179,13 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   continueButton: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     borderRadius: SIZES.radius,
     alignItems: 'center',
   },
   continueButtonText: {
-    color: COLORS.white,
+    color: colors.white,
     fontSize: SIZES.lg,
     ...FONTS.bold,
     letterSpacing: 1,

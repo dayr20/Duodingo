@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert,
+  View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Switch, Image,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 import { COLORS, SIZES, FONTS } from '../constants/theme';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import * as api from '../services/api';
 
 const ProfileScreen = () => {
-  const { user, signOut } = useAuth();
+  const { user, signOut, updateUser } = useAuth();
+  const { isDark, toggleTheme, colors } = useTheme();
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
@@ -43,21 +47,57 @@ const ProfileScreen = () => {
   };
 
   const { progress: levelProgress, remaining } = getXPForNextLevel();
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
 
-  const avatarIcons = ['person', 'code-slash', 'rocket', 'game-controller', 'bug', 'terminal'];
+  const handlePickAvatar = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permission refusée', 'Autorise l\'accès à ta galerie pour choisir une photo.');
+      return;
+    }
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.5,
+      base64: true,
+    });
+    if (!result.canceled && result.assets[0].base64) {
+      setUploadingAvatar(true);
+      try {
+        const base64 = `data:image/jpeg;base64,${result.assets[0].base64}`;
+        await api.uploadAvatar(base64);
+        updateUser({ avatar: base64 });
+      } catch (error) {
+        Alert.alert('Erreur', 'Impossible de mettre à jour l\'avatar.');
+      } finally {
+        setUploadingAvatar(false);
+      }
+    }
+  };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {/* Profile Header */}
       <View style={styles.header}>
-        <View style={styles.avatarContainer}>
-          <View style={styles.avatar}>
-            <Ionicons name="person" size={50} color={COLORS.primary} />
-          </View>
+        <TouchableOpacity style={styles.avatarContainer} onPress={handlePickAvatar} disabled={uploadingAvatar}>
+          {user?.avatar && user.avatar.startsWith('data:image') ? (
+            <Image source={{ uri: user.avatar }} style={styles.avatarImage} />
+          ) : (
+            <View style={styles.avatar}>
+              <Ionicons name="person" size={50} color={COLORS.primary} />
+            </View>
+          )}
           <View style={styles.levelBadge}>
             <Text style={styles.levelText}>{user?.level || 1}</Text>
           </View>
-        </View>
+          <View style={styles.avatarEditBadge}>
+            {uploadingAvatar
+              ? <ActivityIndicator size="small" color={COLORS.white} />
+              : <Ionicons name="camera" size={14} color={COLORS.white} />
+            }
+          </View>
+        </TouchableOpacity>
         <Text style={styles.username}>{user?.username || 'Codeur'}</Text>
         <Text style={styles.email}>{user?.email || ''}</Text>
       </View>
@@ -125,6 +165,25 @@ const ProfileScreen = () => {
         )}
       </View>
 
+      {/* Settings */}
+      <View style={[styles.settingsSection, { backgroundColor: colors.surface }]}>
+        <Text style={[styles.sectionTitle, { color: colors.white }]}>Paramètres</Text>
+        <View style={styles.settingRow}>
+          <View style={styles.settingLeft}>
+            <Ionicons name={isDark ? 'moon' : 'sunny'} size={22} color={colors.secondary} />
+            <Text style={[styles.settingLabel, { color: colors.white }]}>
+              {isDark ? 'Mode sombre' : 'Mode clair'}
+            </Text>
+          </View>
+          <Switch
+            value={isDark}
+            onValueChange={toggleTheme}
+            trackColor={{ false: colors.surfaceLight, true: colors.secondary + '80' }}
+            thumbColor={isDark ? colors.secondary : colors.textMuted}
+          />
+        </View>
+      </View>
+
       {/* Logout Button */}
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Ionicons name="log-out-outline" size={20} color={COLORS.error} />
@@ -161,6 +220,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 3,
     borderColor: COLORS.primary,
+  },
+  avatarImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 3,
+    borderColor: COLORS.primary,
+  },
+  avatarEditBadge: {
+    position: 'absolute',
+    bottom: 2,
+    left: 0,
+    backgroundColor: COLORS.secondary,
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: COLORS.background,
   },
   levelBadge: {
     position: 'absolute',
@@ -299,6 +378,26 @@ const styles = StyleSheet.create({
     fontSize: SIZES.md,
     ...FONTS.regular,
     textAlign: 'center',
+  },
+  settingsSection: {
+    borderRadius: SIZES.radius,
+    padding: 16,
+    marginBottom: 16,
+  },
+  settingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+  settingLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  settingLabel: {
+    fontSize: SIZES.md,
+    ...FONTS.medium,
   },
   logoutButton: {
     flexDirection: 'row',

@@ -1,12 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SIZES, FONTS } from '../constants/theme';
+import { SIZES, FONTS } from '../constants/theme';
+import { useTheme } from '../context/ThemeContext';
 
 const WelcomeScreen = ({ navigation }) => {
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
+
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
+      <StatusBar barStyle="light-content" backgroundColor={colors.background} />
 
       <View style={styles.topSection}>
         <View style={styles.logoContainer}>
@@ -22,15 +26,15 @@ const WelcomeScreen = ({ navigation }) => {
 
       <View style={styles.features}>
         <View style={styles.featureRow}>
-          <Ionicons name="game-controller-outline" size={20} color={COLORS.primary} />
+          <Ionicons name="game-controller-outline" size={20} color={colors.primary} />
           <Text style={styles.featureText}>Leçons interactives et gamifiées</Text>
         </View>
         <View style={styles.featureRow}>
-          <Ionicons name="trophy-outline" size={20} color={COLORS.xp} />
+          <Ionicons name="trophy-outline" size={20} color={colors.xp} />
           <Text style={styles.featureText}>Gagne de l'XP et monte en niveau</Text>
         </View>
         <View style={styles.featureRow}>
-          <Ionicons name="flame-outline" size={20} color={COLORS.streak} />
+          <Ionicons name="flame-outline" size={20} color={colors.streak} />
           <Text style={styles.featureText}>Garde ta série quotidienne</Text>
         </View>
       </View>
@@ -39,6 +43,8 @@ const WelcomeScreen = ({ navigation }) => {
         <TouchableOpacity
           style={styles.startButton}
           onPress={() => navigation.navigate('Register')}
+          accessibilityRole="button"
+          accessibilityLabel="Commencer - créer un compte"
         >
           <Text style={styles.startButtonText}>C'EST PARTI</Text>
         </TouchableOpacity>
@@ -46,6 +52,8 @@ const WelcomeScreen = ({ navigation }) => {
         <TouchableOpacity
           style={styles.loginButton}
           onPress={() => navigation.navigate('Login')}
+          accessibilityRole="button"
+          accessibilityLabel="Se connecter avec un compte existant"
         >
           <Text style={styles.loginButtonText}>J'AI DÉJÀ UN COMPTE</Text>
         </TouchableOpacity>
@@ -54,10 +62,10 @@ const WelcomeScreen = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: colors.background,
     justifyContent: 'space-between',
     paddingHorizontal: SIZES.padding,
     paddingTop: 50,
@@ -76,13 +84,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    color: COLORS.primary,
+    color: colors.primary,
     ...FONTS.bold,
     marginBottom: 6,
   },
   subtitle: {
     fontSize: SIZES.lg,
-    color: COLORS.textSecondary,
+    color: colors.textSecondary,
     textAlign: 'center',
     lineHeight: 24,
     ...FONTS.medium,
@@ -93,13 +101,13 @@ const styles = StyleSheet.create({
   featureRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.surface,
+    backgroundColor: colors.surface,
     padding: 12,
     borderRadius: SIZES.radius,
     gap: 10,
   },
   featureText: {
-    color: COLORS.white,
+    color: colors.white,
     fontSize: SIZES.md,
     ...FONTS.medium,
     flex: 1,
@@ -108,31 +116,31 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   startButton: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: colors.primary,
     paddingVertical: 14,
     borderRadius: SIZES.radius,
     alignItems: 'center',
-    shadowColor: COLORS.primaryDark,
+    shadowColor: colors.primaryDark,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 5,
     elevation: 5,
   },
   startButtonText: {
-    color: COLORS.white,
+    color: colors.white,
     fontSize: SIZES.lg,
     ...FONTS.bold,
     letterSpacing: 1,
   },
   loginButton: {
     borderWidth: 2,
-    borderColor: COLORS.surfaceLight,
+    borderColor: colors.surfaceLight,
     paddingVertical: 14,
     borderRadius: SIZES.radius,
     alignItems: 'center',
   },
   loginButtonText: {
-    color: COLORS.secondary,
+    color: colors.secondary,
     fontSize: SIZES.lg,
     ...FONTS.bold,
     letterSpacing: 1,

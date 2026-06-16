@@ -55,6 +55,9 @@ const OrderCodeExercise = ({ exercise, onAnswer, answered, isCorrect }) => {
               ]}
               onPress={() => removeFromOrder(item, index)}
               disabled={answered}
+              accessibilityRole="button"
+              accessibilityLabel={`Retirer ligne ${index + 1}: ${item.text}`}
+              accessibilityState={{ disabled: answered }}
             >
               <Text style={styles.lineNumber}>{index + 1}</Text>
               <Text style={styles.codeText}>{item.text}</Text>
@@ -75,6 +78,9 @@ const OrderCodeExercise = ({ exercise, onAnswer, answered, isCorrect }) => {
               style={styles.codeLineAvailable}
               onPress={() => addToOrder(item, index)}
               disabled={answered}
+              accessibilityRole="button"
+              accessibilityLabel={`Ajouter: ${item.text}`}
+              accessibilityState={{ disabled: answered }}
             >
               <Text style={styles.codeText}>{item.text}</Text>
               <Ionicons name="add-circle-outline" size={20} color={COLORS.secondary} />
@@ -85,7 +91,12 @@ const OrderCodeExercise = ({ exercise, onAnswer, answered, isCorrect }) => {
 
       {/* Submit button */}
       {!answered && orderedItems.length === exercise.options.length && (
-        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={handleSubmit}
+          accessibilityRole="button"
+          accessibilityLabel="Vérifier ma réponse"
+        >
           <Text style={styles.submitButtonText}>VÉRIFIER</Text>
         </TouchableOpacity>
       )}

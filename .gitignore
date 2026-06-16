@@ -35,3 +35,17 @@ web-build/
 npm-debug.*
 yarn-debug.*
 yarn-error.*
+
+# .NET / MAUI build artifacts
+[Bb]in/
+[Oo]bj/
+*.user
+
+# QA / génération de documents (artefacts intermédiaires)
+docs/slide-*.jpg
+
+# Session & fichiers hors périmètre
+.claude/
+surprise/
+docs/pdf 2.zip
+docs/pdf 2/

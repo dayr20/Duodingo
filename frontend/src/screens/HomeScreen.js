@@ -1,20 +1,27 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView, TouchableOpacity,
-  RefreshControl, ActivityIndicator,
+  View, Text, StyleSheet, ScrollView, TouchableOpacity, RefreshControl,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SIZES, FONTS } from '../constants/theme';
+import { SIZES, FONTS } from '../constants/theme';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import * as api from '../services/api';
+import HeartsTimer from '../components/HeartsTimer';
+import { HomeScreenSkeleton } from '../components/SkeletonLoader';
 
 const HomeScreen = ({ navigation }) => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
+  const { colors } = useTheme();
   const [languages, setLanguages] = useState([]);
   const [selectedLang, setSelectedLang] = useState(null);
   const [topics, setTopics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [nextRegenAt, setNextRegenAt] = useState(null);
+  const [challengeDone, setChallengeDone] = useState(false);
+
+  const styles = createStyles(colors);
 
   const loadLanguages = async () => {
     try {
@@ -31,6 +38,16 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
+  const loadHearts = async () => {
+    try {
+      const data = await api.getHearts();
+      updateUser({ hearts: data.hearts });
+      setNextRegenAt(data.nextRegenAt);
+    } catch (error) {
+      console.log('Erreur vies:', error.message);
+    }
+  };
+
   const loadTopics = async (langId) => {
     try {
       const data = await api.getTopics(langId);
@@ -42,6 +59,8 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     loadLanguages();
+    loadHearts();
+    api.getTodayChallenge().then((c) => setChallengeDone(c.completed)).catch(() => {});
   }, []);
 
   const onRefresh = useCallback(async () => {
@@ -70,8 +89,13 @@ const HomeScreen = ({ navigation }) => {
 
   if (loading) {
     return (
-      <View style={[styles.container, styles.center]}>
-        <ActivityIndicator size="large" color={COLORS.primary} />
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <View style={styles.statRow}>
+            <Text style={styles.headerTitle}>Duodingo</Text>
+          </View>
+        </View>
+        <HomeScreenSkeleton />
       </View>
     );
   }
@@ -82,17 +106,20 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.header}>
         <View style={styles.statRow}>
           <View style={styles.statItem}>
-            <Ionicons name="flame" size={20} color={COLORS.streak} />
+            <Ionicons name="flame" size={20} color={colors.streak} />
             <Text style={styles.statValue}>{user?.streak || 0}</Text>
           </View>
           <Text style={styles.headerTitle}>Duodingo</Text>
           <View style={styles.statRow}>
             <View style={styles.statItem}>
-              <Ionicons name="heart" size={20} color={COLORS.heart} />
-              <Text style={styles.statValue}>{user?.hearts || 5}</Text>
+              <Ionicons name="heart" size={20} color={colors.heart} />
+              <Text style={styles.statValue}>{user?.hearts ?? 5}</Text>
             </View>
+            {nextRegenAt && (user?.hearts ?? 5) < 5 && (
+              <HeartsTimer nextRegenAt={nextRegenAt} onRegen={loadHearts} />
+            )}
             <View style={styles.statItem}>
-              <Ionicons name="star" size={20} color={COLORS.xp} />
+              <Ionicons name="star" size={20} color={colors.xp} />
               <Text style={styles.statValue}>{user?.xp || 0}</Text>
             </View>
           </View>
@@ -119,7 +146,7 @@ const HomeScreen = ({ navigation }) => {
             <Ionicons
               name={getLanguageIcon(lang.slug)}
               size={20}
-              color={selectedLang?._id === lang._id ? COLORS.white : lang.color}
+              color={selectedLang?._id === lang._id ? colors.white : lang.color}
             />
             <Text style={[
               styles.langChipText,
@@ -136,9 +163,44 @@ const HomeScreen = ({ navigation }) => {
         style={styles.topicsContainer}
         contentContainerStyle={styles.topicsContent}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLORS.primary} />
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
         }
       >
+        {/* Daily Challenge Banner */}
+        <TouchableOpacity
+          style={[styles.challengeBanner, challengeDone && styles.challengeBannerDone]}
+          onPress={() => navigation.navigate('DailyChallenge')}
+        >
+          <View style={styles.challengeBannerLeft}>
+            <Text style={styles.challengeEmoji}>⚡</Text>
+            <View>
+              <Text style={styles.challengeTitle}>Défi du jour</Text>
+              <Text style={styles.challengeSubtitle}>
+                {challengeDone ? 'Défi complété aujourd\'hui !' : '+50 XP à gagner'}
+              </Text>
+            </View>
+          </View>
+          {challengeDone
+            ? <Ionicons name="checkmark-circle" size={24} color={colors.primary} />
+            : <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />
+          }
+        </TouchableOpacity>
+
+        {/* Sandbox button */}
+        <TouchableOpacity
+          style={styles.sandboxBanner}
+          onPress={() => navigation.navigate('CodeSandbox')}
+        >
+          <View style={styles.challengeBannerLeft}>
+            <Text style={styles.challengeEmoji}>💻</Text>
+            <View>
+              <Text style={styles.challengeTitle}>Sandbox JavaScript</Text>
+              <Text style={styles.challengeSubtitle}>Teste ton code librement</Text>
+            </View>
+          </View>
+          <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />
+        </TouchableOpacity>
+
         <View style={styles.pathContainer}>
           {topics.map((topic, index) => {
             const unlocked = isTopicUnlocked(topic);
@@ -146,7 +208,6 @@ const HomeScreen = ({ navigation }) => {
 
             return (
               <View key={topic._id} style={styles.pathRow}>
-                {/* Connector line */}
                 {index > 0 && (
                   <View style={[
                     styles.connector,
@@ -159,7 +220,7 @@ const HomeScreen = ({ navigation }) => {
                     styles.topicNode,
                     { alignSelf: isEven ? 'flex-start' : 'flex-end' },
                     unlocked ? styles.topicUnlocked : styles.topicLocked,
-                    unlocked && { borderColor: selectedLang?.color || COLORS.primary },
+                    unlocked && { borderColor: selectedLang?.color || colors.primary },
                   ]}
                   onPress={() => {
                     if (unlocked) {
@@ -174,13 +235,13 @@ const HomeScreen = ({ navigation }) => {
                   <View style={[
                     styles.topicIconCircle,
                     unlocked
-                      ? { backgroundColor: selectedLang?.color || COLORS.primary }
+                      ? { backgroundColor: selectedLang?.color || colors.primary }
                       : styles.topicIconLocked,
                   ]}>
                     <Ionicons
                       name={unlocked ? topic.icon : 'lock-closed'}
                       size={28}
-                      color={COLORS.white}
+                      color={colors.white}
                     />
                   </View>
                   <Text style={[
@@ -204,20 +265,16 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  center: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: colors.background,
   },
   header: {
     paddingTop: 60,
     paddingHorizontal: SIZES.padding,
     paddingBottom: 12,
-    backgroundColor: COLORS.surface,
+    backgroundColor: colors.surface,
   },
   statRow: {
     flexDirection: 'row',
@@ -226,7 +283,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: SIZES.xl,
-    color: COLORS.primary,
+    color: colors.primary,
     ...FONTS.bold,
   },
   statItem: {
@@ -236,15 +293,15 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   statValue: {
-    color: COLORS.white,
+    color: colors.white,
     fontSize: SIZES.md,
     ...FONTS.bold,
   },
   langSelector: {
     maxHeight: 60,
-    backgroundColor: COLORS.surface,
+    backgroundColor: colors.surface,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
+    borderBottomColor: colors.border,
   },
   langSelectorContent: {
     paddingHorizontal: SIZES.padding,
@@ -263,15 +320,49 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   langChipActive: {
-    backgroundColor: COLORS.surfaceLight,
+    backgroundColor: colors.surfaceLight,
   },
   langChipText: {
-    color: COLORS.textSecondary,
+    color: colors.textSecondary,
     fontSize: SIZES.sm,
     ...FONTS.semiBold,
   },
   langChipTextActive: {
-    color: COLORS.white,
+    color: colors.white,
+  },
+  challengeBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: colors.surface,
+    borderRadius: SIZES.radius,
+    padding: 16,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#FFC800' + '40',
+  },
+  challengeBannerDone: {
+    borderColor: colors.primary + '40',
+    backgroundColor: colors.primary + '10',
+  },
+  challengeBannerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  challengeEmoji: { fontSize: 28 },
+  challengeTitle: { color: colors.white, fontSize: SIZES.md, ...FONTS.bold },
+  challengeSubtitle: { color: colors.textSecondary, fontSize: SIZES.sm, ...FONTS.regular, marginTop: 2 },
+  sandboxBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: colors.surface,
+    borderRadius: SIZES.radius,
+    padding: 16,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: colors.secondary + '40',
   },
   topicsContainer: {
     flex: 1,
@@ -293,11 +384,11 @@ const styles = StyleSheet.create({
     left: '50%',
     width: 3,
     height: 15,
-    backgroundColor: COLORS.primary,
+    backgroundColor: colors.primary,
     borderRadius: 2,
   },
   connectorLocked: {
-    backgroundColor: COLORS.border,
+    backgroundColor: colors.border,
   },
   topicNode: {
     width: '65%',
@@ -307,11 +398,11 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   topicUnlocked: {
-    backgroundColor: COLORS.surface,
+    backgroundColor: colors.surface,
   },
   topicLocked: {
-    backgroundColor: COLORS.surface,
-    borderColor: COLORS.border,
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
     opacity: 0.6,
   },
   topicIconCircle: {
@@ -323,19 +414,19 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   topicIconLocked: {
-    backgroundColor: COLORS.textMuted,
+    backgroundColor: colors.textMuted,
   },
   topicName: {
-    color: COLORS.white,
+    color: colors.white,
     fontSize: SIZES.lg,
     ...FONTS.bold,
     textAlign: 'center',
   },
   topicNameLocked: {
-    color: COLORS.textMuted,
+    color: colors.textMuted,
   },
   topicXPRequired: {
-    color: COLORS.textMuted,
+    color: colors.textMuted,
     fontSize: SIZES.xs,
     ...FONTS.regular,
     marginTop: 4,

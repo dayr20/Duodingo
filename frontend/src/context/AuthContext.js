@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as api from '../services/api';
+import { scheduleDailyStreakReminder, cancelStreakReminders } from '../services/notifications';
 
 const AuthContext = createContext();
 
@@ -33,6 +34,7 @@ export const AuthProvider = ({ children }) => {
     await AsyncStorage.setItem('token', data.token);
     setToken(data.token);
     setUser(data.user);
+    scheduleDailyStreakReminder(19, 0);
     return data;
   };
 
@@ -41,10 +43,12 @@ export const AuthProvider = ({ children }) => {
     await AsyncStorage.setItem('token', data.token);
     setToken(data.token);
     setUser(data.user);
+    scheduleDailyStreakReminder(19, 0);
     return data;
   };
 
   const signOut = async () => {
+    await cancelStreakReminders();
     await AsyncStorage.removeItem('token');
     setToken(null);
     setUser(null);

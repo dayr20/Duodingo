@@ -3,15 +3,19 @@ import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SIZES, FONTS } from '../constants/theme';
+import { SIZES, FONTS } from '../constants/theme';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import * as api from '../services/api';
 
 const TopicLessonsScreen = ({ route, navigation }) => {
   const { topic, language } = route.params;
   const { user } = useAuth();
+  const { colors } = useTheme();
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const styles = createStyles(colors);
 
   useEffect(() => {
     loadLessons();
@@ -35,7 +39,7 @@ const TopicLessonsScreen = ({ route, navigation }) => {
   if (loading) {
     return (
       <View style={[styles.container, styles.center]}>
-        <ActivityIndicator size="large" color={COLORS.primary} />
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
@@ -43,8 +47,13 @@ const TopicLessonsScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <View style={[styles.header, { backgroundColor: language.color + '20' }]}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color={COLORS.white} />
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+          accessibilityRole="button"
+          accessibilityLabel="Retour"
+        >
+          <Ionicons name="arrow-back" size={24} color={colors.white} />
         </TouchableOpacity>
         <View style={styles.headerInfo}>
           <Ionicons name={topic.icon} size={32} color={language.color} />
@@ -64,15 +73,17 @@ const TopicLessonsScreen = ({ route, navigation }) => {
               key={lesson._id}
               style={[styles.lessonCard, completed && styles.lessonCompleted]}
               onPress={() => navigation.navigate('LessonPlay', { lessonId: lesson._id })}
+              accessibilityRole="button"
+              accessibilityLabel={`${lesson.title}${completed ? ', complété' : ''}`}
             >
               <View style={[
                 styles.lessonNumber,
                 completed
-                  ? { backgroundColor: COLORS.primary }
+                  ? { backgroundColor: colors.primary }
                   : { backgroundColor: language.color },
               ]}>
                 {completed ? (
-                  <Ionicons name="checkmark" size={20} color={COLORS.white} />
+                  <Ionicons name="checkmark" size={20} color={colors.white} />
                 ) : (
                   <Text style={styles.lessonNumberText}>{index + 1}</Text>
                 )}
@@ -84,11 +95,11 @@ const TopicLessonsScreen = ({ route, navigation }) => {
               </View>
 
               <View style={styles.lessonXP}>
-                <Ionicons name="star" size={16} color={COLORS.xp} />
+                <Ionicons name="star" size={16} color={colors.xp} />
                 <Text style={styles.lessonXPText}>+{lesson.xpReward} XP</Text>
               </View>
 
-              <Ionicons name="chevron-forward" size={20} color={COLORS.textMuted} />
+              <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />
             </TouchableOpacity>
           );
         })}
@@ -97,10 +108,10 @@ const TopicLessonsScreen = ({ route, navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: colors.background,
   },
   center: {
     justifyContent: 'center',
@@ -115,7 +126,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: COLORS.surface,
+    backgroundColor: colors.surface,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
@@ -127,12 +138,12 @@ const styles = StyleSheet.create({
   },
   topicTitle: {
     fontSize: SIZES.xxl,
-    color: COLORS.white,
+    color: colors.white,
     ...FONTS.bold,
   },
   topicDesc: {
     fontSize: SIZES.md,
-    color: COLORS.textSecondary,
+    color: colors.textSecondary,
     ...FONTS.regular,
     marginTop: 4,
   },
@@ -146,16 +157,16 @@ const styles = StyleSheet.create({
   lessonCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.surface,
+    backgroundColor: colors.surface,
     padding: 16,
     borderRadius: SIZES.radius,
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: colors.border,
     gap: 12,
   },
   lessonCompleted: {
-    borderColor: COLORS.primary,
-    backgroundColor: COLORS.primary + '10',
+    borderColor: colors.primary,
+    backgroundColor: colors.primary + '10',
   },
   lessonNumber: {
     width: 36,
@@ -165,7 +176,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   lessonNumberText: {
-    color: COLORS.white,
+    color: colors.white,
     fontSize: SIZES.lg,
     ...FONTS.bold,
   },
@@ -173,12 +184,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   lessonTitle: {
-    color: COLORS.white,
+    color: colors.white,
     fontSize: SIZES.lg,
     ...FONTS.semiBold,
   },
   lessonDesc: {
-    color: COLORS.textSecondary,
+    color: colors.textSecondary,
     fontSize: SIZES.sm,
     ...FONTS.regular,
     marginTop: 2,
@@ -189,7 +200,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   lessonXPText: {
-    color: COLORS.xp,
+    color: colors.xp,
     fontSize: SIZES.sm,
     ...FONTS.bold,
   },

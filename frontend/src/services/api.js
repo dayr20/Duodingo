@@ -54,8 +54,26 @@ export const completeLesson = (lessonId, data) =>
 // Progress
 export const getProgress = () => apiCall('/progress');
 export const getStats = () => apiCall('/progress/stats');
+export const getLeaderboard = () => apiCall('/progress/leaderboard');
+export const getHearts = () => apiCall('/progress/hearts');
 export const updateHearts = (action) =>
   apiCall('/progress/hearts', {
     method: 'POST',
     body: JSON.stringify({ action }),
   });
+
+// Users
+export const uploadAvatar = (base64Image) =>
+  apiCall('/users/avatar', {
+    method: 'POST',
+    body: JSON.stringify({ avatar: base64Image }),
+  });
+
+// Challenges
+export const getTodayChallenge = () => apiCall('/challenges/today');
+export const completeChallenge = (answer) =>
+  apiCall('/challenges/today/complete', {
+    method: 'POST',
+    body: JSON.stringify({ answer }),
+  });
+export const getChallengeHistory = () => apiCall('/challenges/history');

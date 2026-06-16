@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SIZES, FONTS } from '../constants/theme';
+import { SIZES, FONTS } from '../constants/theme';
+import { useTheme } from '../context/ThemeContext';
 
 const TrueFalseExercise = ({ exercise, onAnswer, answered, isCorrect }) => {
+  const { colors } = useTheme();
   const [selected, setSelected] = useState(null);
 
   const handleSelect = (option) => {
@@ -13,48 +15,54 @@ const TrueFalseExercise = ({ exercise, onAnswer, answered, isCorrect }) => {
   };
 
   const getButtonStyle = (option) => {
+    const s = styles(colors);
     if (!answered) {
       if (selected === option.text) {
-        return option.text === 'Vrai' ? styles.trueSelected : styles.falseSelected;
+        return option.text === 'Vrai' ? s.trueSelected : s.falseSelected;
       }
-      return option.text === 'Vrai' ? styles.trueButton : styles.falseButton;
+      return option.text === 'Vrai' ? s.trueButton : s.falseButton;
     }
-    if (option.isCorrect) return styles.correctButton;
-    if (selected === option.text && !option.isCorrect) return styles.wrongButton;
-    return option.text === 'Vrai' ? styles.trueButton : styles.falseButton;
+    if (option.isCorrect) return s.correctButton;
+    if (selected === option.text && !option.isCorrect) return s.wrongButton;
+    return option.text === 'Vrai' ? s.trueButton : s.falseButton;
   };
 
+  const s = styles(colors);
+
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <Text style={styles.question}>{exercise.question}</Text>
+    <ScrollView style={s.container} showsVerticalScrollIndicator={false}>
+      <Text style={s.question}>{exercise.question}</Text>
 
       {exercise.codeSnippet && (
-        <View style={styles.codeBlock}>
-          <Text style={styles.codeText}>{exercise.codeSnippet}</Text>
+        <View style={s.codeBlock}>
+          <Text style={s.codeText}>{exercise.codeSnippet}</Text>
         </View>
       )}
 
-      <View style={styles.buttonsRow}>
+      <View style={s.buttonsRow}>
         {exercise.options.map((option, index) => (
           <TouchableOpacity
             key={index}
-            style={[styles.buttonBase, getButtonStyle(option)]}
+            style={[s.buttonBase, getButtonStyle(option)]}
             onPress={() => handleSelect(option)}
             disabled={answered}
+            accessibilityRole="radio"
+            accessibilityLabel={option.text}
+            accessibilityState={{ selected: selected === option.text, disabled: answered }}
           >
             <Ionicons
               name={option.text === 'Vrai' ? 'checkmark-circle-outline' : 'close-circle-outline'}
               size={32}
               color={
-                answered && option.isCorrect ? COLORS.primary
-                : answered && selected === option.text && !option.isCorrect ? COLORS.error
-                : option.text === 'Vrai' ? COLORS.primary : COLORS.error
+                answered && option.isCorrect ? colors.primary
+                : answered && selected === option.text && !option.isCorrect ? colors.error
+                : option.text === 'Vrai' ? colors.primary : colors.error
               }
             />
             <Text style={[
-              styles.buttonText,
-              answered && option.isCorrect && { color: COLORS.primary },
-              answered && selected === option.text && !option.isCorrect && { color: COLORS.error },
+              s.buttonText,
+              answered && option.isCorrect && { color: colors.primary },
+              answered && selected === option.text && !option.isCorrect && { color: colors.error },
             ]}>
               {option.text}
             </Text>
@@ -65,27 +73,25 @@ const TrueFalseExercise = ({ exercise, onAnswer, answered, isCorrect }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+const styles = (colors) => StyleSheet.create({
+  container: { flex: 1 },
   question: {
     fontSize: SIZES.xl,
-    color: COLORS.white,
+    color: colors.white,
     ...FONTS.bold,
     marginBottom: 20,
     lineHeight: 28,
   },
   codeBlock: {
-    backgroundColor: COLORS.surface,
+    backgroundColor: colors.surface,
     padding: 16,
     borderRadius: SIZES.radiusSmall,
     marginBottom: 24,
     borderLeftWidth: 3,
-    borderLeftColor: COLORS.secondary,
+    borderLeftColor: colors.secondary,
   },
   codeText: {
-    color: COLORS.secondary,
+    color: colors.secondary,
     fontSize: SIZES.md,
     lineHeight: 22,
   },
@@ -104,31 +110,31 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   trueButton: {
-    backgroundColor: COLORS.surface,
-    borderColor: COLORS.primary + '40',
+    backgroundColor: colors.surface,
+    borderColor: colors.primary + '40',
   },
   falseButton: {
-    backgroundColor: COLORS.surface,
-    borderColor: COLORS.error + '40',
+    backgroundColor: colors.surface,
+    borderColor: colors.error + '40',
   },
   trueSelected: {
-    backgroundColor: COLORS.primary + '20',
-    borderColor: COLORS.primary,
+    backgroundColor: colors.primary + '20',
+    borderColor: colors.primary,
   },
   falseSelected: {
-    backgroundColor: COLORS.error + '20',
-    borderColor: COLORS.error,
+    backgroundColor: colors.error + '20',
+    borderColor: colors.error,
   },
   correctButton: {
-    backgroundColor: COLORS.primary + '20',
-    borderColor: COLORS.primary,
+    backgroundColor: colors.primary + '20',
+    borderColor: colors.primary,
   },
   wrongButton: {
-    backgroundColor: COLORS.error + '20',
-    borderColor: COLORS.error,
+    backgroundColor: colors.error + '20',
+    borderColor: colors.error,
   },
   buttonText: {
-    color: COLORS.white,
+    color: colors.white,
     fontSize: SIZES.xl,
     ...FONTS.bold,
   },
