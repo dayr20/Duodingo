@@ -186,7 +186,34 @@ title(s, "Démo — Défi, classement & profil", "Captures réelles");
   s.addText(it[1], { x: x - 0.4, y: 6.35, w: 2.85, h: 0.4, align: "center", fontFace: HF, fontSize: 14, bold: true, color: DARKGREEN });
 });
 
-// ---------- Slide 12 : Difficultés ----------
+// ---------- Slide 12 : Tests & validation ----------
+s = p.addSlide(); lightBg(s);
+title(s, "Tests & validation", "Recette fonctionnelle");
+s.addText("Tests fonctionnels manuels réalisés sur émulateur Android (Pixel 7) connecté au backend Node.js et à MongoDB réels — chaque parcours a été déroulé de bout en bout.",
+  { x: 0.6, y: 1.45, w: 12.1, h: 0.6, fontFace: BF, fontSize: 15, color: WOLF });
+const tests = [
+  "Inscription & connexion (JWT)",
+  "Chargement des langages & parcours",
+  "QCM — bonne et mauvaise réponse",
+  "Vrai / Faux",
+  "Compléter le code (code à trous)",
+  "Remettre le code dans l’ordre",
+  "Perte d’un cœur sur erreur",
+  "Fin de leçon : gain d’XP & succès",
+  "Défi du jour, classement & profil",
+];
+tests.forEach((t, i) => {
+  const x = 0.6 + (i % 2) * 6.2, y = 2.25 + Math.floor(i / 2) * 0.86;
+  s.addShape(p.ShapeType.roundRect, { x, y, w: 5.9, h: 0.72, fill: { color: POLAR }, line: { color: "E8EDE0", width: 1 }, rectRadius: 0.1 });
+  s.addShape(p.ShapeType.ellipse, { x: x + 0.22, y: y + 0.16, w: 0.4, h: 0.4, fill: { color: GREEN } });
+  s.addText("✓", { x: x + 0.22, y: y + 0.13, w: 0.4, h: 0.4, align: "center", fontFace: HF, fontSize: 16, bold: true, color: WHITE });
+  s.addText(t, { x: x + 0.8, y, w: 4.4, h: 0.72, fontFace: BF, fontSize: 14, color: INK, valign: "middle" });
+  s.addText("OK", { x: x + 5.0, y, w: 0.75, h: 0.72, align: "center", fontFace: HF, fontSize: 13, bold: true, color: DARKGREEN, valign: "middle" });
+});
+s.addText("Résultat — parcours validé de bout en bout · 17 captures réelles · compte de test à 85 XP avec succès débloqués.",
+  { x: 0.6, y: 6.85, w: 12.1, h: 0.4, fontFace: BF, fontSize: 13, italic: true, color: WOLF });
+
+// ---------- Slide 13 : Difficultés ----------
 s = p.addSlide(); lightBg(s);
 title(s, "Difficultés & solutions", "Retour technique");
 const diffs = [
@@ -204,7 +231,7 @@ diffs.forEach((d, i) => {
     { x: 1.5, y: y + 0.18, w: 11.0, h: 0.7, fontFace: BF, fontSize: 15, valign: "middle" });
 });
 
-// ---------- Slide 13 : Conclusion ----------
+// ---------- Slide 14 : Conclusion ----------
 s = p.addSlide(); darkBg(s);
 s.addShape(p.ShapeType.ellipse, { x: 9.8, y: -2.2, w: 6, h: 6, fill: { color: "1C2E14" } });
 s.addText("🦉", { x: 0.6, y: 1.4, w: 2, h: 1.2, fontSize: 64 });
